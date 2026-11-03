@@ -1,0 +1,47 @@
+# Project Regels voor Cline (uv + Multi-GPU Setup)
+
+## 1. Hardware Isolatie & Omgeving (Strikt)
+- GPU 0 is exclusief gereserveerd voor lokale LLM's. Raak deze verder NOOIT aan.
+- GPU 1 is voor PyTorch, simulaties en training.
+- Dit project gebruikt 'uv'. Voer Python-taken ALTIJD uit via:
+  CUDA_VISIBLE_DEVICES=1 uv run python <scriptnaam>.py
+
+## 2. Codekwaliteit
+- Gebruik PyTorch (CUDA), torchdiffeq en RDKit conform pyproject.toml.
+- Schrijf modulaire code zonder lege placeholders.
+- Test elk aangemaakt script direct via terminalverificatie op GPU 1.
+
+## 3. Verplicht Denkproces- en Taaklogboek (Harde Regel)
+VOORDAT je enige code schrijft of aanpast voor een taak, ben je verplicht een logbestand aan te maken in de map `logs/` (bijv. `logs/task_<korte_naam>_thought.md`). 
+
+Dit logbestand **moet** dit exact aangehouden Markdown-sjabloon bevatten:
+
+```markdown
+# Denk- en Voortgangslog: [Taaknaam]
+- **Datum / Tijd:** [Timestamp]
+- **Doel van de taak:** [Welk onderdeel van ARCHITECTURE.md lossen we op?]
+
+## 1. Analyse & Probleemstelling
+- Wat wordt er gevraagd? Zowel de exacte prompt als de interpretatie ervan
+- Welke mogelijke valkuilen of randvoorwaarden zijn er?
+
+## 2. Methodologische & Wetenschappelijke Overwegingen
+- Waarom kiezen we deze specifieke aanpak/bibliotheek/wiskundige formule?
+- Hoe sluit dit aan bij het onderzoeksvoorstel (bijv. AOP's, attractor dynamics, API-bronnen)?
+
+## 3. Stap-voor-stap Uitvoeringsplan
+- Welke bestanden worden aangemaakt of gewijzigd?
+- Wat is de opbouw van de logica?
+
+## 4. Terminal Executie & Verificatie (GPU 1)
+- Exact uitgevoerd commando: `CUDA_VISIBLE_DEVICES=1 uv run python ...`
+- Output / Terminal log (inclusief geverifieerde tensor shapes en ontbreken van NaNs):
+
+## 5. Check of taken echt zijn uitgevoerd
+- Check of je alle bestanden hebt aangemaakt en aangepast waarvan je zegt dat je die hebt aangemaakt.
+- Als dit niet zo is reflecteer dan waarom dit niet is gelukt en probeer nog eens, herhaal stap 5 tot het klopt
+
+## 6. Reflectie & Volgende Stap
+- Werkt alles naar behoren? 
+- Wat is het directe vervolg?
+
