@@ -52,14 +52,17 @@ Een gezonde hepatocyt bevindt zich in een stabiele, homeostatische attractor sta
 - **Adaptieve respons (Homeostase):** Bij een lage dosis of adaptieve prikkel (zoals Fenofibrate via PPARA/CPT1A, VLDL-export via MTTP/APOB, of FXR-gemedieerde repressie via NR1H4) vangt het netwerk de verstoring op en keert het traject $z(t)$ terug naar $z_0$.
 - **Adverse Outcome (Pathologische kanteling):** Bij overschrijding van een kritische drempelwaarde passeert de cel een bifurcatiepunt en convergeert $z(t)$ onomkeerbaar naar een pathologische attractor ($z_{\text{steatose}}$ bij overbelaste lipogenese, of $z_{\text{cholestase}}$ bij toxische galzuurretentie).
 
+### Validatiestrategie: Structuur-baseline vs. Biologische verrijking
+Om aan te tonen wat de meerwaarde is van multimodale en multiscale modellering, fungeert een open-weights moleculaire Graphormer (getraind op atomen en bindingen, vergelijkbaar met ToxTransformer) als state-of-the-art structuur-baseline:
+
+* **Stap A (Moleculaire Baseline):** Een lijst met teststoffen (bekende steatose- of cholestase-inductoren) wordt gevoerd door de moleculaire Graphormer om te voorspellen of de stof potent MIE's triggert (zoals LXR-agonist of BSEP-remming).
+* **Stap B (Hepatocyte Verrijking):** Dezelfde stoffen worden ingevoerd via de Perturbation Encoder (Mijlpaal 2) als perturbatiekracht $p$ op de `HepatocyteGraphormer` + Neural ODE.
+* **Stap C (Evaluatie / WP4):** Uit de vergelijking blijkt dat een pure moleculaire Graphormer moeite heeft om te voorspellen *waarom* een biologisch systeem wel of niet kantelt bij dezelfde blootstelling, omdat het de exposoom- en homeostatische context mist. De `HepatocyteGraphormer` kan dit dankzij de integratie met *Physiological maps* en attractor dynamics wél.
+
 ---
 
 ## 2. Systeemarchitectuur & Bestandsnamen
 
-- **Mijlpaal 1:** 
-  - *Stap 1.1:* Haal de AOP op
-  - *Stap 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Echte gezonde & pathologische data ophalen via MyGene.info, GTEx/HPA en NCBI GEO, AOP WIKI opslaan in `data/hepatocyte_features.pt` en Marimo verkenner starten).
-  - *Stap 1.2:* `m01_graph_embedding.py` (Bouwt de HepatocyteGraphormer op basis van de echte data en genereert `01_network_and_embedding.html`).
 - **Mijlpaal 2:** `m02_perturbation_encoder.py` (Genereert `02_perturbation_profiles.html`).
 - **Mijlpaal 3:** `m03_neural_ode_trajectory.py` (Genereert `03_trajectory_dynamics.html`).
 - **Mijlpaal 4:** `m04_attractor_simulation.py` (Genereert `04_attractor_landscape.html`).
