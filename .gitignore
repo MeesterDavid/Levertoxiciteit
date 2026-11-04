@@ -219,3 +219,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# Lokale grote model-caches (>100 MB, worden automatisch gedownload door m00_molecular_baseline_mie.py)
+data/hf_cache/
+data/toxtransformer_cache/
+
+

@@ -29,13 +29,17 @@ Om te voorkomen dat de agent blijft hangen in een passieve "schrijf-illusie" (co
 Elke mijlpaal bouwt voort op de exacte datastructuren en tensor-shapes van de vorige mijlpaal. **Mijlpaal 0** (Moleculaire Structuur-Baseline) en **Mijlpaal 1.1** (Biologische Hepatocyt-Data) leggen samen het fundament voor **Mijlpaal 1.2, 2, 3 en 4**:
 
 ```text
-[Mijlpaal 0: m00_molecular_baseline_mie.py (Microsoft Graphormer PCQM4Mv2)]
-  │  Laadt open-weights GraphormerForGraphClassification ('clefourrier/pcqm4mv2_graphormer_base'),
-  │  zet 2D SMILES om naar OGB atoom-/bindingsgrafen en voorspelt of een stof MIE 167 (LXR-activatie)
+[Mijlpaal 0: m00_molecular_baseline_mie.py (Microsoft Graphormer + ToxTransformer)]
+  │  Laadt twee complementaire open-weights moleculaire baseline-modellen op GPU 1:
+  │  1) Microsoft Graphormer ('clefourrier/pcqm4mv2_graphormer_base'): zet 2D SMILES om naar
+  │     OGB atoom-/bindingsgrafen met Floyd-Warshall spatial encoding (768D [CLS] embedding).
+  │  2) ToxTransformer ('biobricks-ai/toxtransformer' MoE MultitaskTransformer): zet SMILES om
+  │     naar SELFIES-sequenties en bioassay-readouts (512D expert-embedding + 3797 bioassays).
+  │  Voorspelt vanuit SMILES (per model én in consensus) of een stof MIE 167 (LXR-activatie)
   │  of MIE 41 (BSEP-remming) triggert (Stap A van de validatiestrategie).
   │
-  ├─► data/molecular_baseline_mie.pt    (768D Graphormer [CLS] embeddings + MIE-kansen)
-  └─► 00_molecular_baseline_mie.html    (Interactief dashboard: MIE-voorspellingen & 2D PCA ruimte)
+  ├─► data/molecular_baseline_mie.pt    (768D Graphormer + 512D ToxTransformer embeddings & MIE-kansen)
+  └─► 00_molecular_baseline_mie.html    (Interactief dashboard: Graphormer vs. ToxTransformer MIE & PCA)
         │
         ▼
 [Mijlpaal 1.1: fetch_real_hepatocyte_data.py & m01_data_explorer.py]
