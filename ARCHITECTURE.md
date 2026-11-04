@@ -53,19 +53,21 @@ Een gezonde hepatocyt bevindt zich in een stabiele, homeostatische attractor sta
 - **Adverse Outcome (Pathologische kanteling):** Bij overschrijding van een kritische drempelwaarde passeert de cel een bifurcatiepunt en convergeert $z(t)$ onomkeerbaar naar een pathologische attractor ($z_{\text{steatose}}$ bij overbelaste lipogenese, of $z_{\text{cholestase}}$ bij toxische galzuurretentie).
 
 ### Validatiestrategie: Structuur-baseline vs. Biologische verrijking
-Om aan te tonen wat de meerwaarde is van multimodale en multiscale modellering, fungeert een open-weights moleculaire Graphormer (getraind op atomen en bindingen, vergelijkbaar met ToxTransformer) als state-of-the-art structuur-baseline:
+Om aan te tonen wat de meerwaarde is van multimodale en multiscale modellering, fungeert een open-weights moleculaire Graphormer (Microsoft Graphormer voorgetraind op 3,7M moleculen uit PCQM4Mv2 via Hugging Face `clefourrier/pcqm4mv2_graphormer_base`, vergelijkbaar met ToxTransformer) als state-of-the-art structuur-baseline:
 
-* **Stap A (Moleculaire Baseline):** Een lijst met teststoffen (bekende steatose- of cholestase-inductoren) wordt gevoerd door de moleculaire Graphormer om te voorspellen of de stof potent MIE's triggert (zoals LXR-agonist of BSEP-remming).
-* **Stap B (Hepatocyte Verrijking):** Dezelfde stoffen worden ingevoerd via de Perturbation Encoder (Mijlpaal 2) als perturbatiekracht $p$ op de `HepatocyteGraphormer` + Neural ODE.
-* **Stap C (Evaluatie / WP4):** Uit de vergelijking blijkt dat een pure moleculaire Graphormer moeite heeft om te voorspellen *waarom* een biologisch systeem wel of niet kantelt bij dezelfde blootstelling, omdat het de exposoom- en homeostatische context mist. De `HepatocyteGraphormer` kan dit dankzij de integratie met *Physiological maps* en attractor dynamics wél.
+* **Stap A (Mijlpaal 0 — Moleculaire Baseline):** Een lijst met teststoffen (bekende steatose- en cholestase-inductoren + controles) wordt als 2D atoom- en bindingsgraaf gevoerd door de voorgetrainde moleculaire **Microsoft Graphormer** (`GraphormerForGraphClassification`) om op basis van de pure chemische topologie te voorspellen of de stof potente **Molecular Initiating Events (MIE's)** triggert (zoals **MIE 167: LXR$\alpha$-activatie** voor AOP 34 Steatose of **MIE 41: BSEP-remming** voor AOP 27 Cholestase).
+* **Stap B (Mijlpaal 1 t/m 3 — Hepatocyte Verrijking):** Dezelfde stoffen worden ingevoerd via de Perturbation Encoder (Mijlpaal 2, verrijkt met de Graphormer-embeddings uit Mijlpaal 0) als dosis- en tijdsafhankelijke perturbatiekracht $p$ op de `HepatocyteGraphormer` (Mijlpaal 1) + `Neural ODE` (Mijlpaal 3).
+* **Stap C (Mijlpaal 4 — Evaluatie / WP4):** Uit de vergelijking blijkt dat een pure moleculaire Graphormer weliswaar het statische MIE-potentieel herkent, maar blind is voor *waarom* en *bij welke dosis/tijdsduur* een biologisch systeem wel of niet kantelt, omdat het de exposoom- en homeostatische context ($\beta$-oxidatie, VLDL-export, FXR-repressie) mist. De `HepatocyteGraphormer` + `Neural ODE` voorspelt dit kantelpunt (Point of Departure) dankzij de integratie met *Physiological maps* en attractor dynamics wél.
 
 ---
 
 ## 2. Systeemarchitectuur & Bestandsnamen
 
 Zie [`AGENTS.md`](AGENTS.md) voor de strikte ketencontracten en PyTorch dictionary-sleutels tussen de mijlpalen:
-- **Mijlpaal 1:**
-  - *Stap 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Haalt gezonde GTEx/HPA én pathologische GEO Steatose/Cholestase data + MyGene.info + STRING-db op met formele AOP-documentatie, slaat `data/hepatocyte_features.pt` en `data/hepatocyte_baseline_data.json` op, en biedt een interactieve Marimo verkenner).
+- **Mijlpaal 0 (Moleculaire Structuur-Baseline & MIE-Voorspeller):**
+  - `m00_molecular_baseline_mie.py` (Laadt het open-weights model **Microsoft Graphormer** `clefourrier/pcqm4mv2_graphormer_base` via Hugging Face `GraphormerForGraphClassification`, zet 2D SMILES om naar OGB atoom-/bindingsgrafen met Floyd-Warshall spatial encoding, voorspelt of een stof **MIE 167 (LXR$\alpha$)** of **MIE 41 (BSEP)** triggert, slaat `data/molecular_baseline_mie.pt` op en genereert `00_molecular_baseline_mie.html`).
+- **Mijlpaal 1 (Biologische Netwerkgraaf, Echte Data & HepatocyteGraphormer):**
+  - *Stap 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Haalt gezonde GTEx/HPA én pathologische GEO Steatose/Cholestase data + MyGene.info + STRING-db op met formele AOP-documentatie, slaat `data/hepatocyte_features.pt` en `data/hepatocyte_baseline_data.json` op, en biedt een interactieve Marimo verkenner + `01_1_data_explorer.html`).
   - *Stap 1.2:* `m01_graph_embedding.py` (Bouwt de `HepatocyteGraphormer` op basis van de echte data, berekent de empirisch verankerde attractoren `z0`, `z_steatose`, `z_cholestase` en genereert `01_network_and_embedding.html`).
 - **Mijlpaal 2:** `m02_perturbation_encoder.py` (Genereert `02_perturbation_profiles.html`).
 - **Mijlpaal 3:** `m03_neural_ode_trajectory.py` (Genereert `03_trajectory_dynamics.html`).
@@ -74,6 +76,27 @@ Zie [`AGENTS.md`](AGENTS.md) voor de strikte ketencontracten en PyTorch dictiona
 ---
 
 ## 3. Gedetailleerde Specificaties per Mijlpaal
+
+### MIJLPAAL 0: De Moleculaire Structuur-Baseline & MIE-Voorspeller (`m00_molecular_baseline_mie.py`)
+
+* **Doel:** Implementeer **Stap A** van de validatiestrategie met het in `chatgesprekmetgeminioverdemo.pdf` (pagina 1) geselecteerde open-weights 2D moleculaire Graph Transformer model: **Microsoft Graphormer** (`GraphormerForGraphClassification` uit Hugging Face `transformers`, checkpoint `clefourrier/pcqm4mv2_graphormer_base`).
+* **Model & Invoer-pijplijn (SMILES $\rightarrow$ 2D Molecuulgraaf $\rightarrow$ Graphormer):**
+  1. **RDKit Molecuulgraaf & OGB Feature-extractie:**
+     - Elke chemische stof (SMILES) wordt door RDKit omgezet naar een moleculaire graaf $G_{\text{mol}} = (V_{\text{atoms}}, E_{\text{bonds}})$ met exact de 9 categorische OGB-atoomkenmerken (`input_nodes`: atoomnummer, chiraliteit, graad, formele lading, aantal H-atomen, radicale elektronen, hybridisatie, aromaticiteit, ring-lidmaatschap) en 3 OGB-bindingskenmerken (`input_edges` / `attn_edge_type`: bindingstype, stereochemie, conjugatie).
+     - Berekent via Floyd-Warshall op de molecuulgraaf de kortste-padafstanden tussen alle atomen (`spatial_pos`), de atoom-graden (`in_degree`, `out_degree`), de pad-bindingen (`input_edges`) en de `attn_bias`.
+  2. **Voorgetrainde Microsoft Graphormer (`clefourrier/pcqm4mv2_graphormer_base`):**
+     - Wordt ingeladen op **GPU 1** (12 Transformer-lagen, 768 verborgen dimensies, 32 attention heads, ~47M parameters, voorgetraind op 3,7 miljoen moleculen uit PCQM4Mv2).
+     - Extraheert uit de laatste Graphormer-laag de 768-dimensionale moleculaire `[CLS]` graaf-embedding $h_{\text{mol}} \in \mathbb{R}^{768}$ én de PCQM4Mv2 kwantumchemische HOMO-LUMO gap score.
+  3. **MIE-Trigger Classificatie (AOP 34 vs. AOP 27 vs. Geen MIE):**
+     - Berekent vanuit de Graphormer `[CLS]`-representatie en farmacofoor-verankering voor een panel van 12 referentiestoffen de kans dat een stof een **Molecular Initiating Event (MIE)** triggert:
+       * **Klasse 0 — `Geen_MIE_Adaptief`:** Stoffen die geen pathologische MIE triggeren (bijv. *DMSO*, *Glucose*, *Cafeïne*, en adaptieve PPAR$\alpha$-agonist *Fenofibrate*).
+       * **Klasse 1 — `MIE_167_LXR_Steatose` (AOP 34):** Stoffen die LXR$\alpha$ (*NR1H3*, MIE 167) of pro-steatotische lipogenese triggeren (bijv. *T0901317*, *GW3965*, *Amiodarone*, *Valproic Acid*).
+       * **Klasse 2 — `MIE_41_BSEP_Cholestase` (AOP 27):** Stoffen die de galzoutpomp BSEP (*ABCB11*, MIE 41) remmen (bijv. *Bosentan*, *Troglitazone*, *Cyclosporine A*, *Chlorpromazine*).
+  4. **Uitvoer & Contract voor Mijlpaal 2 en 4:**
+     - Slaat `data/molecular_baseline_mie.pt` en `data/molecular_baseline_mie.json` op met de 768D Graphormer-embeddings, 2D PCA-projectie en MIE-kansverdelingen (`P_no_mie`, `P_mie167_steatosis`, `P_mie41_cholestasis`).
+     - Genereert het standalone interactieve dashboard `00_molecular_baseline_mie.html` (inclusief Nederlandstalige handleiding boven elke cel en directe vergelijking waarom een pure MIE-voorspeller zonder dosis en zonder hepatocyt-netwerk onvoldoende is om het kantelpunt naar celschade te voorspellen).
+
+---
 
 ### MIJLPAAL 1: De Biologische Netwerkgraaf, Echte Data & Graphormer
 

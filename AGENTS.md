@@ -19,16 +19,25 @@ Om te voorkomen dat de agent blijft hangen in een passieve "schrijf-illusie" (co
    - **Stap D (Check & Fix):** Controleer met `ls -la` en de terminal-output of alle verwachte output-bestanden (`.pt`, `.json`, `.html`) daadwerkelijk bestaan en geen `NaN`-waarden bevatten. Als er een fout optreedt, los deze direct op in een nieuwe iteratie.
    - **Stap E (Log afronden):** Vul sectie 4, 5 en 6 van het denklogboek in `logs/` aan met de echte terminal-output.
 3. **Hardware-isolatie (Strikt):**
-   - **GPU 0** is bezet door Ollama (`qwen72b-coder-64k`). Raak GPU 0 **nooit** aan.
+   - **GPU 0** is bezet door Ollama's lokale modellen'. Raak GPU 0 **nooit** aan.
    - **GPU 1** is voor PyTorch, Graphormer en Neural ODE. Gebruik bij élk Python-commando `CUDA_VISIBLE_DEVICES=1`.
 
 ---
 
-## 2. Hoe Mijlpaal 1.1 de Fundering legt voor Mijlpaal 1.2 t/m 4 (Ketencontract)
+## 2. Hoe Mijlpaal 0 & 1.1 de Fundering leggen voor Mijlpaal 1.2 t/m 4 (Ketencontract)
 
-Elke mijlpaal bouwt voort op de exacte datastructuren en tensor-shapes van de vorige mijlpaal. **Mijlpaal 1.1** mag daarom geen losstaand script zijn, maar moet precies die tensoren en metadata opleveren die **Mijlpaal 1.2, 2, 3 en 4** nodig hebben:
+Elke mijlpaal bouwt voort op de exacte datastructuren en tensor-shapes van de vorige mijlpaal. **Mijlpaal 0** (Moleculaire Structuur-Baseline) en **Mijlpaal 1.1** (Biologische Hepatocyt-Data) leggen samen het fundament voor **Mijlpaal 1.2, 2, 3 en 4**:
 
 ```text
+[Mijlpaal 0: m00_molecular_baseline_mie.py (Microsoft Graphormer PCQM4Mv2)]
+  │  Laadt open-weights GraphormerForGraphClassification ('clefourrier/pcqm4mv2_graphormer_base'),
+  │  zet 2D SMILES om naar OGB atoom-/bindingsgrafen en voorspelt of een stof MIE 167 (LXR-activatie)
+  │  of MIE 41 (BSEP-remming) triggert (Stap A van de validatiestrategie).
+  │
+  ├─► data/molecular_baseline_mie.pt    (768D Graphormer [CLS] embeddings + MIE-kansen)
+  └─► 00_molecular_baseline_mie.html    (Interactief dashboard: MIE-voorspellingen & 2D PCA ruimte)
+        │
+        ▼
 [Mijlpaal 1.1: fetch_real_hepatocyte_data.py & m01_data_explorer.py]
   │  Haalt echte gezonde (GTEx/HPA) én pathologische (NCBI GEO Steatose & Cholestase)
   │  expressieprofielen + MyGene.info structuurfeatures + STRING-db interacties op.

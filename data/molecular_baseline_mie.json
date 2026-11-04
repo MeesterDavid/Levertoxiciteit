@@ -1,0 +1,6537 @@
+{
+  "model_id": "clefourrier/pcqm4mv2_graphormer_base",
+  "num_parameters": 47677505,
+  "compounds": [
+    {
+      "name": "T0901317",
+      "smiles": "CC(C)(C)c1ccc(cc1)S(=O)(=O)N(CC(F)(F)F)c2ccc(cc2)C(C(F)(F)F)(C(F)(F)F)O",
+      "true_class": 1,
+      "mie_code": "MIE 167 (AOP 34)",
+      "target_gene": "NR1H3 (LXRα) → SREBF1 / FASN / CD36",
+      "mechanism_nl": "Synthetische hexafluoro-isopropanol sulfonamide LXRα/β-agonist (EC50 ~ 20 nM). Bindt direct aan het ligand-bindend domein van NR1H3 (MIE 167) en forceert massale de novo lipogenese.",
+      "limitation_note_nl": "Structuur-baseline ziet altijd: 'MIE 167 = JA'. Maar bij 0.1 µM vangt PPARA/CPT1A dit in de hepatocyt nog homeostatisch op, terwijl pas boven ~5-10 µM kanteling naar steatose optreedt!",
+      "num_nodes": 35,
+      "max_shortest_path": 14,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 7.876213957957374,
+          "y": 0.7192460828911704
+        },
+        {
+          "idx": 1,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 7.092478505347387,
+          "y": 1.9982139246769668
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 6.308743052737402,
+          "y": 3.2771817664627636
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.371446347133185,
+          "y": 2.781949377286952
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.8135106635615905,
+          "y": 1.2144784720669786
+        },
+        {
+          "idx": 5,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.495291930861948,
+          "y": 1.9302293873718421
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.216324089076151,
+          "y": 1.1464939347618557
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.255574979989996,
+          "y": -0.3529924331529948
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.573793712689636,
+          "y": -1.0687433484578583
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.852761554475434,
+          "y": -0.28500789584787256
+        },
+        {
+          "idx": 10,
+          "symbol": "S",
+          "atomic_num": 16,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 1.976607138204198,
+          "y": -1.1367278857629814
+        },
+        {
+          "idx": 11,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 1.1928716855942119,
+          "y": 0.14223995602281608
+        },
+        {
+          "idx": 12,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 2.7603425908141843,
+          "y": -2.415695727548779
+        },
+        {
+          "idx": 13,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.6976392964184013,
+          "y": -1.9204633383729672
+        },
+        {
+          "idx": 14,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.7368901873322455,
+          "y": -3.4199497062878175
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -0.5420776544535513,
+          "y": -4.2036851588978035
+        },
+        {
+          "idx": 16,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.821045496239349,
+          "y": -4.98742061150779
+        },
+        {
+          "idx": 17,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.24165779815643473,
+          "y": -5.4826530006836
+        },
+        {
+          "idx": 18,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.3258131070635377,
+          "y": -2.9247173171120067
+        },
+        {
+          "idx": 19,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.6205794362812402,
+          "y": -1.204712423068103
+        },
+        {
+          "idx": 20,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.659830327195084,
+          "y": 0.29477394484674724
+        },
+        {
+          "idx": 21,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.9780490598947253,
+          "y": 1.010524860151612
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.257016901680524,
+          "y": 0.22678940754162658
+        },
+        {
+          "idx": 23,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.21776601076668,
+          "y": -1.2726969603732232
+        },
+        {
+          "idx": 24,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.8995472780670393,
+          "y": -1.9884478756780886
+        },
+        {
+          "idx": 25,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.5752356343801655,
+          "y": 0.9425403228464908
+        },
+        {
+          "idx": 26,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.893454367079807,
+          "y": 1.6582912381513555
+        },
+        {
+          "idx": 27,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.211673099779449,
+          "y": 2.37404215345622
+        },
+        {
+          "idx": 28,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.609205282384671,
+          "y": 0.34007250545171397
+        },
+        {
+          "idx": 29,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.568845628206324,
+          "y": 2.4824002460331815
+        },
+        {
+          "idx": 30,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.8594847190753008,
+          "y": 2.2607590555461323
+        },
+        {
+          "idx": 31,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.143733803770436,
+          "y": 3.5789777882457736
+        },
+        {
+          "idx": 32,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.5805564797598155,
+          "y": 2.775134410873675
+        },
+        {
+          "idx": 33,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.4072466545870626,
+          "y": 1.8852532579191763
+        },
+        {
+          "idx": 34,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.29098654968503,
+          "y": -0.3756784098531507
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 4,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 8,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 10,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 10,
+          "v": 12,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 10,
+          "v": 13,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 14,
+          "v": 15,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 15,
+          "v": 16,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 15,
+          "v": 17,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 15,
+          "v": 18,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 19,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 19,
+          "v": 20,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 21,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 21,
+          "v": 22,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 23,
+          "v": 24,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 22,
+          "v": 25,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 25,
+          "v": 26,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 26,
+          "v": 27,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 26,
+          "v": 28,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 26,
+          "v": 29,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 25,
+          "v": 30,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 30,
+          "v": 31,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 30,
+          "v": 32,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 30,
+          "v": 33,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 25,
+          "v": 34,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 9,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 24,
+          "v": 19,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 537.44,
+        "logp": 6.05,
+        "tpsa": 57.61,
+        "hbd": 1,
+        "hba": 3,
+        "rings": 2,
+        "halogens": 9,
+        "cf3_groups": 3,
+        "sulfonamide_groups": 1
+      },
+      "atom_saliency": [
+        0.2554108202457428,
+        0.24278251826763153,
+        0.2554101347923279,
+        0.2554101347923279,
+        0.34040766954421997,
+        0.22570590674877167,
+        0.5100974440574646,
+        0.44571369886398315,
+        0.5100967884063721,
+        0.22570590674877167,
+        0.345168799161911,
+        0.36636531352996826,
+        0.36636531352996826,
+        0.4516389071941376,
+        0.8632136583328247,
+        0.6986018419265747,
+        0.823560893535614,
+        0.8235595226287842,
+        0.8235595226287842,
+        0.341962069272995,
+        0.0,
+        0.6570132374763489,
+        0.49041590094566345,
+        0.6570132374763489,
+        0.0,
+        0.8256429433822632,
+        0.9720622897148132,
+        0.9999986290931702,
+        1.0,
+        0.9999986290931702,
+        0.9720622897148132,
+        0.9999986290931702,
+        0.9999986290931702,
+        0.9999993443489075,
+        0.7665989398956299
+      ],
+      "homo_lumo_gap_ev": 5.8415,
+      "prediction": {
+        "predicted_class": 1,
+        "predicted_label": "MIE_167_LXR_Steatose",
+        "predicted_label_nl": "MIE 167: LXRα-activatie (AOP 34 → Steatose)",
+        "mie_triggered": true,
+        "P_no_mie": 0.0072,
+        "P_mie167_steatosis": 0.9829,
+        "P_mie41_cholestasis": 0.0099,
+        "P_any_mie_trigger": 0.9928
+      },
+      "loocv": {
+        "loocv_pred_class": 1,
+        "loocv_P_no_mie": 0.2299,
+        "loocv_P_mie167": 0.4077,
+        "loocv_P_mie41": 0.3624
+      }
+    },
+    {
+      "name": "GW3965",
+      "smiles": "COc1ccc(CC(O)(C(F)(F)F)C(F)(F)F)cc1CNC(Cc1ccc(OCC(C)(C)C(=O)O)cc1)c1cccc(Cl)c1",
+      "true_class": 1,
+      "mie_code": "MIE 167 (AOP 34)",
+      "target_gene": "NR1H3 (LXRα) → SREBF1 / SCD",
+      "mechanism_nl": "Selectieve niet-steroïdale LXRα/β-agonist met bistrifluormethyl-carbinol farmacofoor. Tweede gouden-standaard MIE 167 referentie-inductor voor AOP 34 hepatische steatose.",
+      "limitation_note_nl": "Hoewel GW3965 krachtig MIE 167 triggert, hangt de daadwerkelijke lipidenstapeling af van de VLDL-exportcapaciteit (MTTP/APOB) en blootstellingsduur in de Neural ODE.",
+      "num_nodes": 44,
+      "max_shortest_path": 19,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 1.271946439676819,
+          "y": 1.8706987728535207
+        },
+        {
+          "idx": 1,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.457420070485306,
+          "y": 0.6111167811230536
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.0406731170984356,
+          "y": 0.686726313029973
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.724239935490663,
+          "y": 2.0219178366673596
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.2223331230744052,
+          "y": 2.09752736857428
+        },
+        {
+          "idx": 5,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -4.0368594922659184,
+          "y": 0.837945376843813
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.5349526798496615,
+          "y": 0.9135549087507329
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.21851949824189,
+          "y": 2.2487464323881197
+        },
+        {
+          "idx": 8,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.883327974604503,
+          "y": 2.9323132507803478
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.902086316634118,
+          "y": 3.5839379560255065
+        },
+        {
+          "idx": 10,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.585653135026347,
+          "y": 4.919129479662892
+        },
+        {
+          "idx": 11,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.7338262898755215,
+          "y": 3.2794135610464084
+        },
+        {
+          "idx": 12,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.566894792996731,
+          "y": 4.267504774417734
+        },
+        {
+          "idx": 13,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.553711021879276,
+          "y": 1.5651796139958911
+        },
+        {
+          "idx": 14,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -8.888902545516661,
+          "y": 0.8816127956036577
+        },
+        {
+          "idx": 15,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.870144203487041,
+          "y": 0.2299880903585061
+        },
+        {
+          "idx": 16,
+          "symbol": "F",
+          "atomic_num": 9,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -8.050445382832617,
+          "y": 2.298515461253665
+        },
+        {
+          "idx": 17,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.3532926738736917,
+          "y": -0.4972461467935734
+        },
+        {
+          "idx": 18,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.8551994862899504,
+          "y": -0.5728556787004957
+        },
+        {
+          "idx": 19,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.1716326678977222,
+          "y": -1.9080472023378827
+        },
+        {
+          "idx": 20,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.3264605196860195,
+          "y": -1.9836567342448026
+        },
+        {
+          "idx": 21,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 1.0100273380782476,
+          "y": -3.3188482578821903
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 2.5081205256619894,
+          "y": -3.3944577897891097
+        },
+        {
+          "idx": 23,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.3226468948535026,
+          "y": -2.1348757980586432
+        },
+        {
+          "idx": 24,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.820740082437245,
+          "y": -2.2104853299655627
+        },
+        {
+          "idx": 25,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.635266451628759,
+          "y": -0.9509033382350958
+        },
+        {
+          "idx": 26,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.9516996332365295,
+          "y": 0.38428818540229104
+        },
+        {
+          "idx": 27,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.766226002428043,
+          "y": 1.643870177132758
+        },
+        {
+          "idx": 28,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 7.264319190011786,
+          "y": 1.5682606452258385
+        },
+        {
+          "idx": 29,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.0788455592033,
+          "y": 2.827842636956305
+        },
+        {
+          "idx": 30,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 6.819263567472833,
+          "y": 3.6423690061478182
+        },
+        {
+          "idx": 31,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 9.338427550933766,
+          "y": 2.0133162677647913
+        },
+        {
+          "idx": 32,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.893371928394814,
+          "y": 4.087424628686772
+        },
+        {
+          "idx": 33,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 10.391465115978551,
+          "y": 4.01181509677985
+        },
+        {
+          "idx": 34,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.209805110002584,
+          "y": 5.422616152324159
+        },
+        {
+          "idx": 35,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.453606445652789,
+          "y": 0.4598977173092116
+        },
+        {
+          "idx": 36,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.6390800764612745,
+          "y": -0.799684274421255
+        },
+        {
+          "idx": 37,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.19550096888673396,
+          "y": -4.578430249612657
+        },
+        {
+          "idx": 38,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.3025922186970083,
+          "y": -4.502820717705737
+        },
+        {
+          "idx": 39,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -2.1171185878885215,
+          "y": -5.762402709436205
+        },
+        {
+          "idx": 40,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.4335517694962934,
+          "y": -7.09759423307359
+        },
+        {
+          "idx": 41,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.0645414180874484,
+          "y": -7.173203764980512
+        },
+        {
+          "idx": 42,
+          "symbol": "Cl",
+          "atomic_num": 17,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.7481082364796765,
+          "y": -8.508395288617898
+        },
+        {
+          "idx": 43,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.8790677872789625,
+          "y": -5.9136217732500445
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 2,
+          "v": 3,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 7,
+          "v": 8,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 7,
+          "v": 9,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 9,
+          "v": 10,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 9,
+          "v": 11,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 9,
+          "v": 12,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 7,
+          "v": 13,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 15,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 16,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 5,
+          "v": 17,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 17,
+          "v": 18,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 18,
+          "v": 19,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 19,
+          "v": 20,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 20,
+          "v": 21,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 21,
+          "v": 22,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 23,
+          "v": 24,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 24,
+          "v": 25,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 25,
+          "v": 26,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 26,
+          "v": 27,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 27,
+          "v": 28,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 28,
+          "v": 29,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 29,
+          "v": 30,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 29,
+          "v": 31,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 29,
+          "v": 32,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 32,
+          "v": 33,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 32,
+          "v": 34,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 26,
+          "v": 35,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 35,
+          "v": 36,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 21,
+          "v": 37,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 37,
+          "v": 38,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 38,
+          "v": 39,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 39,
+          "v": 40,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 40,
+          "v": 41,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 41,
+          "v": 42,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 41,
+          "v": 43,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 18,
+          "v": 2,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 36,
+          "v": 23,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 43,
+          "v": 37,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 648.04,
+        "logp": 7.31,
+        "tpsa": 88.02,
+        "hbd": 3,
+        "hba": 5,
+        "rings": 3,
+        "halogens": 7,
+        "cf3_groups": 2,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.7068850994110107,
+        0.43272727727890015,
+        0.8687944412231445,
+        0.5424909591674805,
+        0.5309044122695923,
+        0.6138988137245178,
+        0.5652573704719543,
+        0.7236652970314026,
+        0.6427767872810364,
+        1.0,
+        0.9711945056915283,
+        0.9711958765983582,
+        0.9711958765983582,
+        1.0,
+        0.9711958765983582,
+        0.9711945056915283,
+        0.9711958765983582,
+        0.4463375508785248,
+        0.25212398171424866,
+        0.5426928997039795,
+        0.37180984020233154,
+        0.5997049808502197,
+        0.3628096878528595,
+        0.4374125897884369,
+        0.24897213280200958,
+        0.4288177490234375,
+        0.8079397082328796,
+        0.19338902831077576,
+        0.6371485590934753,
+        0.6077511310577393,
+        0.16993319988250732,
+        0.16993460059165955,
+        0.5175225734710693,
+        0.0,
+        0.14643141627311707,
+        0.4288191497325897,
+        0.24897213280200958,
+        0.2784503400325775,
+        0.4781932234764099,
+        0.06813623756170273,
+        0.671257734298706,
+        0.326779842376709,
+        0.5659370422363281,
+        0.44410771131515503
+      ],
+      "homo_lumo_gap_ev": 6.8989,
+      "prediction": {
+        "predicted_class": 1,
+        "predicted_label": "MIE_167_LXR_Steatose",
+        "predicted_label_nl": "MIE 167: LXRα-activatie (AOP 34 → Steatose)",
+        "mie_triggered": true,
+        "P_no_mie": 0.0091,
+        "P_mie167_steatosis": 0.9832,
+        "P_mie41_cholestasis": 0.0077,
+        "P_any_mie_trigger": 0.9909
+      },
+      "loocv": {
+        "loocv_pred_class": 1,
+        "loocv_P_no_mie": 0.2351,
+        "loocv_P_mie167": 0.4296,
+        "loocv_P_mie41": 0.3353
+      }
+    },
+    {
+      "name": "Amiodarone",
+      "smiles": "CCCCc1oc2ccccc2c1C(=O)c1cc(I)c(OCCN(CC)CC)c(I)c1",
+      "true_class": 1,
+      "mie_code": "MIE 167 / KE 177 (AOP 34)",
+      "target_gene": "NR1H3 / SREBF1 & Mitochondriale β-oxidatie",
+      "mechanism_nl": "Amfifiel gejodeerd benzofuraan anti-aritmicum. Induceert ernstige klinische steatohepatitis door gelijktijdige opregulatie van LXR/SREBP-1c lipogenese-genen en remming van CPT1A.",
+      "limitation_note_nl": "Veroorzaakt bij therapeutische lage spiegels soms reversibele fosfolipidose, maar kantelt bij chronische accumulatie naar irreversibele NASH en apoptose (CASP3).",
+      "num_nodes": 31,
+      "max_shortest_path": 16,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.5007352470357394,
+          "y": -4.188859450803977
+        },
+        {
+          "idx": 1,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -0.905842741417769,
+          "y": -2.8118689255062996
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.5841122870694838,
+          "y": -2.638565685243601
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 1.1790047926874543,
+          "y": -1.2615751599459237
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.668959821174707,
+          "y": -1.0882719196832253
+        },
+        {
+          "idx": 5,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.6849386800512938,
+          "y": -2.1918057697829076
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.048416472459408,
+          "y": -1.5665631691790334
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 6.425406997757085,
+          "y": -2.161455674797004
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 7.629094282792064,
+          "y": -1.2663931519277223
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 7.455791042529364,
+          "y": 0.22356187655953041
+        },
+        {
+          "idx": 10,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 6.078800517231688,
+          "y": 0.8184543821775012
+        },
+        {
+          "idx": 11,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.875113232196709,
+          "y": -0.07660814069177979
+        },
+        {
+          "idx": 12,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.4045281469457587,
+          "y": 0.21899210801828461
+        },
+        {
+          "idx": 13,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 2.7792855463418844,
+          "y": 1.5824699004263987
+        },
+        {
+          "idx": 14,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.6474706517613,
+          "y": 2.805684772281658
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.2858578403185956,
+          "y": 1.7227328209792527
+        },
+        {
+          "idx": 16,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.6606152397147214,
+          "y": 3.086210613387367
+        },
+        {
+          "idx": 17,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.8328124663085679,
+          "y": 3.2264735339402213
+        },
+        {
+          "idx": 18,
+          "symbol": "I",
+          "atomic_num": 53,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.4580550669124408,
+          "y": 4.589951326348335
+        },
+        {
+          "idx": 19,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.7009975717279828,
+          "y": 2.0032586620849617
+        },
+        {
+          "idx": 20,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.1944252777512716,
+          "y": 2.1435215826378173
+        },
+        {
+          "idx": 21,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.0626103831706875,
+          "y": 0.9203067107825584
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.556038089193976,
+          "y": 1.0605696313354147
+        },
+        {
+          "idx": 23,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.424223194613392,
+          "y": -0.16264524051984353
+        },
+        {
+          "idx": 24,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.91765090063668,
+          "y": -0.022382319966986586
+        },
+        {
+          "idx": 25,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -8.785836006056098,
+          "y": -1.245597191822244
+        },
+        {
+          "idx": 26,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.798980594009518,
+          "y": -1.5261230329279583
+        },
+        {
+          "idx": 27,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.667165699428935,
+          "y": -2.749337904783217
+        },
+        {
+          "idx": 28,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.0757549711241097,
+          "y": 0.6397808696768477
+        },
+        {
+          "idx": 29,
+          "symbol": "I",
+          "atomic_num": 53,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.9439400765435237,
+          "y": -0.5834340021784115
+        },
+        {
+          "idx": 30,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.41767273489917955,
+          "y": 0.4995179491239932
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 2,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 8,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 9,
+          "v": 10,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 11,
+          "v": 12,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 13,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 13,
+          "v": 15,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 15,
+          "v": 16,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 16,
+          "v": 17,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 17,
+          "v": 18,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 17,
+          "v": 19,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 19,
+          "v": 20,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 21,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 21,
+          "v": 22,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 23,
+          "v": 24,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 24,
+          "v": 25,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 23,
+          "v": 26,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 26,
+          "v": 27,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 19,
+          "v": 28,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 28,
+          "v": 29,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 28,
+          "v": 30,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 30,
+          "v": 15,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 11,
+          "v": 6,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 645.32,
+        "logp": 6.94,
+        "tpsa": 42.68,
+        "hbd": 0,
+        "hba": 4,
+        "rings": 3,
+        "halogens": 2,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.0,
+        0.6639664173126221,
+        0.7091858386993408,
+        0.7780508399009705,
+        0.7178732752799988,
+        0.3172474503517151,
+        0.6331849694252014,
+        0.6658512949943542,
+        0.6448982954025269,
+        0.5335811376571655,
+        0.652188777923584,
+        0.4048077464103699,
+        0.3749169707298279,
+        0.6776876449584961,
+        0.46517422795295715,
+        0.6723940372467041,
+        0.9038220643997192,
+        0.9437368512153625,
+        0.762898862361908,
+        0.7859921455383301,
+        0.49203240871429443,
+        1.0,
+        0.48253241181373596,
+        0.13210511207580566,
+        0.6353462934494019,
+        0.2955184280872345,
+        0.6353462934494019,
+        0.29551899433135986,
+        0.9437373876571655,
+        0.7628993988037109,
+        0.9038215279579163
+      ],
+      "homo_lumo_gap_ev": 5.6806,
+      "prediction": {
+        "predicted_class": 1,
+        "predicted_label": "MIE_167_LXR_Steatose",
+        "predicted_label_nl": "MIE 167: LXRα-activatie (AOP 34 → Steatose)",
+        "mie_triggered": true,
+        "P_no_mie": 0.0076,
+        "P_mie167_steatosis": 0.9822,
+        "P_mie41_cholestasis": 0.0102,
+        "P_any_mie_trigger": 0.9924
+      },
+      "loocv": {
+        "loocv_pred_class": 2,
+        "loocv_P_no_mie": 0.1782,
+        "loocv_P_mie167": 0.351,
+        "loocv_P_mie41": 0.4709
+      }
+    },
+    {
+      "name": "Tamoxifen",
+      "smiles": "CC/C(=C(\\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1",
+      "true_class": 1,
+      "mie_code": "MIE 167 (AOP 34)",
+      "target_gene": "SREBF1 / FASN / CD36",
+      "mechanism_nl": "Trifenylethyleen-derivaat dat in humane hepatocyten (HepaRG) de novo vetzuursynthese (FASN, ACACA) en vetzuur-opname (CD36) stimuleert en klinisch bekend staat om medicijn-geïnduceerde vetlever.",
+      "limitation_note_nl": "Het kantelpunt naar steatose treedt pas op wanneer de compensatoire PPARα-route overbelast raakt.",
+      "num_nodes": 28,
+      "max_shortest_path": 14,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.245910941531113,
+          "y": -3.163585535409415
+        },
+        {
+          "idx": 1,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.928221843512498,
+          "y": -1.697613626742636
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.4998083803633993,
+          "y": -1.239754501798732
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.182119282344784,
+          "y": 0.22621740686804626
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.2928436474752676,
+          "y": 1.234330190590921
+        },
+        {
+          "idx": 5,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -2.9751545494566525,
+          "y": 2.7003020992576996
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -4.085878914587136,
+          "y": 3.7084148829805748
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -5.5142923777362345,
+          "y": 3.2505557580366706
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -5.831981475754851,
+          "y": 1.784583849369893
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -4.721257110624368,
+          "y": 0.7764710656470171
+        },
+        {
+          "idx": 10,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.7537058191956856,
+          "y": 0.6840765318119504
+        },
+        {
+          "idx": 11,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.35701854593479776,
+          "y": -0.3240362519109241
+        },
+        {
+          "idx": 12,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.7854320090838967,
+          "y": 0.1338228730329798
+        },
+        {
+          "idx": 13,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.103121107102512,
+          "y": 1.5997947816997584
+        },
+        {
+          "idx": 14,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.5315345702516105,
+          "y": 2.057653906643663
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 4.642258935382094,
+          "y": 1.049541122920789
+        },
+        {
+          "idx": 16,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 6.070672398531194,
+          "y": 1.507400247864695
+        },
+        {
+          "idx": 17,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 7.181396763661677,
+          "y": 0.4992874641418217
+        },
+        {
+          "idx": 18,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.609810226810776,
+          "y": 0.9571465890857271
+        },
+        {
+          "idx": 19,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 6.863707665643062,
+          "y": -0.9666844445249576
+        },
+        {
+          "idx": 20,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.9923967419720285,
+          "y": 2.607907565422633
+        },
+        {
+          "idx": 21,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.4360167211770698,
+          "y": 2.15004844047873
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.3890840152329147,
+          "y": -2.247867285521606
+        },
+        {
+          "idx": 23,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.70677311325153,
+          "y": -3.713839194188385
+        },
+        {
+          "idx": 24,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.596048748121047,
+          "y": -4.72195197791126
+        },
+        {
+          "idx": 25,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.8323647150280524,
+          "y": -4.264092852967356
+        },
+        {
+          "idx": 26,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.1500538130466682,
+          "y": -2.798120944300578
+        },
+        {
+          "idx": 27,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.0393294479161852,
+          "y": -1.7900081605777025
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 2,
+          "v": 3,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 8,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 3,
+          "v": 10,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 11,
+          "v": 12,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 13,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 14,
+          "v": 15,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 15,
+          "v": 16,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 16,
+          "v": 17,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 17,
+          "v": 18,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 17,
+          "v": 19,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 20,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 21,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 2,
+          "v": 22,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 23,
+          "v": 24,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 24,
+          "v": 25,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 25,
+          "v": 26,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 26,
+          "v": 27,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 9,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 21,
+          "v": 10,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 27,
+          "v": 22,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 371.52,
+        "logp": 6.0,
+        "tpsa": 12.47,
+        "hbd": 0,
+        "hba": 2,
+        "rings": 3,
+        "halogens": 0,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.7324557304382324,
+        1.0,
+        0.6692104339599609,
+        0.7487976551055908,
+        0.7146318554878235,
+        0.7275606989860535,
+        0.7421727776527405,
+        0.7609288692474365,
+        0.7421727776527405,
+        0.727563202381134,
+        0.7314279079437256,
+        0.8542274236679077,
+        0.9624576568603516,
+        0.7217221260070801,
+        0.5414114594459534,
+        0.24617022275924683,
+        0.34887513518333435,
+        0.0,
+        0.0968751609325409,
+        0.0968751609325409,
+        0.9624601602554321,
+        0.8542274236679077,
+        0.6434974074363708,
+        0.7316015362739563,
+        0.6962859034538269,
+        0.7743659615516663,
+        0.6962859034538269,
+        0.7316015362739563
+      ],
+      "homo_lumo_gap_ev": 7.7822,
+      "prediction": {
+        "predicted_class": 1,
+        "predicted_label": "MIE_167_LXR_Steatose",
+        "predicted_label_nl": "MIE 167: LXRα-activatie (AOP 34 → Steatose)",
+        "mie_triggered": true,
+        "P_no_mie": 0.0047,
+        "P_mie167_steatosis": 0.9815,
+        "P_mie41_cholestasis": 0.0138,
+        "P_any_mie_trigger": 0.9953
+      },
+      "loocv": {
+        "loocv_pred_class": 2,
+        "loocv_P_no_mie": 0.2314,
+        "loocv_P_mie167": 0.332,
+        "loocv_P_mie41": 0.4367
+      }
+    },
+    {
+      "name": "Bosentan",
+      "smiles": "CC(C)(C)c1ccc(cc1)S(=O)(=O)Nc2c(nc(nc2OCCO)c3ccccc3)Oc4ccccc4OC",
+      "true_class": 2,
+      "mie_code": "MIE 41 (AOP 27)",
+      "target_gene": "ABCB11 (BSEP) → NR1H4 / NFE2L2",
+      "mechanism_nl": "Endotheline-receptorantagonist en archetype BSEP-remmer (IC50 ~ 15-25 µM, Rodrigues et al., 2018). Blokkeert canaliculaire galzoutexport (ABCB11, MIE 41), wat leidt tot toxische galzuurretentie.",
+      "limitation_note_nl": "Bij lage dosis compenseert de hepatocyt via FXR (NR1H4): CYP7A1 en SLC10A1 worden onderdrukt. De structuur-baseline mist dit FXR-feedbacknetwerk volledig!",
+      "num_nodes": 39,
+      "max_shortest_path": 15,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.531918697302013,
+          "y": 1.3319063561852005
+        },
+        {
+          "idx": 1,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.882473721684651,
+          "y": -0.12655556477128682
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -8.233028746067287,
+          "y": -1.5850174857277723
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -9.340935642641135,
+          "y": 0.22399945961135082
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -6.424011800728164,
+          "y": -0.477110589153924
+        },
+        {
+          "idx": 5,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -5.998370396789557,
+          "y": -1.9154531753458128
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -4.5399084758330694,
+          "y": -2.26600819972845
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.507087958815188,
+          "y": -1.1782206379191984
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.9327293627537943,
+          "y": 0.26012194827269
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -5.391191283710281,
+          "y": 0.6106769726553289
+        },
+        {
+          "idx": 10,
+          "symbol": "S",
+          "atomic_num": 16,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.0486260378587002,
+          "y": -1.5287756623018354
+        },
+        {
+          "idx": 11,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.6980710134760633,
+          "y": -0.07031374134534751
+        },
+        {
+          "idx": 12,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.3991810622413374,
+          "y": -2.987237583258323
+        },
+        {
+          "idx": 13,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -0.5901641169022124,
+          "y": -1.8793306866844723
+        },
+        {
+          "idx": 14,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.4426564001156682,
+          "y": -0.7915431248752203
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.901118321072156,
+          "y": -1.1420981492578575
+        },
+        {
+          "idx": 16,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 2,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.933938838090037,
+          "y": -0.054310587448605396
+        },
+        {
+          "idx": 17,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.50829743415143,
+          "y": 1.3840319987432832
+        },
+        {
+          "idx": 18,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 2,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.0498355131949428,
+          "y": 1.734587023125921
+        },
+        {
+          "idx": 19,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.01701499617706137,
+          "y": 0.6467994613166698
+        },
+        {
+          "idx": 20,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.4414469247794277,
+          "y": 0.9973544856993066
+        },
+        {
+          "idx": 21,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.867088328718035,
+          "y": 2.4356970718911954
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.3255502496745226,
+          "y": 2.7862520962738326
+        },
+        {
+          "idx": 23,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.75119165361313,
+          "y": 4.224594682465722
+        },
+        {
+          "idx": 24,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.5411179511693107,
+          "y": 2.471819560552535
+        },
+        {
+          "idx": 25,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.999579872125798,
+          "y": 2.1212645361698983
+        },
+        {
+          "idx": 26,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 6.032400389143679,
+          "y": 3.20905209797915
+        },
+        {
+          "idx": 27,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.606758985205073,
+          "y": 4.647394684171038
+        },
+        {
+          "idx": 28,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.1482970642485855,
+          "y": 4.997949708553676
+        },
+        {
+          "idx": 29,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.1154765472307036,
+          "y": 3.9101621467444256
+        },
+        {
+          "idx": 30,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 2.3267597250107643,
+          "y": -2.580440735449746
+        },
+        {
+          "idx": 31,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.785221645967252,
+          "y": -2.9309957598323817
+        },
+        {
+          "idx": 32,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.21086304990586,
+          "y": -4.3693383460242705
+        },
+        {
+          "idx": 33,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.669324970862348,
+          "y": -4.719893370406907
+        },
+        {
+          "idx": 34,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 6.702145487880229,
+          "y": -3.6321058085976548
+        },
+        {
+          "idx": 35,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 6.276504083941621,
+          "y": -2.1937632224057664
+        },
+        {
+          "idx": 36,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 4.818042162985134,
+          "y": -1.8432081980231287
+        },
+        {
+          "idx": 37,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 4.392400759046527,
+          "y": -0.4048656118312388
+        },
+        {
+          "idx": 38,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.425221276064408,
+          "y": 0.682921949978013
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 4,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 8,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 10,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 10,
+          "v": 12,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 10,
+          "v": 13,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 14,
+          "v": 15,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 15,
+          "v": 16,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 16,
+          "v": 17,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 17,
+          "v": 18,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 18,
+          "v": 19,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 19,
+          "v": 20,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 21,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 21,
+          "v": 22,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 17,
+          "v": 24,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 24,
+          "v": 25,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 25,
+          "v": 26,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 26,
+          "v": 27,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 27,
+          "v": 28,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 28,
+          "v": 29,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 15,
+          "v": 30,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 30,
+          "v": 31,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 31,
+          "v": 32,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 32,
+          "v": 33,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 33,
+          "v": 34,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 34,
+          "v": 35,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 35,
+          "v": 36,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 36,
+          "v": 37,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 37,
+          "v": 38,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 9,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 19,
+          "v": 14,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 29,
+          "v": 24,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 36,
+          "v": 31,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 549.65,
+        "logp": 5.41,
+        "tpsa": 119.87,
+        "hbd": 2,
+        "hba": 8,
+        "rings": 4,
+        "halogens": 0,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 1
+      },
+      "atom_saliency": [
+        0.4412443935871124,
+        0.6017658710479736,
+        0.4412443935871124,
+        0.44124606251716614,
+        0.10421905666589737,
+        0.20686787366867065,
+        0.8397635221481323,
+        0.4411701560020447,
+        0.8397635221481323,
+        0.20686957240104675,
+        0.4874153435230255,
+        0.8449599742889404,
+        0.8449583053588867,
+        0.9301709532737732,
+        0.7359846830368042,
+        1.0,
+        0.6521685719490051,
+        0.943216860294342,
+        0.6748383045196533,
+        0.9843701720237732,
+        0.7000682950019836,
+        0.6629122495651245,
+        0.6842647790908813,
+        0.2894224226474762,
+        0.5422453880310059,
+        0.5753046274185181,
+        0.7265548706054688,
+        0.0,
+        0.7265565395355225,
+        0.5753063559532166,
+        0.939944863319397,
+        0.778144896030426,
+        0.8418144583702087,
+        0.3278670310974121,
+        0.4712845981121063,
+        0.525160014629364,
+        0.8333712816238403,
+        0.7896172404289246,
+        0.7481974363327026
+      ],
+      "homo_lumo_gap_ev": 6.9585,
+      "prediction": {
+        "predicted_class": 2,
+        "predicted_label": "MIE_41_BSEP_Cholestase",
+        "predicted_label_nl": "MIE 41: BSEP-remming (AOP 27 → Cholestase)",
+        "mie_triggered": true,
+        "P_no_mie": 0.0116,
+        "P_mie167_steatosis": 0.0101,
+        "P_mie41_cholestasis": 0.9783,
+        "P_any_mie_trigger": 0.9884
+      },
+      "loocv": {
+        "loocv_pred_class": 2,
+        "loocv_P_no_mie": 0.3372,
+        "loocv_P_mie167": 0.3102,
+        "loocv_P_mie41": 0.3526
+      }
+    },
+    {
+      "name": "Troglitazone",
+      "smiles": "Cc1c(C)c2OC(C)(COc3ccc(CC4SC(=O)NC4=O)cc3)CCc2c(C)c1O",
+      "true_class": 2,
+      "mie_code": "MIE 41 (AOP 27)",
+      "target_gene": "ABCB11 (BSEP) → NFE2L2 / TP53 / CASP3",
+      "mechanism_nl": "Van de markt gehaald thiazolidinedion met chromaan-ring. Krachtige competitieve remmer van BSEP (ABCB11, MIE 41, IC50 ~ 3 µM), resulterend in cholestatische leverschade en mitochondriële ROS.",
+      "limitation_note_nl": "Zonder tijdsafhankelijke ODE-integratie is niet te zien hoe snel de Nrf2 (NFE2L2) antioxidant-buffer wordt uitgeput richting Caspase-3 apoptose.",
+      "num_nodes": 31,
+      "max_shortest_path": 17,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.22018720158867,
+          "y": -4.02051088320486
+        },
+        {
+          "idx": 1,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -4.518110025720177,
+          "y": -2.5503945643846437
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.393913359169559,
+          "y": -1.557327670909447
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.971793868487434,
+          "y": -2.0343770962544667
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.6918361833010653,
+          "y": -0.08721135208922903
+        },
+        {
+          "idx": 5,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.567639516750447,
+          "y": 0.9058555413859679
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.8655623408819535,
+          "y": 2.3759718602061857
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.642708826213733,
+          "y": 3.8593249237079337
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.3660466367822148,
+          "y": 2.41408554748864
+        },
+        {
+          "idx": 9,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -0.5832813633138445,
+          "y": 1.1345236980057833
+        },
+        {
+          "idx": 10,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.9162343407858942,
+          "y": 1.1726373852882372
+        },
+        {
+          "idx": 11,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.6989996142542634,
+          "y": -0.10692446419461932
+        },
+        {
+          "idx": 12,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.1985153183540027,
+          "y": -0.06881077691216597
+        },
+        {
+          "idx": 13,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.9152657489853713,
+          "y": 1.2488647598531442
+        },
+        {
+          "idx": 14,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.4147814530851095,
+          "y": 1.2869784471355972
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 6.197546726553479,
+          "y": 0.0074165976527402755
+        },
+        {
+          "idx": 16,
+          "symbol": "S",
+          "atomic_num": 16,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.622457328719401,
+          "y": -1.3779613957118284
+        },
+        {
+          "idx": 17,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 6.762317699625094,
+          "y": -2.3530092585568987
+        },
+        {
+          "idx": 18,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 6.6434805239454535,
+          "y": -3.8482944238937584
+        },
+        {
+          "idx": 19,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.04187954910795,
+          "y": -1.5702439850885295
+        },
+        {
+          "idx": 20,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 7.692831891890341,
+          "y": -0.11142057802690064
+        },
+        {
+          "idx": 21,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.66787975473541,
+          "y": 1.0284397928787912
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.1325004755170016,
+          "y": 2.528426609336001
+        },
+        {
+          "idx": 23,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.6329847714172634,
+          "y": 2.490312922053548
+        },
+        {
+          "idx": 24,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.287681831564079,
+          "y": 2.8530212855512067
+        },
+        {
+          "idx": 25,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.411878498114697,
+          "y": 1.8599543920760102
+        },
+        {
+          "idx": 26,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -5.113955673983191,
+          "y": 0.38983807325579223
+        },
+        {
+          "idx": 27,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -6.238152340533809,
+          "y": -0.603228820219405
+        },
+        {
+          "idx": 28,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.660271831215934,
+          "y": -0.1261793948743839
+        },
+        {
+          "idx": 29,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -5.940229516402302,
+          "y": -2.0733451390396227
+        },
+        {
+          "idx": 30,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.0644261829529205,
+          "y": -3.0664120325148208
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 2,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 2,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 6,
+          "v": 8,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 9,
+          "v": 10,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 11,
+          "v": 12,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 13,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 14,
+          "v": 15,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 15,
+          "v": 16,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 16,
+          "v": 17,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 17,
+          "v": 18,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 17,
+          "v": 19,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 19,
+          "v": 20,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 21,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 13,
+          "v": 22,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 24,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 24,
+          "v": 25,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 25,
+          "v": 26,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 26,
+          "v": 27,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 27,
+          "v": 28,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 27,
+          "v": 29,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 29,
+          "v": 30,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 29,
+          "v": 1,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 26,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 23,
+          "v": 10,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 15,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        }
+      ],
+      "descriptors": {
+        "mw": 441.55,
+        "logp": 4.37,
+        "tpsa": 84.86,
+        "hbd": 2,
+        "hba": 6,
+        "rings": 4,
+        "halogens": 0,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.164372056722641,
+        0.4736420214176178,
+        0.6259462237358093,
+        0.3726148307323456,
+        0.7223851084709167,
+        0.012231565080583096,
+        0.0,
+        0.16592678427696228,
+        1.0,
+        0.39661604166030884,
+        0.49802130460739136,
+        0.1951632797718048,
+        0.37416955828666687,
+        0.3456159234046936,
+        0.7048916816711426,
+        0.693152666091919,
+        0.4881737530231476,
+        0.6158045530319214,
+        0.6370197534561157,
+        0.5052186250686646,
+        0.5649495124816895,
+        0.5176165699958801,
+        0.3741682171821594,
+        0.19516195356845856,
+        0.652344822883606,
+        0.8621276617050171,
+        0.351889431476593,
+        0.6296733617782593,
+        0.2298400104045868,
+        0.3276565968990326,
+        0.16203463077545166
+      ],
+      "homo_lumo_gap_ev": 7.328,
+      "prediction": {
+        "predicted_class": 2,
+        "predicted_label": "MIE_41_BSEP_Cholestase",
+        "predicted_label_nl": "MIE 41: BSEP-remming (AOP 27 → Cholestase)",
+        "mie_triggered": true,
+        "P_no_mie": 0.0114,
+        "P_mie167_steatosis": 0.01,
+        "P_mie41_cholestasis": 0.9786,
+        "P_any_mie_trigger": 0.9886
+      },
+      "loocv": {
+        "loocv_pred_class": 2,
+        "loocv_P_no_mie": 0.3261,
+        "loocv_P_mie167": 0.3152,
+        "loocv_P_mie41": 0.3586
+      }
+    },
+    {
+      "name": "Glibenclamide",
+      "smiles": "COc1ccc(Cl)cc1C(=O)NCCc1ccc(S(=O)(=O)NC(=O)NC2CCCCC2)cc1",
+      "true_class": 2,
+      "mie_code": "MIE 41 (AOP 27)",
+      "target_gene": "ABCB11 (BSEP)",
+      "mechanism_nl": "Sulfonylureum-derivaat dat de ATP-afhankelijke galzouttransportpomp BSEP (ABCB11, MIE 41) direct remt en in menselijke hepatocyten acute galzuurretentie veroorzaakt.",
+      "limitation_note_nl": "In vitro treedt BSEP-remming op bij hoge micromolaire concentraties; bij lage therapeutische dosis blijft de cel binnen de homeostatische FXR-attractor.",
+      "num_nodes": 33,
+      "max_shortest_path": 19,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -7.569862542359207,
+          "y": 4.447683872937538
+        },
+        {
+          "idx": 1,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.80625905634646,
+          "y": 3.1565952949735068
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -7.542572820392865,
+          "y": 1.8497509886860972
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -9.042490070452015,
+          "y": 1.8339952603627205
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -9.778803834498419,
+          "y": 0.5271509540753123
+        },
+        {
+          "idx": 5,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -9.01520034848567,
+          "y": -0.7639376238887192
+        },
+        {
+          "idx": 6,
+          "symbol": "Cl",
+          "atomic_num": 17,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -9.751514112532075,
+          "y": -2.070781930176125
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -7.515283098426523,
+          "y": -0.7481818955653416
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -6.778969334380118,
+          "y": 0.5586624107220657
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.279052084320969,
+          "y": 0.5744181390454433
+        },
+        {
+          "idx": 10,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.542738320274564,
+          "y": 1.8812624453328528
+        },
+        {
+          "idx": 11,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.5154485983082235,
+          "y": -0.7166704389185872
+        },
+        {
+          "idx": 12,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.0155313482490747,
+          "y": -0.7009147105952096
+        },
+        {
+          "idx": 13,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.2519278622363292,
+          "y": -1.99200328855924
+        },
+        {
+          "idx": 14,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.7520106121771802,
+          "y": -1.9762475602358627
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.011592873835565287,
+          "y": -3.267336138199893
+        },
+        {
+          "idx": 16,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.5115101238947153,
+          "y": -3.2515804098765138
+        },
+        {
+          "idx": 17,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.247823887941117,
+          "y": -1.944736103589106
+        },
+        {
+          "idx": 18,
+          "symbol": "S",
+          "atomic_num": 16,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.7477411380002668,
+          "y": -1.9289803752657277
+        },
+        {
+          "idx": 19,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.7319854096768874,
+          "y": -0.4290631252065793
+        },
+        {
+          "idx": 20,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.7634968663236443,
+          "y": -3.428897625324877
+        },
+        {
+          "idx": 21,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.247658388059416,
+          "y": -1.9132246469423504
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.983972152105819,
+          "y": -0.6063803406549422
+        },
+        {
+          "idx": 23,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.220368666093074,
+          "y": 0.6847082373090894
+        },
+        {
+          "idx": 24,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 7.483889402164967,
+          "y": -0.5906246123315642
+        },
+        {
+          "idx": 25,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.22020316621137,
+          "y": 0.7162196939558436
+        },
+        {
+          "idx": 26,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 9.720120416270518,
+          "y": 0.7319754222792216
+        },
+        {
+          "idx": 27,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 10.456434180316924,
+          "y": 2.0388197285666294
+        },
+        {
+          "idx": 28,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 9.692830694304178,
+          "y": 3.32990830653066
+        },
+        {
+          "idx": 29,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 8.192913444245029,
+          "y": 3.3141525782072825
+        },
+        {
+          "idx": 30,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 7.456599680198625,
+          "y": 2.007308271919875
+        },
+        {
+          "idx": 31,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.4842204019283727,
+          "y": -0.6536475256250762
+        },
+        {
+          "idx": 32,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.015696848130776264,
+          "y": -0.6694032539484538
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 2,
+          "v": 3,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 5,
+          "v": 7,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 8,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 9,
+          "v": 10,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 9,
+          "v": 11,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 11,
+          "v": 12,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 12,
+          "v": 13,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 14,
+          "v": 15,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 15,
+          "v": 16,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 16,
+          "v": 17,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 17,
+          "v": 18,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 18,
+          "v": 19,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 18,
+          "v": 20,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 18,
+          "v": 21,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 21,
+          "v": 22,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 22,
+          "v": 24,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 24,
+          "v": 25,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 25,
+          "v": 26,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 26,
+          "v": 27,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 27,
+          "v": 28,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 28,
+          "v": 29,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 29,
+          "v": 30,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 17,
+          "v": 31,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 31,
+          "v": 32,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 2,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 32,
+          "v": 14,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 30,
+          "v": 25,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        }
+      ],
+      "descriptors": {
+        "mw": 494.01,
+        "logp": 3.64,
+        "tpsa": 113.6,
+        "hbd": 3,
+        "hba": 5,
+        "rings": 3,
+        "halogens": 1,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 1
+      },
+      "atom_saliency": [
+        0.900992751121521,
+        0.8046757578849792,
+        0.6810929179191589,
+        0.6934058666229248,
+        0.4433131515979767,
+        0.3346955478191376,
+        0.0,
+        0.555634081363678,
+        0.4016604423522949,
+        0.8503373861312866,
+        0.20577625930309296,
+        0.2548064887523651,
+        0.5008054971694946,
+        0.18462401628494263,
+        0.5818904638290405,
+        0.4042544662952423,
+        0.8514661192893982,
+        0.8710806965827942,
+        1.0,
+        0.9715885519981384,
+        0.9715894460678101,
+        0.8436611294746399,
+        0.6584559679031372,
+        0.29967233538627625,
+        0.2208978831768036,
+        0.18300506472587585,
+        0.12333645671606064,
+        0.12077952921390533,
+        0.32574498653411865,
+        0.1207786500453949,
+        0.12333733588457108,
+        0.8514661192893982,
+        0.40425536036491394
+      ],
+      "homo_lumo_gap_ev": 6.2506,
+      "prediction": {
+        "predicted_class": 2,
+        "predicted_label": "MIE_41_BSEP_Cholestase",
+        "predicted_label_nl": "MIE 41: BSEP-remming (AOP 27 → Cholestase)",
+        "mie_triggered": true,
+        "P_no_mie": 0.0087,
+        "P_mie167_steatosis": 0.0103,
+        "P_mie41_cholestasis": 0.9811,
+        "P_any_mie_trigger": 0.9913
+      },
+      "loocv": {
+        "loocv_pred_class": 2,
+        "loocv_P_no_mie": 0.2587,
+        "loocv_P_mie167": 0.3398,
+        "loocv_P_mie41": 0.4015
+      }
+    },
+    {
+      "name": "Chlorpromazine",
+      "smiles": "CN(C)CCCN1c2ccccc2Sc2ccc(Cl)cc21",
+      "true_class": 2,
+      "mie_code": "MIE 41 / KE 149 (AOP 27)",
+      "target_gene": "ABCB11 (BSEP) & SLC10A1 → NFKB1",
+      "mechanism_nl": "Klassiek tricyclisch fenothiazine dat intrahepatische cholestase veroorzaakt door remming van BSEP-expressie/functie (MIE 41) gecombineerd met oxidatieve stress en NF-κB ontstekingsreacties.",
+      "limitation_note_nl": "De overgang van adaptieve cholestatische stress naar daadwerkelijke celdood vereist modellering van de NFKB1 → TP53 → CASP3 cascade in Mijlpaal 1–3.",
+      "num_nodes": 21,
+      "max_shortest_path": 9,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.503474212124085,
+          "y": 2.9159197595377213
+        },
+        {
+          "idx": 1,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 4.436466671473594,
+          "y": 1.861645170924778
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 4.815991477451545,
+          "y": 0.41045224038542316
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 2.989934324845151,
+          "y": 2.2585635128511896
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 1.9229267841946593,
+          "y": 1.2042889242382462
+        },
+        {
+          "idx": 5,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.4763944375662169,
+          "y": 1.601207266164658
+        },
+        {
+          "idx": 6,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -0.5906131030842745,
+          "y": 0.5469326775517153
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -2.037145449712717,
+          "y": 0.943851019478127
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -2.4166702556906676,
+          "y": 2.3950439500174814
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.8632026023191104,
+          "y": 2.791962291943893
+        },
+        {
+          "idx": 10,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -4.930210142969602,
+          "y": 1.7376877033309497
+        },
+        {
+          "idx": 11,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -4.550685336991652,
+          "y": 0.28649477279159574
+        },
+        {
+          "idx": 12,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -3.1041529903632097,
+          "y": -0.11042356913481643
+        },
+        {
+          "idx": 13,
+          "symbol": "S",
+          "atomic_num": 16,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.7246281843852587,
+          "y": -1.5616164996741704
+        },
+        {
+          "idx": 14,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.2780958377568168,
+          "y": -1.9585348416005823
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.8985710623604701,
+          "y": -3.409727780137824
+        },
+        {
+          "idx": 16,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.5479612759035437,
+          "y": -3.8066461525476254
+        },
+        {
+          "idx": 17,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.614968838771211,
+          "y": -2.752371586420185
+        },
+        {
+          "idx": 18,
+          "symbol": "Cl",
+          "atomic_num": 17,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.061501177035225,
+          "y": -3.149289958829987
+        },
+        {
+          "idx": 19,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.2354440633748651,
+          "y": -1.3011786478829444
+        },
+        {
+          "idx": 20,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.21108829710632393,
+          "y": -0.9042602529876408
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 7,
+          "v": 8,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 9,
+          "v": 10,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 11,
+          "v": 12,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 13,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 14,
+          "v": 15,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 15,
+          "v": 16,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 16,
+          "v": 17,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 17,
+          "v": 18,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 17,
+          "v": 19,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 19,
+          "v": 20,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 6,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 7,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 14,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 318.87,
+        "logp": 4.89,
+        "tpsa": 6.48,
+        "hbd": 0,
+        "hba": 3,
+        "rings": 3,
+        "halogens": 1,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.2859843373298645,
+        0.0,
+        0.2859843373298645,
+        0.43936803936958313,
+        0.31687232851982117,
+        1.0,
+        0.1798299252986908,
+        0.8066601157188416,
+        0.6306276321411133,
+        0.7202697992324829,
+        0.381845623254776,
+        0.8925191164016724,
+        0.7992900609970093,
+        0.7395433783531189,
+        0.8362933397293091,
+        0.8256037831306458,
+        0.48528578877449036,
+        0.7206966280937195,
+        0.3412732481956482,
+        0.6851294040679932,
+        0.8562232851982117
+      ],
+      "homo_lumo_gap_ev": 5.9945,
+      "prediction": {
+        "predicted_class": 2,
+        "predicted_label": "MIE_41_BSEP_Cholestase",
+        "predicted_label_nl": "MIE 41: BSEP-remming (AOP 27 → Cholestase)",
+        "mie_triggered": true,
+        "P_no_mie": 0.01,
+        "P_mie167_steatosis": 0.0088,
+        "P_mie41_cholestasis": 0.9812,
+        "P_any_mie_trigger": 0.99
+      },
+      "loocv": {
+        "loocv_pred_class": 1,
+        "loocv_P_no_mie": 0.1754,
+        "loocv_P_mie167": 0.4654,
+        "loocv_P_mie41": 0.3592
+      }
+    },
+    {
+      "name": "Fenofibrate",
+      "smiles": "CC(C)OC(=O)C(C)(C)Oc1ccc(cc1)C(=O)c2ccc(cc2)Cl",
+      "true_class": 0,
+      "mie_code": "Geen MIE (Adaptieve PPARα-agonist)",
+      "target_gene": "PPARA → CPT1A / MTTP / APOB (Beschermend)",
+      "mechanism_nl": "Klinische lipidenverlager die PPAR-alpha (PPARA) activeert. Stimuleert mitochondriële β-oxidatie (CPT1A) en VLDL-export (MTTP/APOB) en remt SREBP-1c (versterkt de gezonde attractor z0!).",
+      "limitation_note_nl": "Cruciale teststof: heeft aromatische ringen en halogeen zoals veel geneesmiddelen, maar triggert géén MIE 167 of MIE 41 en stabiliseert juist de homeostatische attractor.",
+      "num_nodes": 25,
+      "max_shortest_path": 15,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.1131603662078655,
+          "y": 4.085965222790907
+        },
+        {
+          "idx": 1,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.7130547490451224,
+          "y": 2.7111464240249368
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -6.203629945795489,
+          "y": 2.5432607997666032
+        },
+        {
+          "idx": 3,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.822373935132013,
+          "y": 1.5042132495172993
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.42226831796927,
+          "y": 0.12939445075132827
+        },
+        {
+          "idx": 5,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -5.9128435147196345,
+          "y": -0.03849117350700526
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.531587504056161,
+          "y": -1.0775387237563085
+        },
+        {
+          "idx": 7,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -4.738520678563797,
+          "y": -1.9682195376694176
+        },
+        {
+          "idx": 8,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.3246543295485247,
+          "y": -0.1868579098431995
+        },
+        {
+          "idx": 9,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.6409066901430522,
+          "y": -2.284471898263946
+        },
+        {
+          "idx": 10,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.1503314933926871,
+          "y": -2.116586274005611
+        },
+        {
+          "idx": 11,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.25965067947957743,
+          "y": -3.3235194485132475
+        },
+        {
+          "idx": 12,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.2309245172707877,
+          "y": -3.155633824254913
+        },
+        {
+          "idx": 13,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.8308189001080433,
+          "y": -1.7808150254889417
+        },
+        {
+          "idx": 14,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.940138086194934,
+          "y": -0.5738818509813045
+        },
+        {
+          "idx": 15,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.5504371105554312,
+          "y": -0.7417674752396388
+        },
+        {
+          "idx": 16,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.3213940968584086,
+          "y": -1.6129294012306061
+        },
+        {
+          "idx": 17,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 4.212074910771518,
+          "y": -2.8198625757382416
+        },
+        {
+          "idx": 18,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.9212884796956633,
+          "y": -0.23811060246463467
+        },
+        {
+          "idx": 19,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.411863676446028,
+          "y": -0.07022497820629936
+        },
+        {
+          "idx": 20,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 6.0117580592832836,
+          "y": 1.3045938205596719
+        },
+        {
+          "idx": 21,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 5.121077245370174,
+          "y": 2.5115269950673094
+        },
+        {
+          "idx": 22,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.6305020486198094,
+          "y": 2.3436413708089745
+        },
+        {
+          "idx": 23,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 3.0306076657825534,
+          "y": 0.968822572043003
+        },
+        {
+          "idx": 24,
+          "symbol": "Cl",
+          "atomic_num": 17,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 5.72097162820743,
+          "y": 3.88634579383328
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 4,
+          "v": 6,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 6,
+          "v": 8,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 6,
+          "v": 9,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 9,
+          "v": 10,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 11,
+          "v": 12,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 13,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 13,
+          "v": 14,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 14,
+          "v": 15,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 13,
+          "v": 16,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 16,
+          "v": 17,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 16,
+          "v": 18,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 18,
+          "v": 19,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 19,
+          "v": 20,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 20,
+          "v": 21,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 21,
+          "v": 22,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 22,
+          "v": 23,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 21,
+          "v": 24,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 15,
+          "v": 10,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 23,
+          "v": 18,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 360.84,
+        "logp": 4.68,
+        "tpsa": 52.6,
+        "hbd": 0,
+        "hba": 4,
+        "rings": 2,
+        "halogens": 1,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.0,
+        0.8678886294364929,
+        0.0,
+        0.6680601239204407,
+        0.6778612732887268,
+        0.3904203474521637,
+        1.0,
+        0.49593400955200195,
+        0.49593400955200195,
+        0.6860873103141785,
+        0.7810647487640381,
+        0.6436541080474854,
+        0.4723612368106842,
+        0.4467043876647949,
+        0.4723605811595917,
+        0.6436527371406555,
+        0.5575030446052551,
+        0.6335497498512268,
+        0.3893258571624756,
+        0.6629652976989746,
+        0.6268662810325623,
+        0.671442449092865,
+        0.6268669962882996,
+        0.6629646420478821,
+        0.25250545144081116
+      ],
+      "homo_lumo_gap_ev": 6.7699,
+      "prediction": {
+        "predicted_class": 0,
+        "predicted_label": "Geen_MIE_Adaptief",
+        "predicted_label_nl": "Geen Toxische MIE (Adaptief / Controle)",
+        "mie_triggered": false,
+        "P_no_mie": 0.9809,
+        "P_mie167_steatosis": 0.0067,
+        "P_mie41_cholestasis": 0.0124,
+        "P_any_mie_trigger": 0.0191
+      },
+      "loocv": {
+        "loocv_pred_class": 2,
+        "loocv_P_no_mie": 0.1845,
+        "loocv_P_mie167": 0.3894,
+        "loocv_P_mie41": 0.4262
+      }
+    },
+    {
+      "name": "DMSO_Control",
+      "smiles": "CS(=O)C",
+      "true_class": 0,
+      "mie_code": "Geen MIE (Vehikelcontrole)",
+      "target_gene": "Geen (Homeostase z0)",
+      "mechanism_nl": "Dimethylsulfoxide: standaard oplosmiddel en negatieve controle in HepaRG toxiciteits-experimenten. Triggert geen LXRα (MIE 167) en remt BSEP (MIE 41) niet.",
+      "limitation_note_nl": "Fungeert in Mijlpaal 1–4 als het nul-ankerpunt waarbij dz/dt = 0 op de gezonde attractor z0 blijft.",
+      "num_nodes": 4,
+      "max_shortest_path": 2,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.299038105676658,
+          "y": -0.7499999999999998
+        },
+        {
+          "idx": 1,
+          "symbol": "S",
+          "atomic_num": 16,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.0,
+          "y": 0.0
+        },
+        {
+          "idx": 2,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.0,
+          "y": 1.5000000000000002
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 1.299038105676658,
+          "y": -0.7500000000000004
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        }
+      ],
+      "descriptors": {
+        "mw": 78.14,
+        "logp": -0.01,
+        "tpsa": 17.07,
+        "hbd": 0,
+        "hba": 1,
+        "rings": 0,
+        "halogens": 0,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.42602506279945374,
+        0.0,
+        1.0,
+        0.42602506279945374
+      ],
+      "homo_lumo_gap_ev": 7.7697,
+      "prediction": {
+        "predicted_class": 0,
+        "predicted_label": "Geen_MIE_Adaptief",
+        "predicted_label_nl": "Geen Toxische MIE (Adaptief / Controle)",
+        "mie_triggered": false,
+        "P_no_mie": 0.984,
+        "P_mie167_steatosis": 0.0089,
+        "P_mie41_cholestasis": 0.007,
+        "P_any_mie_trigger": 0.016
+      },
+      "loocv": {
+        "loocv_pred_class": 0,
+        "loocv_P_no_mie": 0.4843,
+        "loocv_P_mie167": 0.2315,
+        "loocv_P_mie41": 0.2842
+      }
+    },
+    {
+      "name": "Caffeine",
+      "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
+      "true_class": 0,
+      "mie_code": "Geen MIE (Negatieve Controle)",
+      "target_gene": "Geen (CYP1A2 metabolisme)",
+      "mechanism_nl": "Xanthine-alkaloïde en standaard negatieve controle in DILI-benchmarks. Wordt probleemloos door hepatocyten gemetaboliseerd zonder verstoring van lipiden- of galzuurhomeostase.",
+      "limitation_note_nl": "Bevestigt dat heterocyclische kleine moleculen zonder MIE-farmacofoor laag scoren op zowel MIE 167 als MIE 41.",
+      "num_nodes": 14,
+      "max_shortest_path": 6,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.3789049966335742,
+          "y": -1.343404940328025
+        },
+        {
+          "idx": 1,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.4408261758325938,
+          "y": -0.1729314780211515
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 2.8363702019490087,
+          "y": 1.2739772694137437
+        },
+        {
+          "idx": 3,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 2,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 1.5825080353100538,
+          "y": 2.0972813852005316
+        },
+        {
+          "idx": 4,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.41203457300318,
+          "y": 1.1592025643995507
+        },
+        {
+          "idx": 5,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": 0.942504357006718,
+          "y": -0.24386614676866536
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -0.007353898118277136,
+          "y": -1.4048008112398822
+        },
+        {
+          "idx": 7,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.5231158858852609,
+          "y": -2.807869522408098
+        },
+        {
+          "idx": 8,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.4876819372468124,
+          "y": -1.1626667645428834
+        },
+        {
+          "idx": 9,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.437540192371808,
+          "y": -2.3236014290141003
+        },
+        {
+          "idx": 10,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -2.018151721250353,
+          "y": 0.24040194662533199
+        },
+        {
+          "idx": 11,
+          "symbol": "O",
+          "atomic_num": 8,
+          "degree": 1,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.4984797603788866,
+          "y": 0.48253599332232966
+        },
+        {
+          "idx": 12,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": true,
+          "formal_charge": 0,
+          "x": -1.0682934661253578,
+          "y": 1.401336611096549
+        },
+        {
+          "idx": 13,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.5987632501288982,
+          "y": 2.804405322264766
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 2,
+          "v": 3,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 4,
+          "v": 5,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 8,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 8,
+          "v": 9,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 8,
+          "v": 10,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 10,
+          "v": 11,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 10,
+          "v": 12,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 13,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 5,
+          "v": 1,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        },
+        {
+          "u": 12,
+          "v": 4,
+          "bond_type": "AROMATIC",
+          "is_aromatic": true,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 194.19,
+        "logp": -1.03,
+        "tpsa": 61.82,
+        "hbd": 0,
+        "hba": 3,
+        "rings": 2,
+        "halogens": 0,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.5203213095664978,
+        0.6230961084365845,
+        1.0,
+        0.3055373728275299,
+        0.7420921921730042,
+        0.6069456338882446,
+        0.7754541635513306,
+        0.2065364569425583,
+        0.5262051820755005,
+        0.5040138959884644,
+        0.8717341423034668,
+        0.0,
+        0.5831064581871033,
+        0.5344406366348267
+      ],
+      "homo_lumo_gap_ev": 6.888,
+      "prediction": {
+        "predicted_class": 0,
+        "predicted_label": "Geen_MIE_Adaptief",
+        "predicted_label_nl": "Geen Toxische MIE (Adaptief / Controle)",
+        "mie_triggered": false,
+        "P_no_mie": 0.9823,
+        "P_mie167_steatosis": 0.008,
+        "P_mie41_cholestasis": 0.0097,
+        "P_any_mie_trigger": 0.0177
+      },
+      "loocv": {
+        "loocv_pred_class": 0,
+        "loocv_P_no_mie": 0.4875,
+        "loocv_P_mie167": 0.193,
+        "loocv_P_mie41": 0.3194
+      }
+    },
+    {
+      "name": "Metformin",
+      "smiles": "CN(C)C(=N)NC(=N)N",
+      "true_class": 0,
+      "mie_code": "Geen MIE (Anti-steatotische Controle)",
+      "target_gene": "AMPK → Remming SREBF1 / ACACA",
+      "mechanism_nl": "Eerstelijns biguanide antidiabeticum. Activeert AMPK waardoor ACACA en SREBF1 juist worden geremd; veroorzaakt geen steatose (MIE 167) en geen BSEP-cholestase (MIE 41).",
+      "limitation_note_nl": "Laat zien dat hydrofiele metabolisme-modulatoren duidelijk gescheiden worden van lipofiele LXR/BSEP-liganden.",
+      "num_nodes": 9,
+      "max_shortest_path": 5,
+      "atoms_meta": [
+        {
+          "idx": 0,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -3.0996570383346507,
+          "y": 0.7093922439761894
+        },
+        {
+          "idx": 1,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -1.9486793640011095,
+          "y": -0.25250712351801646
+        },
+        {
+          "idx": 2,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 4,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -2.2062198149685046,
+          "y": -1.7302327124266985
+        },
+        {
+          "idx": 3,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -0.5401612387001731,
+          "y": 0.26331909789646
+        },
+        {
+          "idx": 4,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": -0.2826207877327782,
+          "y": 1.7410446868051421
+        },
+        {
+          "idx": 5,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 0.6108164356333681,
+          "y": -0.6985802695977457
+        },
+        {
+          "idx": 6,
+          "symbol": "C",
+          "atomic_num": 6,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 2.019334560934304,
+          "y": -0.1827540481832689
+        },
+        {
+          "idx": 7,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 2,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 2.276875011901699,
+          "y": 1.2949715407254128
+        },
+        {
+          "idx": 8,
+          "symbol": "N",
+          "atomic_num": 7,
+          "degree": 3,
+          "is_aromatic": false,
+          "formal_charge": 0,
+          "x": 3.1703122352678452,
+          "y": -1.1446534156774748
+        }
+      ],
+      "bonds_meta": [
+        {
+          "u": 0,
+          "v": 1,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 2,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": false
+        },
+        {
+          "u": 1,
+          "v": 3,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 3,
+          "v": 4,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 3,
+          "v": 5,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 5,
+          "v": 6,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 7,
+          "bond_type": "DOUBLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        },
+        {
+          "u": 6,
+          "v": 8,
+          "bond_type": "SINGLE",
+          "is_aromatic": false,
+          "is_conjugated": true
+        }
+      ],
+      "descriptors": {
+        "mw": 129.17,
+        "logp": -1.03,
+        "tpsa": 88.99,
+        "hbd": 4,
+        "hba": 2,
+        "rings": 0,
+        "halogens": 0,
+        "cf3_groups": 0,
+        "sulfonamide_groups": 0
+      },
+      "atom_saliency": [
+        0.5784728527069092,
+        0.3777771592140198,
+        0.5784721970558167,
+        1.0,
+        0.0,
+        0.29377564787864685,
+        0.9294275641441345,
+        0.2862831652164459,
+        0.5431907176971436
+      ],
+      "homo_lumo_gap_ev": 7.2638,
+      "prediction": {
+        "predicted_class": 0,
+        "predicted_label": "Geen_MIE_Adaptief",
+        "predicted_label_nl": "Geen Toxische MIE (Adaptief / Controle)",
+        "mie_triggered": false,
+        "P_no_mie": 0.9828,
+        "P_mie167_steatosis": 0.0072,
+        "P_mie41_cholestasis": 0.01,
+        "P_any_mie_trigger": 0.0172
+      },
+      "loocv": {
+        "loocv_pred_class": 0,
+        "loocv_P_no_mie": 0.5129,
+        "loocv_P_mie167": 0.185,
+        "loocv_P_mie41": 0.3021
+      }
+    }
+  ],
+  "pca_coords_2d": [
+    [
+      0.08109623938798904,
+      0.41686221957206726
+    ],
+    [
+      0.0688244104385376,
+      0.15213386714458466
+    ],
+    [
+      0.32894575595855713,
+      -0.08037853240966797
+    ],
+    [
+      0.07098939269781113,
+      -0.10599854588508606
+    ],
+    [
+      -0.08440917730331421,
+      0.032324980944395065
+    ],
+    [
+      -0.021802008152008057,
+      -0.1338556557893753
+    ],
+    [
+      0.1358354389667511,
+      0.01638519950211048
+    ],
+    [
+      0.30727043747901917,
+      -0.11923297494649887
+    ],
+    [
+      0.05116626247763634,
+      -0.07410205155611038
+    ],
+    [
+      -0.3245026767253876,
+      0.012031298130750656
+    ],
+    [
+      -0.24101978540420532,
+      -0.08871905505657196
+    ],
+    [
+      -0.37239450216293335,
+      -0.02745070308446884
+    ]
+  ],
+  "cosine_similarity_matrix": [
+    [
+      1.0000001192092896,
+      0.9284452199935913,
+      0.8669066429138184,
+      0.874870240688324,
+      0.9245275855064392,
+      0.8764675259590149,
+      0.918765127658844,
+      0.8638826012611389,
+      0.8997146487236023,
+      0.8456003665924072,
+      0.8879008293151855,
+      0.8665567636489868
+    ],
+    [
+      0.9284452199935913,
+      0.9999999403953552,
+      0.8980928063392639,
+      0.9544816017150879,
+      0.9345538020133972,
+      0.9573327302932739,
+      0.9332563281059265,
+      0.9058412909507751,
+      0.9507835507392883,
+      0.895000159740448,
+      0.9190514087677002,
+      0.8934099078178406
+    ],
+    [
+      0.8669066429138184,
+      0.8980928063392639,
+      1.0000001192092896,
+      0.8923442959785461,
+      0.8769492506980896,
+      0.9080684781074524,
+      0.9716708660125732,
+      0.973715603351593,
+      0.9198450446128845,
+      0.7748348712921143,
+      0.8709825873374939,
+      0.8195881843566895
+    ],
+    [
+      0.874870240688324,
+      0.9544816017150879,
+      0.8923442959785461,
+      1.0,
+      0.9520348906517029,
+      0.9802815914154053,
+      0.9313409924507141,
+      0.9096227288246155,
+      0.9536612033843994,
+      0.9053159952163696,
+      0.9468779563903809,
+      0.9277717471122742
+    ],
+    [
+      0.9245275855064392,
+      0.9345538020133972,
+      0.8769492506980896,
+      0.9520348906517029,
+      0.9999999403953552,
+      0.9563843607902527,
+      0.9259453415870667,
+      0.8783374428749084,
+      0.9631696939468384,
+      0.8875645995140076,
+      0.9734388589859009,
+      0.959586501121521
+    ],
+    [
+      0.8764675259590149,
+      0.9573327302932739,
+      0.9080684781074524,
+      0.9802815914154053,
+      0.9563843607902527,
+      1.0,
+      0.936143159866333,
+      0.9209720492362976,
+      0.9724670648574829,
+      0.9050841331481934,
+      0.9618653059005737,
+      0.9416458606719971
+    ],
+    [
+      0.918765127658844,
+      0.9332563281059265,
+      0.9716708660125732,
+      0.9313409924507141,
+      0.9259453415870667,
+      0.936143159866333,
+      1.0000001192092896,
+      0.9689232707023621,
+      0.9492583870887756,
+      0.8342329859733582,
+      0.9180238246917725,
+      0.8815600872039795
+    ],
+    [
+      0.8638826012611389,
+      0.9058412909507751,
+      0.973715603351593,
+      0.9096227288246155,
+      0.8783374428749084,
+      0.9209720492362976,
+      0.9689232707023621,
+      1.0000001192092896,
+      0.9327548146247864,
+      0.8101405501365662,
+      0.890520453453064,
+      0.8451184034347534
+    ],
+    [
+      0.8997146487236023,
+      0.9507835507392883,
+      0.9198450446128845,
+      0.9536612033843994,
+      0.9631696939468384,
+      0.9724670648574829,
+      0.9492583870887756,
+      0.9327548146247864,
+      1.0000001192092896,
+      0.8851590156555176,
+      0.9675263166427612,
+      0.9465901255607605
+    ],
+    [
+      0.8456003665924072,
+      0.895000159740448,
+      0.7748348712921143,
+      0.9053159952163696,
+      0.8875645995140076,
+      0.9050841331481934,
+      0.8342329859733582,
+      0.8101405501365662,
+      0.8851590156555176,
+      0.9999999403953552,
+      0.9009798765182495,
+      0.9150481820106506
+    ],
+    [
+      0.8879008293151855,
+      0.9190514087677002,
+      0.8709825873374939,
+      0.9468779563903809,
+      0.9734388589859009,
+      0.9618653059005737,
+      0.9180238246917725,
+      0.890520453453064,
+      0.9675263166427612,
+      0.9009798765182495,
+      1.0000001192092896,
+      0.9756665229797363
+    ],
+    [
+      0.8665567636489868,
+      0.8934099078178406,
+      0.8195881843566895,
+      0.9277717471122742,
+      0.959586501121521,
+      0.9416458606719971,
+      0.8815600872039795,
+      0.8451184034347534,
+      0.9465901255607605,
+      0.9150481820106506,
+      0.9756665229797363,
+      1.0
+    ]
+  ]
+}
