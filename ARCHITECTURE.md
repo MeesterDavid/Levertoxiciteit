@@ -63,6 +63,10 @@ Om aan te tonen wat de meerwaarde is van multimodale en multiscale modellering, 
 
 ## 2. Systeemarchitectuur & Bestandsnamen
 
+Zie [`AGENTS.md`](AGENTS.md) voor de strikte ketencontracten en PyTorch dictionary-sleutels tussen de mijlpalen:
+- **Mijlpaal 1:**
+  - *Stap 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Haalt gezonde GTEx/HPA én pathologische GEO Steatose/Cholestase data + MyGene.info + STRING-db op met formele AOP-documentatie, slaat `data/hepatocyte_features.pt` en `data/hepatocyte_baseline_data.json` op, en biedt een interactieve Marimo verkenner).
+  - *Stap 1.2:* `m01_graph_embedding.py` (Bouwt de `HepatocyteGraphormer` op basis van de echte data, berekent de empirisch verankerde attractoren `z0`, `z_steatose`, `z_cholestase` en genereert `01_network_and_embedding.html`).
 - **Mijlpaal 2:** `m02_perturbation_encoder.py` (Genereert `02_perturbation_profiles.html`).
 - **Mijlpaal 3:** `m03_neural_ode_trajectory.py` (Genereert `03_trajectory_dynamics.html`).
 - **Mijlpaal 4:** `m04_attractor_simulation.py` (Genereert `04_attractor_landscape.html`).

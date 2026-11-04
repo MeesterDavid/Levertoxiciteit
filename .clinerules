@@ -6,7 +6,10 @@
 - Dit project gebruikt 'uv'. Voer Python-taken ALTIJD uit via:
   CUDA_VISIBLE_DEVICES=1 uv run python <scriptnaam>.py
 
-## 2. Codekwaliteit
+## 2. Codekwaliteit, Architectuur & Agent-Contracten
+- Lees ALTIJD eerst `AGENTS.md` en `ARCHITECTURE.md` volledig door voordat je aan een taak begint.
+- Schrijf NOOIT volledige Python-scripts als platte tekst in de chat; gebruik ALTIJD direct je bestands-tool (`write_to_file` / `replace_in_file`) om bestanden daadwerkelijk op de schijf aan te maken.
+- Houd je strikt aan de vastgelegde tensor-shapes (`X`: `[18, 8]`, `z0`: `[B, 64]`, `p`: `[B, 33]`, `trajectories`: `[T, B, 64]`) en modulenamen uit `AGENTS.md`.
 - Gebruik PyTorch (CUDA), torchdiffeq en RDKit conform pyproject.toml.
 - Schrijf modulaire code zonder lege placeholders.
 - Test elk aangemaakt script direct via terminalverificatie op GPU 1.
@@ -44,4 +47,11 @@ Dit logbestand **moet** dit exact aangehouden Markdown-sjabloon bevatten:
 ## 6. Reflectie & Volgende Stap
 - Werkt alles naar behoren? 
 - Wat is het directe vervolg?
+```
+
+Na de uitvoering op GPU 1 moet je sectie 4, 5 en 6 van dit logbestand invullen met de daadwerkelijke resultaten.
+
+## 4. Visualisatie & Kwaliteit
+- Gebruik NOOIT matplotlib. Gebruik uitsluitend Plotly (`plotly.graph_objects` / `subplots`) en sla dashboards op als standalone HTML-bestanden.
+- Schrijf volledige, werkende code zonder placeholders.
 
