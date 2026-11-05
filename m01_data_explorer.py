@@ -1,7 +1,7 @@
 import marimo
 
 __generated_with = "0.25.2"
-app = marimo.App(width="full", app_title="Mijlpaal 1.1 — Hepatocyt AOP & Graphormer Data Explorer")
+app = marimo.App(width="full", app_title="Milestone 1.1 — Hepatocyte AOP & Graphormer Data Explorer")
 
 
 @app.cell
@@ -36,17 +36,17 @@ def _(Path, json, mo):
 
     intro_md = mo.md(
         f"""
-        # 🧬 Mijlpaal 1, Stap 1.1: Hepatocyt AOP-Netwerk & Echte Data Verkenner
-        **Project:** *{meta['project']}* | **Kader:** *{meta['institution']}*
+        # 🧬 Milestone 1, Step 1.1: Hepatocyte AOP Network & Real Data Explorer
+        **Project:** *Multimodal & Multiscale AI for Liver Toxicity (Graphormer + Neural ODE)* | **Framework:** *Research Group Innovative Testing (HU University of Applied Sciences Utrecht)*
 
-        ### 📘 Algemene Handleiding & Overzicht
-        Dit notebook vormt **Mijlpaal 1, Stap 1.1** van de hybride **Graphormer + Neural ODE Levertoxiciteit Simulator**. Voordat we in **Stap 1.2** de `HepatocyteGraphormer` trainen/initiëren om een levercel samen te vatten in een 64-dimensionale latente toestandsvector ($z_0 \\in \\mathbb{{R}}^{{64}}$), verkennen en valideren we hier de **echte biologische invoerdata**:
-        1. **De 18 Sleutelgenen (`index 0 t/m 17`):** Verdeeld over vier gekoppelde biologische modules:
-           - 🔴 **Groep 1 — `AOP34_Steatosis` (`NR1H3`, `SREBF1`, `FASN`, `ACACA`, `SCD`, `CD36`):** De lipogene cascade van OECD AOP 34 die bij overmatige LXR-activatie leidt tot leververvetting (steatose).
-           - 🟢 **Groep 2 — `Homeostasis` (`PPARA`, `CPT1A`, `MTTP`, `APOB`):** De fysiologische tegenkracht uit de *Physiological Map* die overtollige vetzuren verbrandt ($\beta$-oxidatie) of exporteert (VLDL) om de cel in de gezonde attractor ($z_{{\\text{{homeo}}}}$) te houden.
-           - 🟠 **Groep 3 — `AOP27_Cholestasis` (`NR1H4`, `ABCB11`, `CYP7A1`, `SLC10A1`):** De galzuurhomeostase en het doelwit van OECD AOP 27 (`ABCB11`/BSEP-remming) die bij blokkade leidt tot toxische galstuwing (cholestase).
-           - 🟣 **Groep 4 — `Stress_Apoptosis` (`NFE2L2`, `NFKB1`, `TP53`, `CASP3`):** De convergente schade- en ontstekingsroute die bij het falen van de homeostatische buffers het kantelpunt naar celdood (*Adverse Outcome*) aandrijft.
-        2. **Live API Data + Empirische Expressieprofielen:** Gecombineerd uit **MyGene.info v3** (genlengte, exonen, Ensembl/UniProt), **STRING-db v12.0** (150 humane eiwit-eiwit interactiescores), **GTEx/HPA** (gezonde lever-TPM) en **NCBI GEO** (pathologische expressie bij Steatose en Cholestase).
+        ### 📘 General User Guide & Overview
+        This notebook constitutes **Milestone 1, Step 1.1** of the hybrid **Graphormer + Neural ODE Liver Toxicity Simulator**. Before training/initializing the `HepatocyteGraphormer` in **Step 1.2** to summarize a liver cell into a 64-dimensional latent state vector ($z_0 \\in \\mathbb{{R}}^{{64}}$), we explore and validate the **real biological input data** here:
+        1. **The 18 Key Genes (`index 0 through 17`):** Divided across four coupled biological modules:
+           - 🔴 **Group 1 — `AOP34_Steatosis` (`NR1H3`, `SREBF1`, `FASN`, `ACACA`, `SCD`, `CD36`):** The lipogenic cascade of OECD AOP 34 that leads to fatty liver (steatosis) under excessive LXR activation.
+           - 🟢 **Group 2 — `Homeostasis` (`PPARA`, `CPT1A`, `MTTP`, `APOB`):** The physiological counter-force from the *Physiological Map* that oxidizes excess fatty acids ($\beta$-oxidation) or exports them (VLDL) to keep the cell in the healthy attractor ($z_{{\\text{{homeo}}}}$).
+           - 🟠 **Group 3 — `AOP27_Cholestasis` (`NR1H4`, `ABCB11`, `CYP7A1`, `SLC10A1`):** Bile acid homeostasis and the target of OECD AOP 27 (`ABCB11`/BSEP inhibition) that leads to toxic bile accumulation (cholestasis) when blocked.
+           - 🟣 **Group 4 — `Stress_Apoptosis` (`NFE2L2`, `NFKB1`, `TP53`, `CASP3`):** The convergent injury and inflammatory pathway that drives the tipping point toward cell death (*Adverse Outcome*) when homeostatic buffers fail.
+        2. **Live API Data + Empirical Expression Profiles:** Combined from **MyGene.info v3** (gene length, exons, Ensembl/UniProt), **STRING-db v12.0** (150 human protein-protein interaction scores), **GTEx/HPA** (healthy liver TPM), and **NCBI GEO** (pathological expression in Steatosis and Cholestasis).
         """
     )
     intro_md
@@ -64,7 +64,7 @@ def _(mo):
             "Delta: Cholestasis vs Healthy (log2FC)",
         ],
         value="Steatosis (AOP 34 - LXR/NAFLD)",
-        label="🔬 Celtoestand op Netwerk (Knoopgrootte & Kleur):",
+        label="🔬 Cellular State on Network (Node Size & Color):",
     )
 
     group_filter = mo.ui.multiselect(
@@ -80,7 +80,7 @@ def _(mo):
             "AOP27_Cholestasis",
             "Stress_Apoptosis",
         ],
-        label="🧩 Filter Functionele AOP-Groepen:",
+        label="🧩 Filter Functional AOP Groups:",
     )
 
     string_slider = mo.ui.slider(
@@ -88,29 +88,29 @@ def _(mo):
         stop=0.95,
         step=0.05,
         value=0.50,
-        label="🔗 Min. STRING-db Interactiescore:",
+        label="🔗 Min. STRING-db Interaction Score:",
     )
 
     show_extra_ppi = mo.ui.checkbox(
         value=True,
-        label="Toon ook niet-causale STRING-db eiwit-interacties (gestippelde achtergrondlijnen)",
+        label="Also show non-causal STRING-db protein interactions (dashed background lines)",
     )
 
     norm_selector = mo.ui.dropdown(
         options=[
-            "Z-Score (Genormaliseerd t.o.v. Gezonde Baseline)",
-            "Ruwe Biologische Waarden (log2 TPM, log10 bp, exonen, etc.)",
+            "Z-Score (Normalized vs. Healthy Baseline)",
+            "Raw Biological Values (log2 TPM, log10 bp, exons, etc.)",
         ],
-        value="Z-Score (Genormaliseerd t.o.v. Gezonde Baseline)",
-        label="📊 Schaal voor Feature Matrix X [18, 8]:",
+        value="Z-Score (Normalized vs. Healthy Baseline)",
+        label="📊 Scale for Feature Matrix X [18, 8]:",
     )
 
     controls_view = mo.vstack(
         [
             mo.md(
                 """
-                ### 🎛️ Handleiding Interactieve Filters (Cel 1)
-                - **Hoe te gebruiken:** Gebruik de dropdown **Celtoestand op Netwerk** om het biologische netwerk (Visualisatie 1) en de Feature Matrix (Visualisatie 3) direct tussen *Gezond*, *Steatose (AOP 34)*, *Cholestase (AOP 27)* en de *Fold-Change verschuivingen ($\Delta\log_2\text{FC}$)* te schakelen. Met de **STRING-db slider** filter je zwakkere eiwit-interacties weg.
+                ### 🎛️ Interactive Filters Guide (Cell 1)
+                - **How to use:** Use the **Cellular State on Network** dropdown to directly switch the biological network (Visualization 1) and the Feature Matrix (Visualization 3) between *Healthy*, *Steatosis (AOP 34)*, *Cholestasis (AOP 27)*, and the *Fold-Change shifts ($\Delta\log_2\text{FC}$)*. Use the **STRING-db slider** to filter out weaker protein interactions.
                 """
             ),
             mo.hstack(
@@ -175,14 +175,14 @@ def _(
     }
 
     GROUP_LABELS = {
-        "AOP34_Steatosis": "AOP 34: Lipogenese & Steatose",
-        "Homeostasis": "Homeostase: β-Oxidatie & VLDL-Export",
-        "AOP27_Cholestasis": "AOP 27: Galzuur & Cholestase",
-        "Stress_Apoptosis": "Convergente Stress & Apoptose (AO)",
+        "AOP34_Steatosis": "AOP 34: Lipogenesis & Steatosis",
+        "Homeostasis": "Homeostasis: β-Oxidation & VLDL Export",
+        "AOP27_Cholestasis": "AOP 27: Bile Acid & Cholestasis",
+        "Stress_Apoptosis": "Convergent Stress & Apoptosis (AO)",
     }
 
     def render_network_svg(selected_state_str, active_groups_set, min_str_score, include_bg_ppi):
-        """Genereert een haarscherpe, interactieve SVG (met native hover-tooltips) die in elke viewer werkt."""
+        """Generates a crisp, interactive SVG (with native hover tooltips) that works in every viewer."""
         W, H = 1160, 620
         pad_x, pad_top, pad_bot = 60, 78, 56
         plot_w = W - 2 * pad_x
@@ -204,16 +204,16 @@ def _(
             '<marker id="arrow-rep" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#F43F5E"/></marker>',
             '<filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.6"/></filter>',
             "</defs>",
-            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualisatie 1: Causale Hepatocyt AOP-Netwerkgraaf (AOP 34 Steatose + AOP 27 Cholestase + Homeostase)</text>',
-            f'<text x="22" y="48" fill="#94A3B8" font-size="12.5">Actieve toestand: {html_lib.escape(selected_state_str)} | Min. STRING-db score: {min_str_score:.2f} | Beweeg je muis over knopen en pijlen voor OECD AOP-citaties</text>',
+            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualization 1: Causal Hepatocyte AOP Network Graph (AOP 34 Steatosis + AOP 27 Cholestasis + Homeostasis)</text>',
+            f'<text x="22" y="48" fill="#94A3B8" font-size="12.5">Active state: {html_lib.escape(selected_state_str)} | Min. STRING-db score: {min_str_score:.2f} | Hover over nodes and arrows for OECD AOP citations</text>',
         ]
 
-        # Kolom-headers
+        # Column headers
         headers = [
-            (0.09, "1. Nucleaire Receptoren (MIE)"),
-            (0.32, "2. Transcriptie & Influx (KE)"),
-            (0.55, "3. Metabole Enzymen & Export"),
-            (0.84, "4. Stress & Apoptose (AO)"),
+            (0.09, "1. Nuclear Receptors (MIE)"),
+            (0.32, "2. Transcription & Influx (KE)"),
+            (0.55, "3. Metabolic Enzymes & Export"),
+            (0.84, "4. Stress & Apoptosis (AO)"),
         ]
         for hx, htxt in headers:
             px, _ = to_px(hx, 1.0)
@@ -221,7 +221,7 @@ def _(
                 f'<text x="{px:.1f}" y="70" fill="#64748B" font-size="11.5" font-weight="700" text-anchor="middle">{html_lib.escape(htxt)}</text>'
             )
 
-        # 1. Achtergrond STRING-db lijnen
+        # 1. Background STRING-db lines
         if include_bg_ppi:
             for i_idx in range(len(genes)):
                 for j_idx in range(i_idx + 1, len(genes)):
@@ -238,7 +238,7 @@ def _(
                                 f'<line x1="{x0:.1f}" y1="{y0:.1f}" x2="{x1:.1f}" y2="{y1:.1f}" stroke="#475569" stroke-opacity="0.30" stroke-width="1.3" stroke-dasharray="3,4"><title>{html_lib.escape(tip)}</title></line>'
                             )
 
-        # 2. Causale AOP-randen
+        # 2. Causal AOP edges
         for e in edges:
             if e["string_score"] < min_str_score:
                 continue
@@ -261,7 +261,7 @@ def _(
             lw = 1.8 + 2.2 * float(e["string_score"])
             tip = (
                 f"{e['source_symbol']} → {e['target_symbol']} ({e['interaction_type']})\n"
-                f"OECD AOP Citatie: {e['citation']}\n"
+                f"OECD AOP Citation: {e['citation']}\n"
                 f"STRING-db Score: {e['string_score']:.3f}"
             )
             svg.append(
@@ -270,7 +270,7 @@ def _(
                 f"<title>{html_lib.escape(tip)}</title></line></g>"
             )
 
-        # 3. De 18 Gen-knopen
+        # 3. The 18 Gene nodes
         for _g in genes:
             if _g["group"] not in active_groups_set:
                 continue
@@ -314,15 +314,15 @@ def _(
 
             tip = (
                 f"{sym} — {_g['name']}\n"
-                f"Groep: {GROUP_LABELS[grp_key]} ({_g['role_label']})\n"
+                f"Group: {GROUP_LABELS[grp_key]} ({_g['role_label']})\n"
                 f"OECD AOP: {_g['aop_ref']}\n"
-                f"Toelichting: {_g['description']}\n"
+                f"Description: {_g['description']}\n"
                 f"---\n"
-                f"Gezond (GTEx/HPA): {_g['expr_healthy_tpm']:.1f} TPM (log2={_g['expr_healthy_log2']:.2f})\n"
-                f"Steatose (AOP 34): {_g['expr_steatosis_tpm']:.1f} TPM (log2={_g['expr_steatosis_log2']:.2f}, Δ={_g['log2fc_steatosis_vs_healthy']:+.2f})\n"
-                f"Cholestase (AOP 27): {_g['expr_cholestasis_tpm']:.1f} TPM (log2={_g['expr_cholestasis_log2']:.2f}, Δ={_g['log2fc_cholestasis_vs_healthy']:+.2f})\n"
-                f"MyGene.info: {_g['gene_length_bp']:,} bp | {_g['exon_count']} exonen | {_g['protein_length_aa']} aa | Chr {_g['chr']}\n"
-                f"Netwerk: In-deg={_g['in_degree']} | Out-deg={_g['out_degree']} | Mean STRING={_g['mean_string_score']:.3f}"
+                f"Healthy (GTEx/HPA): {_g['expr_healthy_tpm']:.1f} TPM (log2={_g['expr_healthy_log2']:.2f})\n"
+                f"Steatosis (AOP 34): {_g['expr_steatosis_tpm']:.1f} TPM (log2={_g['expr_steatosis_log2']:.2f}, Δ={_g['log2fc_steatosis_vs_healthy']:+.2f})\n"
+                f"Cholestasis (AOP 27): {_g['expr_cholestasis_tpm']:.1f} TPM (log2={_g['expr_cholestasis_log2']:.2f}, Δ={_g['log2fc_cholestasis_vs_healthy']:+.2f})\n"
+                f"MyGene.info: {_g['gene_length_bp']:,} bp | {_g['exon_count']} exons | {_g['protein_length_aa']} aa | Chr {_g['chr']}\n"
+                f"Network: In-deg={_g['in_degree']} | Out-deg={_g['out_degree']} | Mean STRING={_g['mean_string_score']:.3f}"
             )
             bw = 3.2 if (b_col == "#FDE047" or is_delta) else 2.0
             svg.append(
@@ -333,14 +333,14 @@ def _(
                 f"<title>{html_lib.escape(tip)}</title></g>"
             )
 
-        # Legenda onderaan
+        # Legend at bottom
         leg_items = [
-            ("#FF5964", "AOP 34: Steatose/Lipogenese"),
-            ("#2EC4B6", "Homeostase: β-Oxidatie & VLDL"),
-            ("#FF9F1C", "AOP 27: Cholestase/Galzuur"),
-            ("#A855F7", "Stress & Apoptose (AO)"),
-            ("#10B981", "Activatie (+1 pijl)"),
-            ("#F43F5E", "Repressie / Schade (-1 pijl)"),
+            ("#FF5964", "AOP 34: Steatosis/Lipogenesis"),
+            ("#2EC4B6", "Homeostasis: β-Oxidation & VLDL"),
+            ("#FF9F1C", "AOP 27: Cholestasis/Bile Acid"),
+            ("#A855F7", "Stress & Apoptosis (AO)"),
+            ("#10B981", "Activation (+1 arrow)"),
+            ("#F43F5E", "Repression / Injury (-1 arrow)"),
         ]
         lx_cur = 28
         for lcol, llbl in leg_items:
@@ -361,14 +361,14 @@ def _(
 
     guide_v1 = mo.md(
         """
-        ### 🕸️ Handleiding Visualisatie 1 — Causale Hepatocyt AOP-Netwerkgraaf
-        - **Hoe gebruik je deze cel?**
-          - Kies hierboven bij **🔬 Celtoestand op Netwerk** welke toestand je op de knopen wilt projecteren (*Steatose AOP 34*, *Gezond*, *Cholestase AOP 27* of *$\Delta\log_2\text{FC}$*).
-          - **Hover met je muis** over een **gen-knoop** om het exacte Ensembl/UniProt ID, het aantal exonen, de genlengte en de expressie in alle 3 de toestanden te lezen.
-          - **Hover met je muis** over een **groene (+1) of rode (-1) pijl** om de **officiële OECD AOP Key Event citatie** en de **STRING-db interactiescore** te lezen.
-        - **Wat zie je in deze grafiek?**
-          - In **Steatose (AOP 34)** zie je linksboven hoe activatie van `NR1H3` (LXR$\alpha$) via `SREBF1` de lipogene enzymen (`FASN`, `ACACA`, `SCD`) en vetzuur-influx (`CD36`) sterk laat opzwellen (geel omrand), terwijl de homeostatische tegenkracht `PPARA` krimpt.
-          - In **Cholestase (AOP 27)** zie je linksonder hoe `ABCB11` (BSEP) instort (van 115 naar 18.5 TPM), waarna `NR1H4` (FXR) compensatoir `CYP7A1` en `SLC10A1` onderdrukt en rechts de stress/apoptose-cascade (`NFE2L2` $\rightarrow$ `NFKB1` $\rightarrow$ `TP53` $\rightarrow$ `CASP3`) opvlamt.
+        ### 🕸️ User Guide Visualization 1 — Causal Hepatocyte AOP Network Graph
+        - **How to use this cell:**
+          - Select above under **🔬 Cellular State on Network** which state you want to project onto the nodes (*Steatosis AOP 34*, *Healthy*, *Cholestasis AOP 27*, or *$\Delta\log_2\text{FC}$*).
+          - **Hover your mouse** over a **gene node** to read the exact Ensembl/UniProt ID, exon count, gene length, and expression across all 3 states.
+          - **Hover your mouse** over a **green (+1) or red (-1) arrow** to read the **official OECD AOP Key Event citation** and **STRING-db interaction score**.
+        - **What do you see in this chart?**
+          - In **Steatosis (AOP 34)**, you see in the upper left how activation of `NR1H3` (LXR$\alpha$) via `SREBF1` causes the lipogenic enzymes (`FASN`, `ACACA`, `SCD`) and fatty acid influx (`CD36`) to swell strongly (outlined in yellow), while the homeostatic counter-force `PPARA` shrinks.
+          - In **Cholestasis (AOP 27)**, you see in the lower left how `ABCB11` (BSEP) collapses (from 115 to 18.5 TPM), after which `NR1H4` (FXR) compensatorily represses `CYP7A1` and `SLC10A1`, and on the right the stress/apoptosis cascade (`NFE2L2` $\rightarrow$ `NFKB1` $\rightarrow$ `TP53` $\rightarrow$ `CASP3`) flares up.
         """
     )
 
@@ -389,19 +389,19 @@ def _(
 @app.cell
 def _(genes, group_filter, html_lib, mo):
     def render_expression_svg(filtered_genes_list):
-        """Genereert een dual-panel SVG voor Visualisatie 2: Absolute log2(TPM+1) én Delta log2FC."""
+        """Generates a dual-panel SVG for Visualization 2: Absolute log2(TPM+1) and Delta log2FC."""
         W, H = 1160, 450
         svg = [
             f'<svg viewBox="0 0 {W} {H}" width="100%" height="auto" style="background:#0F172A;border-radius:10px;border:1px solid #1E293B;font-family:Inter,system-ui,sans-serif;">',
-            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualisatie 2: Empirische Expressieprofielen — Gezonde Homeostase vs. Steatose (AOP 34) vs. Cholestase (AOP 27)</text>',
-            f'<text x="22" y="47" fill="#94A3B8" font-size="12">Links: Absolute expressie log2(TPM + 1) [GTEx/HPA &amp; GEO] | Rechts: Pathologische verschuiving Δlog2(Fold-Change) t.o.v. Gezonde Hepatocyt</text>',
+            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualization 2: Empirical Expression Profiles — Healthy Homeostasis vs. Steatosis (AOP 34) vs. Cholestasis (AOP 27)</text>',
+            f'<text x="22" y="47" fill="#94A3B8" font-size="12">Left: Absolute expression log2(TPM + 1) [GTEx/HPA &amp; GEO] | Right: Pathological shift Δlog2(Fold-Change) vs. Healthy Hepatocyte</text>',
         ]
 
         n_g = max(len(filtered_genes_list), 1)
-        # Paneel 1 (Links): x van 55 tot 565, y van 80 tot 380
+        # Panel 1 (Left): x from 55 to 565, y from 80 to 380
         p1_x0, p1_w, p1_y0, p1_h = 52, 505, 78, 295
         max_log2 = 10.0
-        svg.append(f'<text x="{p1_x0 + p1_w/2:.1f}" y="68" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Paneel A: Absolute mRNA-Expressie log2(TPM + 1)</text>')
+        svg.append(f'<text x="{p1_x0 + p1_w/2:.1f}" y="68" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Panel A: Absolute mRNA Expression log2(TPM + 1)</text>')
         for y_tick in [0, 2, 4, 6, 8, 10]:
             py = p1_y0 + p1_h - (y_tick / max_log2) * p1_h
             svg.append(f'<line x1="{p1_x0}" y1="{py:.1f}" x2="{p1_x0 + p1_w}" y2="{py:.1f}" stroke="#1E293B" stroke-width="1"/>')
@@ -412,9 +412,9 @@ def _(genes, group_filter, html_lib, mo):
         for idx, _g in enumerate(filtered_genes_list):
             cx = p1_x0 + (idx + 0.5) * slot_w
             vals = [
-                (_g["expr_healthy_log2"], _g["expr_healthy_tpm"], "#2EC4B6", "Gezond"),
-                (_g["expr_steatosis_log2"], _g["expr_steatosis_tpm"], "#FF5964", "Steatose AOP 34"),
-                (_g["expr_cholestasis_log2"], _g["expr_cholestasis_tpm"], "#FF9F1C", "Cholestase AOP 27"),
+                (_g["expr_healthy_log2"], _g["expr_healthy_tpm"], "#2EC4B6", "Healthy"),
+                (_g["expr_steatosis_log2"], _g["expr_steatosis_tpm"], "#FF5964", "Steatosis AOP 34"),
+                (_g["expr_cholestasis_log2"], _g["expr_cholestasis_tpm"], "#FF9F1C", "Cholestasis AOP 27"),
             ]
             for b_i, (v_log2, v_tpm, b_col, b_lbl) in enumerate(vals):
                 bh = (min(v_log2, max_log2) / max_log2) * p1_h
@@ -429,11 +429,11 @@ def _(genes, group_filter, html_lib, mo):
                 f'<text x="{cx:.1f}" y="{p1_y0 + p1_h + 14:.1f}" fill="#E2E8F0" font-size="9.5" font-weight="600" text-anchor="end" transform="rotate(-40 {cx:.1f} {p1_y0 + p1_h + 14:.1f})">{_g["symbol"]}</text>'
             )
 
-        # Paneel 2 (Rechts): Delta log2FC van -3.5 tot +3.5
+        # Panel 2 (Right): Delta log2FC from -3.5 to +3.5
         p2_x0, p2_w, p2_y0, p2_h = 620, 515, 78, 295
         zero_y = p2_y0 + p2_h / 2.0
         max_fc = 3.2
-        svg.append(f'<text x="{p2_x0 + p2_w/2:.1f}" y="68" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Paneel B: Pathologische Verschuiving Δlog2(Fold-Change vs. Gezond)</text>')
+        svg.append(f'<text x="{p2_x0 + p2_w/2:.1f}" y="68" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Panel B: Pathological Shift Δlog2(Fold-Change vs. Healthy)</text>')
         for fc_tick in [-3, -2, -1, 0, 1, 2, 3]:
             py = zero_y - (fc_tick / max_fc) * (p2_h / 2.0)
             stroke_c = "#64748B" if fc_tick == 0 else "#1E293B"
@@ -446,8 +446,8 @@ def _(genes, group_filter, html_lib, mo):
         for idx, _g in enumerate(filtered_genes_list):
             cx = p2_x0 + (idx + 0.5) * slot2_w
             fcs = [
-                (_g["log2fc_steatosis_vs_healthy"], "#FB7185", "ΔSteatose vs Gezond"),
-                (_g["log2fc_cholestasis_vs_healthy"], "#FBBF24", "ΔCholestase vs Gezond"),
+                (_g["log2fc_steatosis_vs_healthy"], "#FB7185", "ΔSteatosis vs Healthy"),
+                (_g["log2fc_cholestasis_vs_healthy"], "#FBBF24", "ΔCholestasis vs Healthy"),
             ]
             for b_i, (fc_v, b_col, b_lbl) in enumerate(fcs):
                 bh = (min(abs(fc_v), max_fc) / max_fc) * (p2_h / 2.0)
@@ -462,13 +462,13 @@ def _(genes, group_filter, html_lib, mo):
                 f'<text x="{cx:.1f}" y="{p2_y0 + p2_h + 14:.1f}" fill="#E2E8F0" font-size="9.5" font-weight="600" text-anchor="end" transform="rotate(-40 {cx:.1f} {p2_y0 + p2_h + 14:.1f})">{_g["symbol"]}</text>'
             )
 
-        # Legenda onderaan
+        # Legend at bottom
         legs = [
-            ("#2EC4B6", "Gezond (GTEx/HPA Homeostase)"),
-            ("#FF5964", "Steatose (GEO NAFLD / AOP 34)"),
-            ("#FF9F1C", "Cholestase (BSEP-remming / AOP 27)"),
-            ("#FB7185", "Δlog2FC Steatose vs. Gezond"),
-            ("#FBBF24", "Δlog2FC Cholestase vs. Gezond"),
+            ("#2EC4B6", "Healthy (GTEx/HPA Homeostasis)"),
+            ("#FF5964", "Steatosis (GEO NAFLD / AOP 34)"),
+            ("#FF9F1C", "Cholestasis (BSEP Inhibition / AOP 27)"),
+            ("#FB7185", "Δlog2FC Steatosis vs. Healthy"),
+            ("#FBBF24", "Δlog2FC Cholestasis vs. Healthy"),
         ]
         lx = 45
         for lcol, llbl in legs:
@@ -485,14 +485,14 @@ def _(genes, group_filter, html_lib, mo):
 
     guide_v2 = mo.md(
         """
-        ### 📊 Handleiding Visualisatie 2 — Gezond vs. Pathologisch Expressieprofiel (Homeostase vs. Steatose vs. Cholestase)
-        - **Hoe gebruik je deze cel?**
-          - Gebruik het filter **🧩 Filter Functionele AOP-Groepen** bovenin om specifieke gen-groepen te isoleren, en beweeg je muis over de staven voor de exacte TPM- en $\log_2\text{Fold-Change}$ waarden.
-        - **Wat zie je in deze grafiek?**
-          - **Paneel A (links)** toont de absolute mRNA-expressie $\log_2(\text{TPM}+1)$ voor elk van de 18 genen in gezonde hepatocyten (groen) versus steatose (rood) en cholestase (oranje).
-          - **Paneel B (rechts)** toont de relatieve verschuiving ($\Delta\log_2\text{FC}$) ten opzichte van de gezonde baseline:
-            1. **Bij Steatose (roze staven):** Sterke positieve pieken op de lipogene genen `NR1H3`, `SREBF1`, `FASN`, `ACACA`, `SCD` en `CD36` (+1.5 tot +2.8 $\log_2\text{FC}$), gepaard met een daling (onder de nullijn) van de $\beta$-oxidatie en VLDL-exportgenen (`PPARA`, `CPT1A`, `MTTP`, `APOB`).
-            2. **Bij Cholestase (gele staven):** Sterke negatieve uitslag (repressie/functieverlies) op `ABCB11` (-2.6 $\log_2\text{FC}$), `CYP7A1` (-2.8 $\log_2\text{FC}$) en `SLC10A1` (-2.2 $\log_2\text{FC}$), en sterke inductie van de vier stress/apoptose-genen rechts (`NFE2L2`, `NFKB1`, `TP53`, `CASP3`).
+        ### 📊 User Guide Visualization 2 — Healthy vs. Pathological Expression Profile (Homeostasis vs. Steatosis vs. Cholestasis)
+        - **How to use this cell:**
+          - Use the **🧩 Filter Functional AOP Groups** filter at the top to isolate specific gene groups, and hover your mouse over the bars for the exact TPM and $\log_2\text{Fold-Change}$ values.
+        - **What do you see in this chart?**
+          - **Panel A (left)** shows the absolute mRNA expression $\log_2(\text{TPM}+1)$ for each of the 18 genes in healthy hepatocytes (green) versus steatosis (red) and cholestasis (orange).
+          - **Panel B (right)** shows the relative shift ($\Delta\log_2\text{FC}$) compared to the healthy baseline:
+            1. **In Steatosis (pink bars):** Strong positive peaks on the lipogenic genes `NR1H3`, `SREBF1`, `FASN`, `ACACA`, `SCD`, and `CD36` (+1.5 to +2.8 $\log_2\text{FC}$), accompanied by a drop (below the zero line) of the $\beta$-oxidation and VLDL export genes (`PPARA`, `CPT1A`, `MTTP`, `APOB`).
+            2. **In Cholestasis (yellow bars):** Strong negative deflection (repression/loss of function) on `ABCB11` (-2.6 $\log_2\text{FC}$), `CYP7A1` (-2.8 $\log_2\text{FC}$), and `SLC10A1` (-2.2 $\log_2\text{FC}$), and strong induction of the four stress/apoptosis genes on the right (`NFE2L2`, `NFKB1`, `TP53`, `CASP3`).
         """
     )
 
@@ -511,31 +511,40 @@ def _(genes, group_filter, html_lib, mo):
 @app.cell
 def _(genes, html_lib, matrices, meta, mo, norm_selector, np, state_selector):
     def render_feature_heatmap_svg(selected_state_str, use_zscore_bool):
-        """Genereert een geannoteerde SVG heatmap van de [18 x 8] Feature Matrix X."""
+        """Generates an annotated SVG heatmap of the [18 x 8] Feature Matrix X."""
         if "Steatosis" in selected_state_str and not selected_state_str.startswith("Healthy"):
             raw_mat = np.array(matrices["X_steatosis_raw"], dtype=float)
             z_mat = np.array(matrices["X_steatosis_zscore"], dtype=float)
-            state_tag = "Steatose (AOP 34)"
+            state_tag = "Steatosis (AOP 34)"
         elif "Cholestasis" in selected_state_str:
             raw_mat = np.array(matrices["X_cholestasis_raw"], dtype=float)
             z_mat = np.array(matrices["X_cholestasis_zscore"], dtype=float)
-            state_tag = "Cholestase (AOP 27)"
+            state_tag = "Cholestasis (AOP 27)"
         else:
             raw_mat = np.array(matrices["X_healthy_raw"], dtype=float)
             z_mat = np.array(matrices["X_healthy_zscore"], dtype=float)
-            state_tag = "Gezond (Homeostase Baseline)"
+            state_tag = "Healthy (Homeostasis Baseline)"
 
         feat_names = meta["feature_names"]
-        feat_descs = meta["feature_descriptions"]
+        feat_descs = [
+            "mRNA expression in hepatocytes log2(TPM + 1) [GTEx/HPA Healthy vs. GEO Steatosis/Cholestasis]",
+            "Genomic span on the human genome in log10(base pairs) [MyGene.info / Ensembl]",
+            "Exon count / canonical transcript structure [MyGene.info / RefSeq]",
+            "Canonical protein length (amino acid count / 1000) [MyGene.info / UniProt]",
+            "In-degree (number of incoming regulatory arrows) in the causal AOP network",
+            "Out-degree (number of outgoing regulatory arrows) in the causal AOP network",
+            "Mean experimental STRING-db protein interaction score with connected network genes",
+            "Functional role index (0.25=Receptor/TF, 0.50=Enzyme, 0.75=Transporter, 1.00=Stress/Apoptosis)",
+        ]
         col_short = [
             "F0: log2(TPM+1)",
             "F1: log10(bp)",
-            "F2: Exonen",
-            "F3: Eiwit (kAA)",
+            "F2: Exons",
+            "F3: Protein (kAA)",
             "F4: In-Deg",
             "F5: Out-Deg",
             "F6: STRING",
-            "F7: Rol-Index",
+            "F7: Role Index",
         ]
 
         W, H = 1160, 610
@@ -544,7 +553,7 @@ def _(genes, html_lib, matrices, meta, mo, norm_selector, np, state_selector):
         rh = gh / 18.0
 
         def z_to_rgb(z_val):
-            # Divergente blauw (-2.5) -> donker leigrijs (0) -> rood (+2.5) kleurenschaal
+            # Diverging blue (-2.5) -> dark slate (0) -> red (+2.5) color scale
             v = float(np.clip(z_val / 2.5, -1.0, 1.0))
             if v < 0:
                 t = abs(v)
@@ -558,11 +567,11 @@ def _(genes, html_lib, matrices, meta, mo, norm_selector, np, state_selector):
                 b = int(59 * (1 - t) + 72 * t)
             return f"rgb({r},{g},{b})"
 
-        scale_lbl = "Z-Score (σ t.o.v. Gezonde Baseline)" if use_zscore_bool else "Ruwe Biologische Eenheden"
+        scale_lbl = "Z-Score (σ vs. Healthy Baseline)" if use_zscore_bool else "Raw Biological Units"
         svg = [
             f'<svg viewBox="0 0 {W} {H}" width="100%" height="auto" style="background:#0F172A;border-radius:10px;border:1px solid #1E293B;font-family:Inter,system-ui,sans-serif;">',
-            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualisatie 3: Graphormer Input Feature Matrix X [18 genen × 8 features] — {html_lib.escape(state_tag)}</text>',
-            f'<text x="22" y="48" fill="#94A3B8" font-size="12">Weergave: {html_lib.escape(scale_lbl)} | Elke rij i is de 8D feature-vector x_i die in Mijlpaal 1.2 door nn.Linear(8, 64) wordt geprojecteerd</text>',
+            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualization 3: Graphormer Input Feature Matrix X [18 genes × 8 features] — {html_lib.escape(state_tag)}</text>',
+            f'<text x="22" y="48" fill="#94A3B8" font-size="12">Display: {html_lib.escape(scale_lbl)} | Each row i is the 8D feature vector x_i projected by nn.Linear(8, 64) in Milestone 1.2</text>',
         ]
 
         for c_i, clbl in enumerate(col_short):
@@ -581,10 +590,10 @@ def _(genes, html_lib, matrices, meta, mo, norm_selector, np, state_selector):
                 cell_col = z_to_rgb(z_v)
                 cell_txt = f"{z_v:+.2f}σ" if use_zscore_bool else f"{raw_v:.2f}"
                 tip = (
-                    f"Gen: {_g['symbol']} ({_g['name']})\n"
+                    f"Gene: {_g['symbol']} ({_g['name']})\n"
                     f"Feature [{c_i}] ({feat_names[c_i]}): {feat_descs[c_i]}\n"
-                    f"Ruwe Waarde ({state_tag}): {raw_v:.3f}\n"
-                    f"Z-Score (t.o.v. Gezond): {z_v:+.3f} σ"
+                    f"Raw Value ({state_tag}): {raw_v:.3f}\n"
+                    f"Z-Score (vs. Healthy): {z_v:+.3f} σ"
                 )
                 svg.append(
                     f'<g style="cursor:pointer;">'
@@ -603,14 +612,14 @@ def _(genes, html_lib, matrices, meta, mo, norm_selector, np, state_selector):
 
     guide_v3 = mo.md(
         """
-        ### 🧮 Handleiding Visualisatie 3 — De `[18 × 8]` Feature Matrix $X$ Heatmap
-        - **Hoe gebruik je deze cel?**
-          - Schakel via **📊 Schaal voor Feature Matrix X [18, 8]** tussen **Z-Scores ($\sigma$)** en **Ruwe Biologische Waarden**, en gebruik **🔬 Celtoestand op Netwerk** om `X_healthy`, `X_steatosis` of `X_cholestasis` te inspecteren.
-        - **Wat zie je in deze grafiek?**
-          - Dit is exact de tensor $X \in \mathbb{R}^{18 \times 8}$ die in `data/hepatocyte_features.pt` is opgeslagen voor Mijlpaal 1.2:
-            - **Kolom `F0: log2(TPM+1)`** verandert dynamisch per celtoestand (rood = sterk opgereguleerd t.o.v. gezonde baseline, blauw = onderdrukt).
-            - **Kolommen `F1` t/m `F3`** bevatten de echte gen- en eiwitstructuur uit MyGene.info (`ACACA` is bijvoorbeeld het langste gen met 59 exonen; `APOB` het grootste eiwit met 4.563 aminozuren, `+3.66σ`).
-            - **Kolommen `F4` t/m `F7`** bevatten de topologische rol in het AOP-netwerk (in-degree, out-degree, gemiddelde STRING-db score en functionele rol-index).
+        ### 🧮 User Guide Visualization 3 — The `[18 × 8]` Feature Matrix $X$ Heatmap
+        - **How to use this cell:**
+          - Switch via **📊 Scale for Feature Matrix X [18, 8]** between **Z-Scores ($\sigma$)** and **Raw Biological Values**, and use **🔬 Cellular State on Network** to inspect `X_healthy`, `X_steatosis`, or `X_cholestasis`.
+        - **What do you see in this chart?**
+          - This is the exact tensor $X \in \mathbb{R}^{18 \times 8}$ saved in `data/hepatocyte_features.pt` for Milestone 1.2:
+            - **Column `F0: log2(TPM+1)`** changes dynamically per cellular state (red = strongly upregulated vs. healthy baseline, blue = repressed).
+            - **Columns `F1` through `F3`** contain the real gene and protein structure from MyGene.info (`ACACA` is for example the longest gene with 56–59 exons; `APOB` is the largest protein with 4,563 amino acids, `+3.66σ`).
+            - **Columns `F4` through `F7`** contain the topological role in the AOP network (in-degree, out-degree, mean STRING-db score, and functional role index).
         """
     )
 
@@ -622,18 +631,18 @@ def _(genes, html_lib, matrices, meta, mo, norm_selector, np, state_selector):
 @app.cell
 def _(genes, html_lib, matrices, mo, np):
     def render_spatial_centrality_svg():
-        """Genereert een dual-panel SVG voor Visualisatie 4: [19x19] Shortest-Path Matrix + Degree Centrality."""
+        """Generates a dual-panel SVG for Visualization 4: [19x19] Shortest-Path Matrix + Degree Centrality."""
         dist_19 = np.array(matrices["dist_matrix_19_cls"], dtype=int)
         cls_labels = ["00:[CLS]"] + [f"{_g['idx'] + 1:02d}:{_g['symbol']}" for _g in genes]
 
         W, H = 1160, 600
         svg = [
             f'<svg viewBox="0 0 {W} {H}" width="100%" height="auto" style="background:#0F172A;border-radius:10px;border:1px solid #1E293B;font-family:Inter,system-ui,sans-serif;">',
-            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualisatie 4: Graphormer Structurele Encodings — [19×19] Shortest-Path Matrix D (incl. [CLS]) &amp; Degree Centrality</text>',
-            f'<text x="22" y="48" fill="#94A3B8" font-size="12">Links: Floyd-Warshall afstandsmatrix [19×19] voor Spatial Attention Bias b_φ(v_i, v_j) | Rechts: In-Degree &amp; Out-Degree voor Centrality Encoding</text>',
+            f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualization 4: Graphormer Structural Encodings — [19×19] Shortest-Path Matrix D (incl. [CLS]) &amp; Degree Centrality</text>',
+            f'<text x="22" y="48" fill="#94A3B8" font-size="12">Left: Floyd-Warshall distance matrix [19×19] for Spatial Attention Bias b_φ(v_i, v_j) | Right: In-Degree &amp; Out-Degree for Centrality Encoding</text>',
         ]
 
-        # Paneel 1 (Links): [19 x 19] matrix
+        # Panel 1 (Left): [19 x 19] matrix
         mx0, my0, mw, mh = 92, 95, 550, 475
         cw = mw / 19.0
         ch = mh / 19.0
@@ -654,7 +663,7 @@ def _(genes, html_lib, matrices, mo, np):
             }
             return palette.get(int(d), "#475569")
 
-        svg.append(f'<text x="{mx0 + mw/2:.1f}" y="72" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Paneel A: [19 × 19] Floyd-Warshall Shortest-Path Matrix D</text>')
+        svg.append(f'<text x="{mx0 + mw/2:.1f}" y="72" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Panel A: [19 × 19] Floyd-Warshall Shortest-Path Matrix D</text>')
 
         for i in range(19):
             cx = mx0 + (i + 0.5) * cw
@@ -670,7 +679,7 @@ def _(genes, html_lib, matrices, mo, np):
                 rx = mx0 + j * cw
                 ry = my0 + i * ch
                 c_fill = dist_to_col(d_val)
-                tip = f"Van {cls_labels[i]} naar {cls_labels[j]}: kortste-padafstand = {d_val}"
+                tip = f"From {cls_labels[i]} to {cls_labels[j]}: shortest-path distance = {d_val}"
                 svg.append(
                     f'<g style="cursor:pointer;">'
                     f'<rect x="{rx + 0.8:.1f}" y="{ry + 0.8:.1f}" width="{cw - 1.6:.1f}" height="{ch - 1.6:.1f}" fill="{c_fill}" rx="2"/>'
@@ -678,11 +687,11 @@ def _(genes, html_lib, matrices, mo, np):
                     f"<title>{html_lib.escape(tip)}</title></g>"
                 )
 
-        # Paneel 2 (Rechts): In-Degree & Out-Degree per gen
+        # Panel 2 (Right): In-Degree & Out-Degree per gene
         bx0, by0, bw, bh = 720, 95, 405, 475
         rh = bh / 18.0
         max_deg = 4.0
-        svg.append(f'<text x="{bx0 + bw/2:.1f}" y="72" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Paneel B: Graphormer Degree Centrality (In vs. Out)</text>')
+        svg.append(f'<text x="{bx0 + bw/2:.1f}" y="72" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Panel B: Graphormer Degree Centrality (In vs. Out)</text>')
 
         for d_tick in [0, 1, 2, 3, 4]:
             tx = bx0 + (d_tick / max_deg) * bw
@@ -714,13 +723,13 @@ def _(genes, html_lib, matrices, mo, np):
 
     guide_v4 = mo.md(
         """
-        ### 🧭 Handleiding Visualisatie 4 — De `[19 × 19]` Graphormer Shortest-Path Matrix $D$ & Centrality
-        - **Hoe gebruik je deze cel?**
-          - Beweeg je muis over een vakje `(i, j)` in het linkerpaneel om de exacte kortste-padafstand $\phi(v_i, v_j)$ tussen twee genen te lezen, of bekijk rechts hoeveel pijlen elk gen ontvangt (`In-Degree`) en uitstuurt (`Out-Degree`).
-        - **Wat zie je in deze grafiek?**
-          - **Waarom `[19 × 19]` in plaats van `[18 × 18]`?** De `HepatocyteGraphormer` (Mijlpaal 1.2) plaatst een virtuele **`[CLS]`-readout knoop op index `0`** vóór de 18 genen om de hele graaf samen te vatten in $z_0 \in \mathbb{R}^{64}$.
-          - **Paarse rand (`afstand = 10`):** Rij `0` en kolom `0` hebben de speciale virtuele afstand `10` tussen `[CLS]` en alle 18 genen (en `0` op `[0, 0]`), zodat de self-attention in Mijlpaal 1.2 geen dimensie-mismatch (`19 vs 18`) krijgt.
-          - **Rechterpaneel:** Laat direct zien dat `SREBF1` de sterkste hub is (`Out-Degree = 3`, `In-Degree = 2`), wat door de Graphormer Centrality Encoding extra gewicht krijgt.
+        ### 🧭 User Guide Visualization 4 — The `[19 × 19]` Graphormer Shortest-Path Matrix $D$ & Centrality
+        - **How to use this cell:**
+          - Hover your mouse over a cell `(i, j)` in the left panel to read the exact shortest-path distance $\phi(v_i, v_j)$ between two genes, or inspect on the right how many arrows each gene receives (`In-Degree`) and sends out (`Out-Degree`).
+        - **What do you see in this chart?**
+          - **Why `[19 × 19]` instead of `[18 × 18]`?** The `HepatocyteGraphormer` (Milestone 1.2) prepends a virtual **`[CLS]` readout node at index `0`** before the 18 genes to summarize the entire graph into $z_0 \in \mathbb{R}^{64}$.
+          - **Purple border (`distance = 10`):** Row `0` and column `0` carry the special virtual distance `10` between `[CLS]` and all 18 genes (and `0` at `[0, 0]`), preventing any dimension mismatch (`19 vs 18`) during self-attention in Milestone 1.2.
+          - **Right panel:** Immediately shows that `SREBF1` is the strongest hub (`Out-Degree = 3`, `In-Degree = 2`), which receives additional weight via Graphormer Centrality Encoding.
         """
     )
 
@@ -746,18 +755,18 @@ def _(
         [
             {
                 "Index": _g["idx"],
-                "Gen": _g["symbol"],
-                "Groep": _g["group"],
-                "Rol": _g["role_label"],
-                "OECD AOP Referentie": _g["aop_ref"],
-                "Gezond (TPM)": _g["expr_healthy_tpm"],
-                "Steatose (TPM)": _g["expr_steatosis_tpm"],
-                "Cholestase (TPM)": _g["expr_cholestasis_tpm"],
-                "Δlog2FC Steatose": _g["log2fc_steatosis_vs_healthy"],
-                "Δlog2FC Cholestase": _g["log2fc_cholestasis_vs_healthy"],
-                "Lengte (bp)": _g["gene_length_bp"],
-                "Exonen": _g["exon_count"],
-                "Eiwit (AA)": _g["protein_length_aa"],
+                "Gene": _g["symbol"],
+                "Group": _g["group"],
+                "Role": _g["role_label"],
+                "OECD AOP Reference": _g["aop_ref"],
+                "Healthy (TPM)": _g["expr_healthy_tpm"],
+                "Steatosis (TPM)": _g["expr_steatosis_tpm"],
+                "Cholestasis (TPM)": _g["expr_cholestasis_tpm"],
+                "Δlog2FC Steatosis": _g["log2fc_steatosis_vs_healthy"],
+                "Δlog2FC Cholestasis": _g["log2fc_cholestasis_vs_healthy"],
+                "Length (bp)": _g["gene_length_bp"],
+                "Exons": _g["exon_count"],
+                "Protein (AA)": _g["protein_length_aa"],
                 "STRING Score": _g["mean_string_score"],
                 "Ensembl ID": _g["ensembl_id"],
                 "UniProt": _g["uniprot_id"],
@@ -770,33 +779,33 @@ def _(
         [
             {
                 "Edge #": e["edge_id"] + 1,
-                "Bron": f"{e['source_idx']}: {e['source_symbol']}",
-                "Doel": f"{e['target_idx']}: {e['target_symbol']}",
-                "Teken": "+1 (Activatie)" if e["sign"] > 0 else "-1 (Repressie)",
+                "Source": f"{e['source_idx']}: {e['source_symbol']}",
+                "Target": f"{e['target_idx']}: {e['target_symbol']}",
+                "Sign": "+1 (Activation)" if e["sign"] > 0 else "-1 (Repression)",
                 "STRING-db Score": e["string_score"],
-                "OECD AOP & Mechanistische Citatie": e["citation"],
+                "OECD AOP & Mechanistic Citation": e["citation"],
             }
             for e in edges
         ]
     )
 
-    # Bouw 01_1_data_explorer.html met pure CSS radio-tabs + inline interactieve SVG's
-    # Werkt 100% gegarandeerd in VS Code HTML Preview (zelfs als JavaScript geblokkeerd is!) én in elke browser.
+    # Build 01_1_data_explorer.html with pure CSS radio tabs + inline interactive SVGs
+    # Guaranteed to work 100% in VS Code HTML Preview (even when JavaScript is blocked!) and in every browser.
     all_grps = set(GROUP_COLORS.keys())
     net_states = [
-        ("Steatose (AOP 34 - LXR/NAFLD)", "Steatosis (AOP 34 - LXR/NAFLD)"),
-        ("Gezond (Homeostase Baseline)", "Healthy (Homeostasis Baseline)"),
-        ("Cholestase (AOP 27 - BSEP Remming)", "Cholestasis (AOP 27 - BSEP Inhibition)"),
-        ("Δlog2FC: Steatose vs. Gezond", "Delta: Steatosis vs Healthy (log2FC)"),
-        ("Δlog2FC: Cholestase vs. Gezond", "Delta: Cholestasis vs Healthy (log2FC)"),
+        ("Steatosis (AOP 34 - LXR/NAFLD)", "Steatosis (AOP 34 - LXR/NAFLD)"),
+        ("Healthy (Homeostasis Baseline)", "Healthy (Homeostasis Baseline)"),
+        ("Cholestasis (AOP 27 - BSEP Inhibition)", "Cholestasis (AOP 27 - BSEP Inhibition)"),
+        ("Δlog2FC: Steatosis vs. Healthy", "Delta: Steatosis vs Healthy (log2FC)"),
+        ("Δlog2FC: Cholestasis vs. Healthy", "Delta: Cholestasis vs Healthy (log2FC)"),
     ]
     net_svgs = [render_network_svg(full_st, all_grps, 0.50, True) for _, full_st in net_states]
 
     feat_states = [
-        ("Steatose (Z-Score t.o.v. Gezond)", "Steatosis (AOP 34 - LXR/NAFLD)", True),
-        ("Gezond (Z-Score Baseline)", "Healthy (Homeostasis Baseline)", True),
-        ("Cholestase (Z-Score t.o.v. Gezond)", "Cholestasis (AOP 27 - BSEP Inhibition)", True),
-        ("Ruwe Biologische Waarden (Gezond)", "Healthy (Homeostasis Baseline)", False),
+        ("Steatosis (Z-Score vs. Healthy)", "Steatosis (AOP 34 - LXR/NAFLD)", True),
+        ("Healthy (Z-Score Baseline)", "Healthy (Homeostasis Baseline)", True),
+        ("Cholestasis (Z-Score vs. Healthy)", "Cholestasis (AOP 27 - BSEP Inhibition)", True),
+        ("Raw Biological Values (Healthy)", "Healthy (Homeostasis Baseline)", False),
     ]
     feat_svgs = [render_feature_heatmap_svg(f_st, f_z) for _, f_st, f_z in feat_states]
 
@@ -804,10 +813,10 @@ def _(
     edges_table_html = edges_df.to_html(index=False, classes="aop-table")
 
     standalone_html = f"""<!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Mijlpaal 1.1 — Hepatocyt AOP & Graphormer Data Explorer</title>
+  <title>Milestone 1.1 — Hepatocyte AOP & Graphormer Data Explorer</title>
   <style>
     body {{
       background-color: #0B1120;
@@ -854,7 +863,7 @@ def _(
       margin-bottom: 26px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }}
-    /* Pure CSS Radio Tabs — werkt zelfs als VS Code HTML Preview JavaScript uitschakelt! */
+    /* Pure CSS Radio Tabs — works even if VS Code HTML Preview disables JavaScript! */
     .tab-group input[type="radio"] {{
       display: none;
     }}
@@ -939,22 +948,22 @@ def _(
 </head>
 <body>
   <div class="header-box">
-    <h1>🧬 Mijlpaal 1, Stap 1.1: Hepatocyt AOP-Netwerk &amp; Echte Data Verkenner</h1>
-    <p style="margin:4px 0;color:#CBD5E1;font-size:14px;"><b>Project:</b> Multimodal &amp; Multiscale AI voor Levertoxiciteit (Graphormer + Neural ODE) | <b>Lectoraat Innovative Testing (Hogeschool Utrecht)</b></p>
-    <p style="margin:4px 0;color:#94A3B8;font-size:13.5px;">Dit dashboard toont de gevalideerde invoerdata uit <code>data/hepatocyte_features.pt</code> en <code>data/hepatocyte_baseline_data.json</code> (MyGene.info v3, STRING-db v12.0, GTEx/HPA Gezond &amp; NCBI GEO Steatose/Cholestase). <b>Elke cel heeft hieronder een eigen Nederlandstalige handleiding.</b></p>
+    <h1>🧬 Milestone 1, Step 1.1: Hepatocyte AOP Network &amp; Real Data Explorer</h1>
+    <p style="margin:4px 0;color:#CBD5E1;font-size:14px;"><b>Project:</b> Multimodal &amp; Multiscale AI for Liver Toxicity (Graphormer + Neural ODE) | <b>Research Group Innovative Testing (HU University of Applied Sciences Utrecht)</b></p>
+    <p style="margin:4px 0;color:#94A3B8;font-size:13.5px;">This dashboard displays the validated input data from <code>data/hepatocyte_features.pt</code> and <code>data/hepatocyte_baseline_data.json</code> (MyGene.info v3, STRING-db v12.0, GTEx/HPA Healthy &amp; NCBI GEO Steatosis/Cholestasis). <b>Each cell below includes its own dedicated user guide.</b></p>
   </div>
 
-  <!-- CEL 1: NETWERKGRAAF -->
+  <!-- CELL 1: NETWORK GRAPH -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 Handleiding Cel 1: Causale Hepatocyt AOP-Netwerkgraaf (Visualisatie 1)</h3>
+      <h3>📘 User Guide Cell 1: Causal Hepatocyte AOP Network Graph (Visualization 1)</h3>
       <ul>
-        <li><b>Hoe te gebruiken:</b> Klik op de blauwe knoppen hieronder om te schakelen tussen de 5 celtoestanden. Beweeg je muis over een <b>knoop (gen)</b> of <b>pijl (interactie)</b> om de exacte TPM-waarden, MyGene.info structuurdata, STRING-db scores en de officiële <b>OECD AOP Key Event citatie</b> te bekijken.</li>
-        <li><b>Wat je ziet gebeuren:</b>
+        <li><b>How to use:</b> Click the blue buttons below to switch between the 5 cellular states. Hover your mouse over a <b>node (gene)</b> or <b>arrow (interaction)</b> to inspect the exact TPM values, MyGene.info structural data, STRING-db scores, and the official <b>OECD AOP Key Event citation</b>.</li>
+        <li><b>What you see happening:</b>
           <ul>
-            <li>In <b>Steatose (AOP 34)</b> zwellen de koraalrode lipogenese-genen (<code>NR1H3</code>, <code>SREBF1</code>, <code>FASN</code>, <code>ACACA</code>, <code>SCD</code>, <code>CD36</code>) sterk op (geel omrand: &gt;+0.8 log2FC), terwijl de turkooizen homeostase-genen (<code>PPARA</code>, <code>CPT1A</code>, <code>MTTP</code>, <code>APOB</code>) krimpen.</li>
-            <li>In <b>Cholestase (AOP 27)</b> krimpt de galzoutpomp <code>ABCB11</code> (BSEP) dramatisch en worden <code>CYP7A1</code> en <code>SLC10A1</code> via FXR (<code>NR1H4</code>) onderdrukt, terwijl rechts de paarse stress- en apoptose-cascade (<code>NFE2L2</code> → <code>NFKB1</code> → <code>TP53</code> → <code>CASP3</code>) sterk oplicht.</li>
-            <li>In de twee <b>Δlog2FC modi</b> kleuren opgereguleerde genen felrood en onderdrukte genen blauw, waarbij de knoopgrootte schaalt met de sterkte van de verstoring.</li>
+            <li>In <b>Steatosis (AOP 34)</b>, the coral-red lipogenesis genes (<code>NR1H3</code>, <code>SREBF1</code>, <code>FASN</code>, <code>ACACA</code>, <code>SCD</code>, <code>CD36</code>) swell strongly (outlined in yellow: &gt;+0.8 log2FC), while the turquoise homeostasis genes (<code>PPARA</code>, <code>CPT1A</code>, <code>MTTP</code>, <code>APOB</code>) shrink.</li>
+            <li>In <b>Cholestasis (AOP 27)</b>, the bile salt export pump <code>ABCB11</code> (BSEP) shrinks dramatically and <code>CYP7A1</code> and <code>SLC10A1</code> are repressed via FXR (<code>NR1H4</code>), while on the right the purple stress and apoptosis cascade (<code>NFE2L2</code> → <code>NFKB1</code> → <code>TP53</code> → <code>CASP3</code>) lights up strongly.</li>
+            <li>In the two <b>Δlog2FC modes</b>, upregulated genes turn bright red and repressed genes turn blue, with node size scaling with the magnitude of perturbation.</li>
           </ul>
         </li>
       </ul>
@@ -966,12 +975,12 @@ def _(
       <input type="radio" name="net_tab" id="net_r3" />
       <input type="radio" name="net_tab" id="net_r4" />
       <div class="tab-labels">
-        <span>🔬 Schakel Celtoestand op Netwerk:</span>
-        <label for="net_r0">Steatose (AOP 34 - LXR/NAFLD)</label>
-        <label for="net_r1">Gezond (Homeostase Baseline)</label>
-        <label for="net_r2">Cholestase (AOP 27 - BSEP Remming)</label>
-        <label for="net_r3">Δlog2FC: Steatose vs. Gezond</label>
-        <label for="net_r4">Δlog2FC: Cholestase vs. Gezond</label>
+        <span>🔬 Switch Cellular State on Network:</span>
+        <label for="net_r0">Steatosis (AOP 34 - LXR/NAFLD)</label>
+        <label for="net_r1">Healthy (Homeostasis Baseline)</label>
+        <label for="net_r2">Cholestasis (AOP 27 - BSEP Inhibition)</label>
+        <label for="net_r3">Δlog2FC: Steatosis vs. Healthy</label>
+        <label for="net_r4">Δlog2FC: Cholestasis vs. Healthy</label>
       </div>
       <div class="tab-panes">
         <div class="pane" id="net_p0">{net_svgs[0]}</div>
@@ -983,25 +992,25 @@ def _(
     </div>
   </div>
 
-  <!-- CEL 2: EXPRESSIE & FOLD-CHANGES -->
+  <!-- CELL 2: EXPRESSION & FOLD-CHANGES -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 Handleiding Cel 2: Gezond vs. Pathologisch Expressieprofiel (Visualisatie 2)</h3>
+      <h3>📘 User Guide Cell 2: Healthy vs. Pathological Expression Profile (Visualization 2)</h3>
       <ul>
-        <li><b>Hoe te gebruiken:</b> Vergelijk per gen (op de x-as) de drie gekleurde staven in <b>Paneel A (links)</b> voor de absolute mRNA-expressie $\\log_2(\\text{{TPM}}+1)$, en bekijk in <b>Paneel B (rechts)</b> de relatieve verschuiving ($\\Delta\\log_2\\text{{Fold-Change}}$) boven of onder de nullijn. Hover over elke staaf voor het exacte getal.</li>
-        <li><b>Wat je ziet gebeuren:</b> Deze grafiek laat zien waarom de drie attractoren in Mijlpaal 1.2 en Mijlpaal 3 ($z_{{\\text{{homeo}}}}$, $z_{{\\text{{steatose}}}}$, $z_{{\\text{{cholestase}}}}$) scherp van elkaar te onderscheiden zijn: Steatose (roze staven rechts) heeft een exclusieve piek op genen 0 t/m 5, Cholestase (gele staven rechts) heeft een diepe dip op genen 11 t/m 13, en beide ziektebeelden convergeren op de stress/apoptose-genen 14 t/m 17.</li>
+        <li><b>How to use:</b> Compare per gene (on the x-axis) the three colored bars in <b>Panel A (left)</b> for absolute mRNA expression $\\log_2(\\text{{TPM}}+1)$, and inspect in <b>Panel B (right)</b> the relative shift ($\\Delta\\log_2\\text{{Fold-Change}}$) above or below the zero line. Hover over any bar for the exact number.</li>
+        <li><b>What you see happening:</b> This chart illustrates why the three attractors in Milestone 1.2 and Milestone 3 ($z_{{\\text{{homeo}}}}$, $z_{{\\text{{steatose}}}}$, $z_{{\\text{{cholestase}}}}$) are sharply distinguishable: Steatosis (pink bars on the right) has an exclusive peak on genes 0 through 5, Cholestasis (yellow bars on the right) has a deep dip on genes 11 through 13, and both pathologies converge on the stress/apoptosis genes 14 through 17.</li>
       </ul>
     </div>
     {expr_svg_str}
   </div>
 
-  <!-- CEL 3: FEATURE MATRIX [18 x 8] -->
+  <!-- CELL 3: FEATURE MATRIX [18 x 8] -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 Handleiding Cel 3: Graphormer Input Feature Matrix X [18 genen × 8 features] (Visualisatie 3)</h3>
+      <h3>📘 User Guide Cell 3: Graphormer Input Feature Matrix X [18 genes × 8 features] (Visualization 3)</h3>
       <ul>
-        <li><b>Hoe te gebruiken:</b> Klik op de knoppen hieronder om te wisselen tussen de Z-score genormaliseerde matrices (<code>X_steatosis</code>, <code>X_healthy</code>, <code>X_cholestasis</code>) en de ruwe biologische waarden (<code>X_healthy_raw</code>). Hover over een cel voor de volledige feature-uitleg.</li>
-        <li><b>Wat je ziet gebeuren:</b> Alle drie de toestanden zijn genormaliseerd ten opzichte van <b>dezelfde gezonde baseline</b> ($\\mu_{{\\text{{healthy}}}}, \\sigma_{{\\text{{healthy}}}}$). Wanneer je tussen <i>Gezond</i>, <i>Steatose</i> en <i>Cholestase</i> schakelt, zie je in kolom <b>F0: log2(TPM+1)</b> de exacte Z-score verschuivingen verschijnen die de <code>HepatocyteGraphormer</code> in Mijlpaal 1.2 gebruikt om de cel in de juiste Waddington-vallei te plaatsen.</li>
+        <li><b>How to use:</b> Click the buttons below to toggle between the Z-score normalized matrices (<code>X_steatosis</code>, <code>X_healthy</code>, <code>X_cholestasis</code>) and the raw biological values (<code>X_healthy_raw</code>). Hover over any cell for the full feature description.</li>
+        <li><b>What you see happening:</b> All three states are normalized relative to the <b>same healthy baseline</b> ($\\mu_{{\\text{{healthy}}}}, \\sigma_{{\\text{{healthy}}}}$). When switching between <i>Healthy</i>, <i>Steatosis</i>, and <i>Cholestasis</i>, you see in column <b>F0: log2(TPM+1)</b> the exact Z-score shifts appear that the <code>HepatocyteGraphormer</code> uses in Milestone 1.2 to place the cell into the appropriate Waddington valley.</li>
       </ul>
     </div>
     <div class="tab-group">
@@ -1010,11 +1019,11 @@ def _(
       <input type="radio" name="feat_tab" id="feat_r2" />
       <input type="radio" name="feat_tab" id="feat_r3" />
       <div class="tab-labels">
-        <span>📊 Schakel Feature Matrix X [18 × 8] Weergave:</span>
-        <label for="feat_r0">Steatose (Z-Score t.o.v. Gezond)</label>
-        <label for="feat_r1">Gezond (Z-Score Baseline)</label>
-        <label for="feat_r2">Cholestase (Z-Score t.o.v. Gezond)</label>
-        <label for="feat_r3">Ruwe Biologische Waarden (Gezond)</label>
+        <span>📊 Switch Feature Matrix X [18 × 8] View:</span>
+        <label for="feat_r0">Steatosis (Z-Score vs. Healthy)</label>
+        <label for="feat_r1">Healthy (Z-Score Baseline)</label>
+        <label for="feat_r2">Cholestasis (Z-Score vs. Healthy)</label>
+        <label for="feat_r3">Raw Biological Values (Healthy)</label>
       </div>
       <div class="tab-panes">
         <div class="pane" id="feat_p0">{feat_svgs[0]}</div>
@@ -1025,29 +1034,29 @@ def _(
     </div>
   </div>
 
-  <!-- CEL 4: [19 x 19] SHORTEST PATH MATRIX & CENTRALITY -->
+  <!-- CELL 4: [19 x 19] SHORTEST PATH MATRIX & CENTRALITY -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 Handleiding Cel 4: [19 × 19] Graphormer Shortest-Path Matrix D &amp; Centrality Encoding (Visualisatie 4)</h3>
+      <h3>📘 User Guide Cell 4: [19 × 19] Graphormer Shortest-Path Matrix D &amp; Centrality Encoding (Visualization 4)</h3>
       <ul>
-        <li><b>Hoe te gebruiken:</b> Bekijk in <b>Paneel A (links)</b> de kortste-padafstand tussen elk paar knopen in het netwerk (berekend via Floyd-Warshall), en in <b>Paneel B (rechts)</b> het aantal inkomende (blauw) en uitgaande (roze) AOP-interacties per gen.</li>
-        <li><b>Wat je ziet gebeuren:</b> Rij en kolom <code>00:[CLS]</code> vormen de virtuele <b>Graphormer Readout-knoop</b> met speciale afstand <code>10</code> (paars) naar alle 18 genen en <code>0</code> naar zichzelf. Binnen de 18 genen (indices 1 t/m 18) lopen de kortste paden van <code>0</code> (diagonaal, blauw) en <code>1</code> (direct verbonden, groen) tot <code>8</code> (rood, bijv. van galzuursynthese <code>CYP7A1</code> helemaal naar lipogenese-enzym <code>ACACA</code>).</li>
+        <li><b>How to use:</b> Inspect in <b>Panel A (left)</b> the shortest-path distance between every pair of nodes in the network (computed via Floyd-Warshall), and in <b>Panel B (right)</b> the number of incoming (blue) and outgoing (pink) AOP interactions per gene.</li>
+        <li><b>What you see happening:</b> Row and column <code>00:[CLS]</code> form the virtual <b>Graphormer Readout node</b> with special distance <code>10</code> (purple) to all 18 genes and <code>0</code> to itself. Within the 18 genes (indices 1 through 18), shortest paths range from <code>0</code> (diagonal, blue) and <code>1</code> (directly connected, green) up to <code>8</code> (red, e.g., from bile acid synthesis <code>CYP7A1</code> all the way to lipogenic enzyme <code>ACACA</code>).</li>
       </ul>
     </div>
     {sp_svg_str}
   </div>
 
-  <!-- CEL 5: TABELLEN -->
+  <!-- CELL 5: TABLES -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 Handleiding Cel 5: Gevalideerde Bronnen, MyGene.info Annotaties &amp; OECD AOP Citaties</h3>
+      <h3>📘 User Guide Cell 5: Validated Sources, MyGene.info Annotations &amp; OECD AOP Citations</h3>
       <ul>
-        <li><b>Wat je hier vindt:</b> De volledige referentietabellen met voor elk van de 18 genen het Ensembl- en UniProt-ID, genomische lengte, exonen, eiwitlengte en TPM-waarden per toestand, gevolgd door de 20 gerichte interacties met hun STRING-db score en OECD AOP-verwijzing.</li>
+        <li><b>What you find here:</b> The complete reference tables containing the Ensembl and UniProt ID, genomic length, exons, protein length, and TPM values per state for each of the 18 genes, followed by the 20 directed interactions with their STRING-db score and OECD AOP reference.</li>
       </ul>
     </div>
-    <h3 style="color:#38BDF8;margin-top:4px;">📋 18 Sleutelgenen &amp; Empirische Expressieprofielen (MyGene.info, GTEx/HPA &amp; GEO)</h3>
+    <h3 style="color:#38BDF8;margin-top:4px;">📋 18 Key Genes &amp; Empirical Expression Profiles (MyGene.info, GTEx/HPA &amp; GEO)</h3>
     <div class="table-wrap">{genes_table_html}</div>
-    <h3 style="color:#38BDF8;margin-top:22px;">🔗 20 Gerichte Causale OECD AOP-Interacties &amp; STRING-db Scores</h3>
+    <h3 style="color:#38BDF8;margin-top:22px;">🔗 20 Directed Causal OECD AOP Interactions &amp; STRING-db Scores</h3>
     <div class="table-wrap">{edges_table_html}</div>
   </div>
 </body>
@@ -1059,14 +1068,14 @@ def _(
         [
             mo.md(
                 """
-                ### 📋 Handleiding Cel 5 — Bron- & OECD AOP-Annotatietabellen
-                - **Hoe gebruik je deze cel?** Klik op de twee tabbladen hieronder om door alle 18 genen (inclusief Ensembl/UniProt ID's uit MyGene.info) en alle 20 causale OECD AOP-interacties (inclusief STRING-db scores en literatuurcitaten) te bladeren.
+                ### 📋 User Guide Cell 5 — Source & OECD AOP Annotation Tables
+                - **How to use this cell:** Click the two tabs below to browse through all 18 genes (including Ensembl/UniProt IDs from MyGene.info) and all 20 causal OECD AOP interactions (including STRING-db scores and literature citations).
                 """
             ),
             mo.ui.tabs(
                 {
-                    "18 Sleutelgenen & Expressieprofielen": mo.ui.table(genes_df, selection=None),
-                    "20 Gerichte OECD AOP-Interacties": mo.ui.table(edges_df, selection=None),
+                    "18 Key Genes & Expression Profiles": mo.ui.table(genes_df, selection=None),
+                    "20 Directed OECD AOP Interactions": mo.ui.table(edges_df, selection=None),
                 }
             ),
         ]

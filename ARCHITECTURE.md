@@ -1,142 +1,142 @@
-# Master Architecture: Multimodal & Multiscale AI voor Levertoxiciteit
+# Master Architecture: Multimodal & Multiscale AI for Liver Toxicity
 Project: Graphormer + Neural ODE Simulator (Hepatocyte Attractor Dynamics)
-Kader: Promotieonderzoek Lectoraat Innovative Testing (Hogeschool Utrecht)
+Framework: PhD Research at Research Group Innovative Testing (HU University of Applied Sciences Utrecht)
 
 ---
 
-## 0. Versimpelde uitleg van AOP34 en AOP27
+## 0. Simplified Explanation of AOP34 and AOP27
 
-  **AOP 34, Steatose, leververvetting:** Wanneer bepaalde chemische stoffen een specifieke schakelaar in de levercel aanzetten, gaat de cel ongecontroleerd extra vetten aanmaken én vetten uit het bloed opzuigen. In het begin kan de cel dit extra vet nog veilig opslaan of verbranden, maar bij langdurige overbelasting raakt het opruimsysteem verstopt. De cel zwelt op, raakt beschadigd door giftige vetstapeling en sterft uiteindelijk af, wat leidt tot ernstige leverontsteking en littekenweefsel.
+  **AOP 34, Steatosis, fatty liver:** When certain chemicals flip a specific switch inside the liver cell, the cell begins uncontrollably synthesizing extra fats while also absorbing fats from the blood. Initially, the cell can safely store or burn this excess fat, but under prolonged overload, the clearance system becomes clogged. The cell swells, becomes damaged by toxic lipid accumulation, and eventually dies, leading to severe liver inflammation and scar tissue.
 
-  **AOP 27, Cholestase, Galstuwing**: Als een chemische stof de afvoerpomp van de lever blokkeert, kunnen galzouten de cel niet meer verlaten en hopen ze zich gevaarlijk op. De cel probeert zich eerst te verdedigen door direct de aanmaak en opname van nieuwe galzouten stil te leggen. Als de chemische blokkade echter te zwaar is, vreten de opgestapelde bijtende galzouten de cel van binnenuit aan met zuurstofschade en ontstekingen, waardoor levercellen afsterven en de galstroom volledig vastloopt.
+  **AOP 27, Cholestasis, bile accumulation:** When a chemical blocks the liver's export pump, bile salts can no longer leave the cell and accumulate to dangerous levels. The cell first tries to defend itself by immediately shutting down the production and uptake of new bile salts. However, if the chemical blockade is too severe, the accumulated corrosive bile salts corrode the cell from the inside out via oxidative damage and inflammation, causing liver cells to die and bile flow to come to a complete halt.
 
-## 1. Wetenschappelijke & Biologische Context
+## 1. Scientific & Biological Context
 
-Dit systeem modelleert hoe menselijke levercellen (hepatocyten, zoals HepaRG) reageren op chemische blootstelling door een Adverse Outcome Pathway (AOP) en hun onderliggende Physiological maps te combineren:
-1. **AOP 34 (LXR-activatie richting Steatose) & Physiological Maps:** 
-  Chemische activatie van de nucleaire receptor LXR-alpha (NR1H3, MIE 167) verstoort de hepatische lipidenhomeostase door een gecoördineerde transcriptionele cascade, ondersteund door een positieve feed-forward autoregulatie van LXR. Waar de klassieke AOP 34 de progressie lineair schetst richting steatose (Liver Steatosis, AO 345), toont inbedding in bredere Physiological maps (Staumont et al., 2025) dat cellulaire uitkomsten worden bepaald door niet-lineaire terugkoppelingen tussen de novo lipogenese, vetzuurflux en compensatiemechanismen (Noble, 2012; Maertens, 2025).
+This system models how human liver cells (hepatocytes, such as HepaRG) respond to chemical exposure by combining an Adverse Outcome Pathway (AOP) with their underlying Physiological Maps:
+1. **AOP 34 (LXR activation leading to Steatosis) & Physiological Maps:** 
+  Chemical activation of the nuclear receptor LXR-alpha (NR1H3, MIE 167) disrupts hepatic lipid homeostasis through a coordinated transcriptional cascade, supported by positive feed-forward autoregulation of LXR. Whereas the classical AOP 34 depicts progression linearly toward steatosis (Liver Steatosis, AO 345), embedding it within broader Physiological Maps (Staumont et al., 2025) demonstrates that cellular outcomes are governed by non-linear feedback loops between de novo lipogenesis, fatty acid flux, and compensatory mechanisms (Noble, 2012; Maertens, 2025).
 
-   - **Lipogene cascade & Verhoogde vetflux:** 
-     LXR-activatie stuurt parallelle transcriptieroutes aan via zowel directe binding aan LXREs als interacties met meester-transcriptiefactoren:
-     1. Transcriptionele opregulatie van SREBP-1c (*SREBF1*, KE 264) en ChREBP (KE 66).
-     2. Verhoogde expressie van lipogene sleutelenzymen: *FASN* (KE 116), *ACACA* en *SCD* (*SCD1*, KE 258), wat leidt tot versnelde de novo vetzuursynthese (*De Novo FA Synthesis*, KE 89).
-     3. Directe en indirecte opregulatie van de vetzuurtransporter FAT/*CD36* (KE 54), resulterend in verhoogde influx van vrije vetzuren vanuit de perifere circulatie (*FA influx*, KE 115).
+   - **Lipogenic cascade & Increased lipid flux:** 
+     LXR activation drives parallel transcriptional pathways via both direct binding to LXREs and interactions with master transcription factors:
+     1. Transcriptional upregulation of SREBP-1c (*SREBF1*, KE 264) and ChREBP (KE 66).
+     2. Increased expression of key lipogenic enzymes: *FASN* (KE 116), *ACACA*, and *SCD* (*SCD1*, KE 258), leading to accelerated de novo fatty acid synthesis (*De Novo FA Synthesis*, KE 89).
+     3. Direct and indirect upregulation of the fatty acid transporter FAT/*CD36* (KE 54), resulting in increased influx of free fatty acids from the peripheral circulation (*FA influx*, KE 115).
 
-   - **Adaptieve homeostatische attractor ($z_{\text{homeo}} = z_0$):** 
-     In de vroege fase vormt de resulterende triglyceride-stapeling (*Triglyceride accumulation*, KE 291) een reversibele, fysiologische buffer. Binnen de fysiologische map vangt het hepatocytennetwerk deze belasting adaptief op door activering van $\beta$-oxidatie (*PPARA* / *CPT1A*) en versnelde VLDL-assemblage en -secretie (*MTTP* / *APOB*). Zolang de perturbatiekracht $p$ binnen deze dynamische capaciteit blijft, keert het cellulaire traject terug naar de homeostatische attractor.
+   - **Adaptive homeostatic attractor ($z_{\text{homeo}} = z_0$):** 
+     In the early phase, the resulting triglyceride accumulation (*Triglyceride accumulation*, KE 291) forms a reversible physiological buffer. Within the physiological map, the hepatocyte network adaptively absorbs this load by activating $\beta$-oxidation (*PPARA* / *CPT1A*) and accelerating VLDL assembly and secretion (*MTTP* / *APOB*). As long as the perturbation force $p$ remains within this dynamic capacity, the cellular trajectory returns to the homeostatic attractor.
 
-   - **Deterioratief kantelpunt naar de pathologische attractor ($z_{\text{steatose}}$):** 
-     Wanneer chronische blootstelling of overmatige chemische activatie de homeostatische buffers overbelast, faalt de adaptieve compensatie:
-     1. Excessieve triglyceride-accumulatie (KE 291) induceert intracellulaire verdringing, kernvervorming en mitochondriële dysfunctie (*Mitochondrial dysfunction*, KE 177).
-     2. Lipotoxische stress overstijgt de endogene afweer (*NFE2L2*), wat leidt tot activatie van stress- en ontstekingsroutes (*NFKB1*, *TP53*) en Caspase-3-afhankelijke celdood (*CASP3*, apoptose en necrose).
-     3. Deze celschade drijft de overgang van eenvoudige steatose (AO 345) naar een irreversibele pathologische staat gekenmerkt door steatohepatitis (NASH) en weefselfibrose via Kupffer- en stellaatcelactivatie.
+   - **Deteriorative tipping point toward the pathological attractor ($z_{\text{steatose}}$):** 
+     When chronic exposure or excessive chemical activation overwhelms the homeostatic buffers, adaptive compensation fails:
+     1. Excessive triglyceride accumulation (KE 291) induces intracellular crowding, nuclear deformation, and mitochondrial dysfunction (*Mitochondrial dysfunction*, KE 177).
+     2. Lipotoxic stress exceeds endogenous defense (*NFE2L2*), leading to activation of stress and inflammatory pathways (*NFKB1*, *TP53*) and Caspase-3-dependent cell death (*CASP3*, apoptosis and necrosis).
+     3. This cellular injury drives the transition from simple steatosis (AO 345) to an irreversible pathological state characterized by steatohepatitis (NASH) and tissue fibrosis via Kupffer and stellate cell activation.
 
-2. **AOP 27 (BSEP-remming richting Cholestase) & Physiological Maps:** 
-   Chemische remming van de canaliculaire galzuurtransporter BSEP (ABCB11, MIE 41) leidt tot pathologische intrahepatische galzuuraccumulatie (Bile accumulation, KE 214). Waar een klassieke AOP dit proces lineair benadert, toont inbedding in bredere Physiological maps (Staumont et al., 2025) dat toxiciteit niet binair optreedt, maar gestuurd wordt door een dynamische balans tussen multi-directionele terugkoppelingen (Noble, 2012; Maertens, 2025) binnen menselijke hepatocyten (HepaRG; Rodrigues et al., 2018).
+2. **AOP 27 (BSEP inhibition leading to Cholestasis) & Physiological Maps:** 
+   Chemical inhibition of the canalicular bile acid transporter BSEP (ABCB11, MIE 41) leads to pathological intrahepatic bile acid accumulation (Bile accumulation, KE 214). Whereas a classical AOP approaches this process linearly, embedding it within broader Physiological Maps (Staumont et al., 2025) shows that toxicity does not occur binarily, but is governed by a dynamic balance between multi-directional feedback loops (Noble, 2012; Maertens, 2025) within human hepatocytes (HepaRG; Rodrigues et al., 2018).
 
-   - **Adaptieve compensatierespons (Homeostatische attractor):** 
-     Als fysiologische tegenreactie induceert de galzoutstapeling transcriptionele activatie van specifieke nucleaire receptoren (Activation of nuclear receptors, KE 288), met name de farnesoid X-receptor (FXR / NR1H4). Dit initieert een gecoördineerd feedbacknetwerk ter bescherming van de homeostatische attractor state ($z_0$):
-     1. Transcriptionele repressie van de galzuurnieuwvorming via downregulatie van *CYP7A1*.
-     2. Remming van verdere basolaterale opname via *SLC10A1* (NTCP).
-     3. Activering van de endogene antioxidant-afweer via de Nrf2-route (*NFE2L2*).
-     Zolang de blootstellingscontext (dosis en tijdsduur) binnen de fysiologische bandbreedte blijft, neutraliseert dit netwerk de perturbatiekracht $p$ en keert de cel terug naar homeostase.
+   - **Adaptive compensatory response (Homeostatic attractor):** 
+     As a physiological counter-response, bile salt accumulation induces transcriptional activation of specific nuclear receptors (Activation of nuclear receptors, KE 288), particularly the farnesoid X receptor (FXR / NR1H4). This initiates a coordinated feedback network to protect the homeostatic attractor state ($z_0$):
+     1. Transcriptional repression of de novo bile acid synthesis via downregulation of *CYP7A1*.
+     2. Inhibition of further basolateral uptake via *SLC10A1* (NTCP).
+     3. Activation of endogenous antioxidant defense via the Nrf2 pathway (*NFE2L2*).
+     As long as the exposure context (dose and duration) remains within the physiological bandwidth, this network neutralizes the perturbation force $p$ and the cell returns to homeostasis.
 
-   - **Deterioratieve transitie (Kantelpunt naar pathologische attractor):** 
-     Wanneer chronische blootstelling of hoge doseringen de adaptieve compensatiecapaciteit overbelasten, kantelt het systeem door niet-lineaire versterking naar een pathologische attractor state ($z_{\text{cholestase}}$):
-     1. Cytotoxische galzouten veroorzaken mitochondriële dysfunctie en excessieve reactieve zuurstofspecies (*ROS*, KE 1115), wat resulteert in weefsel- en eiwitschade (*Peptide oxidation*, KE 209).
-     2. Galzuurretentie triggert chemotaxis en secretie van ontstekingsmediatoren (*Cytokine release*, KE 87), wat leidt tot versterkte weefselinflammatie (*Inflammation*, KE 149 via NF-κB / *NFKB1*).
-     3. Gecombineerde lipotoxische/oxidatieve stress induceert genomische stressrespons via *TP53*, waarna activatie van *CASP3* (caspase-3) onomkeerbare hepatocyten-dood (apoptose en necrose) en functionele cholestatische leverschade (*Cholestasis*, AO 357) forceert.
+   - **Deteriorative transition (Tipping point toward pathological attractor):** 
+     When chronic exposure or high doses overwhelm the adaptive compensatory capacity, the system tips via non-linear amplification into a pathological attractor state ($z_{\text{cholestase}}$):
+     1. Cytotoxic bile salts cause mitochondrial dysfunction and excessive reactive oxygen species (*ROS*, KE 1115), resulting in tissue and protein damage (*Peptide oxidation*, KE 209).
+     2. Bile acid retention triggers chemotaxis and secretion of inflammatory mediators (*Cytokine release*, KE 87), leading to amplified tissue inflammation (*Inflammation*, KE 149 via NF-κB / *NFKB1*).
+     3. Combined lipotoxic/oxidative stress induces a genomic stress response via *TP53*, after which activation of *CASP3* (caspase-3) forces irreversible hepatocyte death (apoptosis and necrosis) and functional cholestatic liver injury (*Cholestasis*, AO 357).
 
-### Het Waddington Attractor Concept
-Een gezonde hepatocyt bevindt zich in een stabiele, homeostatische attractor state ($z_{\text{homeo}} = z_0$). Chemische blootstelling oefent een perturbatiekracht $p$ uit op dit systeem:
-- **Adaptieve respons (Homeostase):** Bij een lage dosis of adaptieve prikkel (zoals Fenofibrate via PPARA/CPT1A, VLDL-export via MTTP/APOB, of FXR-gemedieerde repressie via NR1H4) vangt het netwerk de verstoring op en keert het traject $z(t)$ terug naar $z_0$.
-- **Adverse Outcome (Pathologische kanteling):** Bij overschrijding van een kritische drempelwaarde passeert de cel een bifurcatiepunt en convergeert $z(t)$ onomkeerbaar naar een pathologische attractor ($z_{\text{steatose}}$ bij overbelaste lipogenese, of $z_{\text{cholestase}}$ bij toxische galzuurretentie).
+### The Waddington Attractor Concept
+A healthy hepatocyte resides in a stable, homeostatic attractor state ($z_{\text{homeo}} = z_0$). Chemical exposure exerts a perturbation force $p$ on this system:
+- **Adaptive response (Homeostasis):** At a low dose or adaptive stimulus (such as Fenofibrate via PPARA/CPT1A, VLDL export via MTTP/APOB, or FXR-mediated repression via NR1H4), the network absorbs the perturbation and the trajectory $z(t)$ returns to $z_0$.
+- **Adverse Outcome (Pathological tipping):** Upon exceeding a critical threshold, the cell crosses a bifurcation point and $z(t)$ irreversibly converges toward a pathological attractor ($z_{\text{steatose}}$ under overloaded lipogenesis, or $z_{\text{cholestase}}$ under toxic bile acid retention).
 
-### Validatiestrategie: Structuur-baseline vs. Biologische verrijking
-Om aan te tonen wat de meerwaarde is van multimodale en multiscale modellering, fungeren twee complementaire open-weights moleculaire diepe-leermodellen — **Microsoft Graphormer** (2D moleculaire Graph Transformer voorgetraind op 3,7M moleculen uit PCQM4Mv2 via Hugging Face `clefourrier/pcqm4mv2_graphormer_base`) én **ToxTransformer** (`biobricks-ai/toxtransformer`, SMILES $\rightarrow$ SELFIES Sequence & Multi-Task Bioassay Mixture-of-Experts Transformer voorgetraind op 3.797 toxicologische/farmacologische bioassays) — samen als state-of-the-art structuur- en SMILES-baseline:
+### Validation Strategy: Structure Baseline vs. Biological Enrichment
+To demonstrate the added value of multimodal and multiscale modeling, two complementary open-weights molecular deep learning models — **Microsoft Graphormer** (2D molecular Graph Transformer pretrained on 3.7M molecules from PCQM4Mv2 via Hugging Face `clefourrier/pcqm4mv2_graphormer_base`) and **ToxTransformer** (`biobricks-ai/toxtransformer`, SMILES $\rightarrow$ SELFIES Sequence & Multi-Task Bioassay Mixture-of-Experts Transformer pretrained on 3,797 toxicological/pharmacological bioassays) — jointly serve as a state-of-the-art structure and SMILES baseline:
 
-* **Stap A (Mijlpaal 0 — Duale Moleculaire Baseline: Graphormer + ToxTransformer):** Een lijst met teststoffen (bekende steatose- en cholestase-inductoren + controles) wordt vanuit SMILES zowel als 2D atoom- en bindingsgraaf gevoerd door **Microsoft Graphormer** (`GraphormerForGraphClassification`) als in SMILES/SELFIES-sequentievorm gevoerd door **ToxTransformer** (`MoE MultitaskTransformer`). Beide modellen voorspellen (individueel én in consensus) of de stof potente **Molecular Initiating Events (MIE's)** triggert: **MIE 167: LXR$\alpha$-activatie** voor AOP 34 Steatose of **MIE 41: BSEP-remming** voor AOP 27 Cholestase.
-* **Stap B (Mijlpaal 1 t/m 3 — Hepatocyte Verrijking):** Dezelfde stoffen worden ingevoerd via de Perturbation Encoder (Mijlpaal 2, verrijkt met de moleculaire baseline-embeddings uit Mijlpaal 0) als dosis- en tijdsafhankelijke perturbatiekracht $p$ op de `HepatocyteGraphormer` (Mijlpaal 1) + `Neural ODE` (Mijlpaal 3).
-* **Stap C (Mijlpaal 4 — Evaluatie / WP4):** Uit de vergelijking blijkt dat een pure moleculaire structuur-/SMILES-baseline (zowel Graphormer als ToxTransformer) weliswaar het statische MIE-potentieel herkent, maar blind is voor *waarom* en *bij welke dosis/tijdsduur* een biologisch systeem wel of niet kantelt, omdat het de exposoom- en homeostatische context ($\beta$-oxidatie, VLDL-export, FXR-repressie) mist. De `HepatocyteGraphormer` + `Neural ODE` voorspelt dit kantelpunt (Point of Departure) dankzij de integratie met *Physiological maps* en attractor dynamics wél.
-
----
-
-## 2. Systeemarchitectuur & Bestandsnamen
-
-Zie [`AGENTS.md`](AGENTS.md) voor de strikte ketencontracten en PyTorch dictionary-sleutels tussen de mijlpalen:
-- **Mijlpaal 0 (Duale Moleculaire Structuur- & SMILES-Baseline & MIE-Voorspeller):**
-  - `m00_molecular_baseline_mie.py` (Laadt zowel **Microsoft Graphormer** `clefourrier/pcqm4mv2_graphormer_base` als **ToxTransformer** `biobricks-ai/toxtransformer` op GPU 1, zet SMILES om naar 2D OGB atoom-/bindingsgrafen én SELFIES-sequenties, voorspelt per model en in consensus of een stof **MIE 167 (LXR$\alpha$)** of **MIE 41 (BSEP)** triggert, slaat `data/molecular_baseline_mie.pt` op en genereert `00_molecular_baseline_mie.html`).
-- **Mijlpaal 1 (Biologische Netwerkgraaf, Echte Data & HepatocyteGraphormer):**
-  - *Stap 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Haalt gezonde GTEx/HPA én pathologische GEO Steatose/Cholestase data + MyGene.info + STRING-db op met formele AOP-documentatie, slaat `data/hepatocyte_features.pt` en `data/hepatocyte_baseline_data.json` op, en biedt een interactieve Marimo verkenner + `01_1_data_explorer.html`).
-  - *Stap 1.2:* `m01_graph_embedding.py` (Bouwt de `HepatocyteGraphormer` op basis van de echte data, berekent de empirisch verankerde attractoren `z0`, `z_steatose`, `z_cholestase` en genereert `01_network_and_embedding.html`).
-- **Mijlpaal 2:** `m02_perturbation_encoder.py` (Genereert `02_perturbation_profiles.html`).
-- **Mijlpaal 3:** `m03_neural_ode_trajectory.py` (Genereert `03_trajectory_dynamics.html`).
-- **Mijlpaal 4:** `m04_attractor_simulation.py` (Genereert `04_attractor_landscape.html`).
+* **Step A (Milestone 0 — Dual Molecular Baseline: Graphormer + ToxTransformer):** A panel of test compounds (known steatosis and cholestasis inducers + controls) is fed from SMILES both as a 2D atom and bond graph into **Microsoft Graphormer** (`GraphormerForGraphClassification`) and in SMILES/SELFIES sequence form into **ToxTransformer** (`MoE MultitaskTransformer`). Both models predict (individually and in consensus) whether the compound triggers potent **Molecular Initiating Events (MIEs)**: **MIE 167: LXR$\alpha$ activation** for AOP 34 Steatosis or **MIE 41: BSEP inhibition** for AOP 27 Cholestasis.
+* **Step B (Milestones 1 through 3 — Hepatocyte Enrichment):** The same compounds are fed via the Perturbation Encoder (Milestone 2, enriched with the molecular baseline embeddings from Milestone 0) as a dose- and time-dependent perturbation force $p$ onto the `HepatocyteGraphormer` (Milestone 1) + `Neural ODE` (Milestone 3).
+* **Step C (Milestone 4 — Evaluation / WP4):** The comparison demonstrates that while a pure molecular structure/SMILES baseline (both Graphormer and ToxTransformer) recognizes static MIE potential, it is blind to *why* and *at what dose/duration* a biological system does or does not tip, because it lacks the exposome and homeostatic context ($\beta$-oxidation, VLDL export, FXR repression). The `HepatocyteGraphormer` + `Neural ODE` successfully predicts this tipping point (Point of Departure) thanks to its integration with *Physiological Maps* and attractor dynamics.
 
 ---
 
-## 3. Gedetailleerde Specificaties per Mijlpaal
+## 2. System Architecture & File Names
 
-### MIJLPAAL 0: De Duale Moleculaire Baseline & MIE-Voorspeller (`m00_molecular_baseline_mie.py`)
-
-* **Doel:** Implementeer **Stap A** van de validatiestrategie met een duale moleculaire baseline die zowel 2D graaftopologie als SMILES-sequentie- en bioassay-transformatie combineert:
-  1. **Microsoft Graphormer** (`GraphormerForGraphClassification` uit Hugging Face `transformers`, checkpoint `clefourrier/pcqm4mv2_graphormer_base`).
-  2. **ToxTransformer** (`MoE` / `MultitaskTransformer` uit `biobricks-ai/toxtransformer`, open-weights checkpoint `brick/moe/mtransformer.pt` met 2 Transformer-experts en gating-netwerk, voorgetraind op SELFIES-sequenties en 3.797 PubChem/ToxCast/ICE bioassays).
-* **Model & Invoer-pijplijn (SMILES $\rightarrow$ 2D Molecuulgraaf + SELFIES $\rightarrow$ Graphormer & ToxTransformer):**
-  1. **Pijplijn A — RDKit Molecuulgraaf & Voorgetrainde Microsoft Graphormer (`clefourrier/pcqm4mv2_graphormer_base`):**
-     - Elke chemische stof (SMILES) wordt door RDKit omgezet naar een moleculaire graaf $G_{\text{mol}} = (V_{\text{atoms}}, E_{\text{bonds}})$ met exact de 9 categorische OGB-atoomkenmerken (`input_nodes`), 3 OGB-bindingskenmerken (`input_edges` / `attn_edge_type`) en Floyd-Warshall kortste-padafstanden (`spatial_pos`).
-     - Wordt ingeladen op **GPU 1** (12 Transformer-lagen, 768 verborgen dimensies, 32 attention heads, ~47M parameters) en extraheert de 768-dimensionale moleculaire `[CLS]` graaf-embedding $h_{\text{graph}} \in \mathbb{R}^{768}$, de PCQM4Mv2 HOMO-LUMO gap en de per-atoom gradiënt-saliency.
-  2. **Pijplijn B — SMILES $\rightarrow$ SELFIES Tokenisatie & Voorgetrainde ToxTransformer (`biobricks-ai/toxtransformer`):**
-     - Elke SMILES-string wordt canoniek omgezet naar een 100% robuuste moleculaire string-representatie (**SELFIES**, `selfies.encoder(smiles)`) en getokeniseerd via de `SelfiesPropertyValTokenizer` (`vocab_size = 6232`: 2.431 chemische SELFIES-symbolen + 3.797 bioassay-tokens + property tokens).
-     - Het Mixture-of-Experts (`MoE`) Transformer-model (2 experts van elk 4 encoder- en 4 decoder-lagen met $d_{\text{model}} = 256$, plus een 4-laags Transformer gating-netwerk) wordt geladen op **GPU 1** vanuit `data/toxtransformer_cache/brick/moe/mtransformer.pt`.
-     - Extraheert de 512-dimensionale multi-expert SMILES/SELFIES-embedding $h_{\text{tox}} \in \mathbb{R}^{512}$, de expert-gating gewichten $(w_{\text{exp0}}, w_{\text{exp1}})$, de autoregressieve decoder bioassay-log-kansen en de per-SELFIES-token gradiënt-saliency.
-  3. **MIE-Trigger Classificatie (AOP 34 vs. AOP 27 vs. Geen MIE) — Graphormer, ToxTransformer & Consensus:**
-     - Berekent vanuit zowel de Graphormer `[CLS]`-representatie als de ToxTransformer SMILES/SELFIES-representatie (én hun gecombineerde consensus) voor het panel van 12 referentiestoffen (en willekeurige nieuwe SMILES via `predict_mie_for_smiles`) de kans dat een stof een **Molecular Initiating Event (MIE)** triggert:
-       * **Klasse 0 — `Geen_MIE_Adaptief`:** Stoffen die geen pathologische MIE triggeren (bijv. *DMSO*, *Glucose*, *Cafeïne*, en adaptieve PPAR$\alpha$-agonist *Fenofibrate*).
-       * **Klasse 1 — `MIE_167_LXR_Steatose` (AOP 34):** Stoffen die LXR$\alpha$ (*NR1H3*, MIE 167) of pro-steatotische lipogenese triggeren (bijv. *T0901317*, *GW3965*, *Amiodarone*, *Valproic Acid*).
-       * **Klasse 2 — `MIE_41_BSEP_Cholestase` (AOP 27):** Stoffen die de galzoutpomp BSEP (*ABCB11*, MIE 41) remmen (bijv. *Bosentan*, *Troglitazone*, *Cyclosporine A*, *Chlorpromazine*).
-  4. **Uitvoer & Contract voor Mijlpaal 2 en 4:**
-     - Slaat `data/molecular_baseline_mie.pt` en `data/molecular_baseline_mie.json` op met de 768D Graphormer-embeddings, 512D ToxTransformer-embeddings, 2D PCA-projecties voor beide modellen en de MIE-kansverdelingen (`mie_probabilities`, `toxtransformer_mie_probabilities`, `consensus_mie_probabilities`).
-     - Genereert het standalone interactieve dashboard `00_molecular_baseline_mie.html` (met 2D molecuulgraaf + SELFIES token-saliency strip, modelvergelijking Graphormer vs. ToxTransformer vs. Consensus, duale 2D PCA latente ruimte en overzichtstabel).
+See [`AGENTS.md`](AGENTS.md) for the strict chain contracts and PyTorch dictionary keys between milestones:
+- **Milestone 0 (Dual Molecular Structure & SMILES Baseline & MIE Predictor):**
+  - `m00_molecular_baseline_mie.py` (Loads both **Microsoft Graphormer** `clefourrier/pcqm4mv2_graphormer_base` and **ToxTransformer** `biobricks-ai/toxtransformer` on GPU 1, converts SMILES into 2D OGB atom/bond graphs and SELFIES sequences, predicts per model and in consensus whether a compound triggers **MIE 167 (LXR$\alpha$)** or **MIE 41 (BSEP)**, saves `data/molecular_baseline_mie.pt`, and generates `00_molecular_baseline_mie.html`).
+- **Milestone 1 (Biological Network Graph, Real Data & HepatocyteGraphormer):**
+  - *Step 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Fetches healthy GTEx/HPA and pathological GEO Steatosis/Cholestasis data + MyGene.info + STRING-db with formal AOP documentation, saves `data/hepatocyte_features.pt` and `data/hepatocyte_baseline_data.json`, and provides an interactive Marimo explorer + `01_1_data_explorer.html`).
+  - *Step 1.2:* `m01_graph_embedding.py` (Builds the `HepatocyteGraphormer` based on the real data, computes the empirically anchored attractors `z0`, `z_steatose`, `z_cholestase`, and generates `01_network_and_embedding.html`).
+- **Milestone 2:** `m02_perturbation_encoder.py` (Generates `02_perturbation_profiles.html`).
+- **Milestone 3:** `m03_neural_ode_trajectory.py` (Generates `03_trajectory_dynamics.html`).
+- **Milestone 4:** `m04_attractor_simulation.py` (Generates `04_attractor_landscape.html`).
 
 ---
 
-### MIJLPAAL 1: De Biologische Netwerkgraaf, Echte Data & Graphormer
+## 3. Detailed Specifications per Milestone
 
-#### Mijlpaal 1, Stap 1.1: Echte Gezonde & Pathologische Data-acquisitie, AOP-annotatie & Marimo Verkenner
-* **Doel:** Echte humane data ophalen uit gevalideerde openbare databases voor zowel de gezonde baseline als pathologische (steatose/NAFLD) toestanden, gekoppeld aan officiële OECD AOP-literatuur.
-* **Exacte Openbare Databronnen:**
-  1. **Gezonde Baseline:** 
-     - **GTEx Portal & Human Protein Atlas (HPA):** Normale basale leverweefsel expressie (TPM) voor de 18 genen.
-     - **MyGene.info / Ensembl API:** Genstructuur, genomische lengte, exonen en eiwitlengte.
-  2. **Pathologische Toestanden (Steatose / NAFLD & Toxisch):** 
-     - **NCBI Gene Expression Omnibus (GEO):** Humane levertranscriptoomdatasets van NAFLD / steatose patiënten (bijv. referentie-series zoals GSE126848 of vergelijkbare humane steatose/DILI datasets) om de opregulatie van lipogene genen ($SREBF1$, $FASN$, $CD36$) vs. homeostatische compensatie empirisch te verankeren in de feature matrix.
-  3. **Eiwit-Interacties:** 
-     - **STRING-db API:** Experimenteel gevalideerde interactiescores (`combined_score`) voor de 20 gerichte AOP-randen.
-* **Exact 18 genen (vaste volgorde, index 0 t/m 17) met formele annotaties:**
-  * *Groep 1 - AOP 34 (LXR-activatie & Steatose):* 
+### MILESTONE 0: The Dual Molecular Baseline & MIE Predictor (`m00_molecular_baseline_mie.py`)
+
+* **Goal:** Implement **Step A** of the validation strategy with a dual molecular baseline combining both 2D graph topology and SMILES sequence and bioassay transformation:
+  1. **Microsoft Graphormer** (`GraphormerForGraphClassification` from Hugging Face `transformers`, checkpoint `clefourrier/pcqm4mv2_graphormer_base`).
+  2. **ToxTransformer** (`MoE` / `MultitaskTransformer` from `biobricks-ai/toxtransformer`, open-weights checkpoint `brick/moe/mtransformer.pt` with 2 Transformer experts and gating network, pretrained on SELFIES sequences and 3,797 PubChem/ToxCast/ICE bioassays).
+* **Model & Input Pipeline (SMILES $\rightarrow$ 2D Molecular Graph + SELFIES $\rightarrow$ Graphormer & ToxTransformer):**
+  1. **Pipeline A — RDKit Molecular Graph & Pretrained Microsoft Graphormer (`clefourrier/pcqm4mv2_graphormer_base`):**
+     - Each chemical compound (SMILES) is converted by RDKit into a molecular graph $G_{\text{mol}} = (V_{\text{atoms}}, E_{\text{bonds}})$ with the exact 9 categorical OGB atom features (`input_nodes`), 3 OGB bond features (`input_edges` / `attn_edge_type`), and Floyd-Warshall shortest-path distances (`spatial_pos`).
+     - Loaded onto **GPU 1** (12 Transformer layers, 768 hidden dimensions, 32 attention heads, ~47M parameters) and extracts the 768-dimensional molecular `[CLS]` graph embedding $h_{\text{graph}} \in \mathbb{R}^{768}$, the PCQM4Mv2 HOMO-LUMO gap, and per-atom gradient saliency.
+  2. **Pipeline B — SMILES $\rightarrow$ SELFIES Tokenization & Pretrained ToxTransformer (`biobricks-ai/toxtransformer`):**
+     - Each SMILES string is canonically converted into a 100% robust molecular string representation (**SELFIES**, `selfies.encoder(smiles)`) and tokenized via the `SelfiesPropertyValTokenizer` (`vocab_size = 6232`: 2,431 chemical SELFIES symbols + 3,797 bioassay tokens + property tokens).
+     - The Mixture-of-Experts (`MoE`) Transformer model (2 experts of 4 encoder and 4 decoder layers each with $d_{\text{model}} = 256$, plus a 4-layer Transformer gating network) is loaded onto **GPU 1** from `data/toxtransformer_cache/brick/moe/mtransformer.pt`.
+     - Extracts the 512-dimensional multi-expert SMILES/SELFIES embedding $h_{\text{tox}} \in \mathbb{R}^{512}$, the expert gating weights $(w_{\text{exp0}}, w_{\text{exp1}})$, the autoregressive decoder bioassay log-probabilities, and per-SELFIES-token gradient saliency.
+  3. **MIE Trigger Classification (AOP 34 vs. AOP 27 vs. No MIE) — Graphormer, ToxTransformer & Consensus:**
+     - Computes from both the Graphormer `[CLS]` representation and the ToxTransformer SMILES/SELFIES representation (and their combined consensus) for the panel of 12 reference compounds (and arbitrary new SMILES via `predict_mie_for_smiles`) the probability that a compound triggers a **Molecular Initiating Event (MIE)**:
+       * **Class 0 — `Geen_MIE_Adaptief` (No MIE / Adaptive):** Compounds that do not trigger a pathological MIE (e.g., *DMSO*, *Glucose*, *Caffeine*, and adaptive PPAR$\alpha$ agonist *Fenofibrate*).
+       * **Class 1 — `MIE_167_LXR_Steatose` (AOP 34):** Compounds that trigger LXR$\alpha$ (*NR1H3*, MIE 167) or pro-steatotic lipogenesis (e.g., *T0901317*, *GW3965*, *Amiodarone*, *Valproic Acid*).
+       * **Class 2 — `MIE_41_BSEP_Cholestase` (AOP 27):** Compounds that inhibit the bile salt export pump BSEP (*ABCB11*, MIE 41) (e.g., *Bosentan*, *Troglitazone*, *Cyclosporine A*, *Chlorpromazine*).
+  4. **Output & Contract for Milestones 2 and 4:**
+     - Saves `data/molecular_baseline_mie.pt` and `data/molecular_baseline_mie.json` with the 768D Graphormer embeddings, 512D ToxTransformer embeddings, 2D PCA projections for both models, and the MIE probability distributions (`mie_probabilities`, `toxtransformer_mie_probabilities`, `consensus_mie_probabilities`).
+     - Generates the standalone interactive dashboard `00_molecular_baseline_mie.html` (featuring 2D molecular graph + SELFIES token-saliency strip, model comparison Graphormer vs. ToxTransformer vs. Consensus, dual 2D PCA latent space, and summary table).
+
+---
+
+### MILESTONE 1: The Biological Network Graph, Real Data & Graphormer
+
+#### Milestone 1, Step 1.1: Real Healthy & Pathological Data Acquisition, AOP Annotation & Marimo Explorer
+* **Goal:** Fetch real human data from validated public databases for both the healthy baseline and pathological (steatosis/NAFLD) states, linked to official OECD AOP literature.
+* **Exact Public Data Sources:**
+  1. **Healthy Baseline:** 
+     - **GTEx Portal & Human Protein Atlas (HPA):** Normal basal liver tissue expression (TPM) for the 18 genes.
+     - **MyGene.info / Ensembl API:** Gene structure, genomic length, exons, and protein length.
+  2. **Pathological States (Steatosis / NAFLD & Toxic):** 
+     - **NCBI Gene Expression Omnibus (GEO):** Human liver transcriptome datasets from NAFLD / steatosis patients (e.g., reference series such as GSE126848 or comparable human steatosis/DILI datasets) to empirically anchor the upregulation of lipogenic genes ($SREBF1$, $FASN$, $CD36$) vs. homeostatic compensation in the feature matrix.
+  3. **Protein Interactions:** 
+     - **STRING-db API:** Experimentally validated interaction scores (`combined_score`) for the 20 directed AOP edges.
+* **Exact 18 genes (fixed order, index 0 through 17) with formal annotations:**
+  * *Group 1 - AOP 34 (LXR activation & Steatosis):* 
     `0: NR1H3` (Liver X Receptor alpha - Initiator AOP 34), 
-    `1: SREBF1` (SREBP-1c - Upstream lipogene transcriptiefactor), 
-    `2: FASN` (Fatty acid synthase - De novo lipogenese), 
-    `3: ACACA` (Acetyl-CoA carboxylase - Snelheidsbepalend enzym), 
-    `4: SCD` (Stearoyl-CoA desaturase - Vetzuur desaturatie), 
-    `5: CD36` (Fatty acid translocase - Leveropname van vetzuren).
-  * *Groep 2 - Homeostatische Compensatie & Oxidatie:* 
-    `6: PPARA` (PPAR-alpha - $\beta$-oxidatie), 
-    `7: CPT1A` (Carnitine palmitoyltransferase 1A - Mitochondriële import), 
-    `8: MTTP` (Microsomal triglyceride transfer protein - VLDL assemblage), 
+    `1: SREBF1` (SREBP-1c - Upstream lipogenic transcription factor), 
+    `2: FASN` (Fatty acid synthase - De novo lipogenesis), 
+    `3: ACACA` (Acetyl-CoA carboxylase - Rate-limiting enzyme), 
+    `4: SCD` (Stearoyl-CoA desaturase - Fatty acid desaturation), 
+    `5: CD36` (Fatty acid translocase - Hepatic fatty acid uptake).
+  * *Group 2 - Homeostatic Compensation & Oxidation:* 
+    `6: PPARA` (PPAR-alpha - $\beta$-oxidation), 
+    `7: CPT1A` (Carnitine palmitoyltransferase 1A - Mitochondrial import), 
+    `8: MTTP` (Microsomal triglyceride transfer protein - VLDL assembly), 
     `9: APOB` (Apolipoprotein B - VLDL/LDL scaffold).
-  * *Groep 3 - AOP 27 (BSEP-remming & Cholestase):* 
-    `10: NR1H4` (FXR - Galzuurregulator), 
-    `11: ABCB11` (BSEP - Moleculair doelwit AOP 27), 
-    `12: CYP7A1` (Cholesterol 7 alpha-hydroxylase - Galzuursynthese), 
-    `13: SLC10A1` (NTCP - Basolaterale galzuuruptake).
-  * *Groep 4 - Cellulaire Stress, Ontsteking & Apoptose:* 
-    `14: NFE2L2` (Nrf2 - Oxidatieve stress sensor), 
-    `15: NFKB1` (NF-$\kappa$B - Ontsteking), 
-    `16: TP53` (p53 - Genoomwachter/stress), 
-    `17: CASP3` (Caspase 3 - Apoptose / Adverse Outcome).
-* **Gerichte interacties met formele AOP-literatuurverwijzingen:**
+  * *Group 3 - AOP 27 (BSEP inhibition & Cholestasis):* 
+    `10: NR1H4` (FXR - Bile acid regulator), 
+    `11: ABCB11` (BSEP - Molecular target AOP 27), 
+    `12: CYP7A1` (Cholesterol 7 alpha-hydroxylase - Bile acid synthesis), 
+    `13: SLC10A1` (NTCP - Basolateral bile acid uptake).
+  * *Group 4 - Cellular Stress, Inflammation & Apoptosis:* 
+    `14: NFE2L2` (Nrf2 - Oxidative stress sensor), 
+    `15: NFKB1` (NF-$\kappa$B - Inflammation), 
+    `16: TP53` (p53 - Genome guardian/stress), 
+    `17: CASP3` (Caspase 3 - Apoptosis / Adverse Outcome).
+* **Directed interactions with formal AOP literature references:**
   * `(0, 1, +1, "AOP34: NR1H3 activation transcriptionally upregulates SREBF1 expression")`
   * `(0, 5, +1, "AOP34: LXR activation directly induces CD36 expression, enhancing FA uptake")`
   * `(1, 2, +1, "AOP34: SREBP-1c drives transcription of FASN (De Novo Lipogenesis)")`
@@ -157,23 +157,23 @@ Zie [`AGENTS.md`](AGENTS.md) voor de strikte ketencontracten en PyTorch dictiona
   * `(15, 16, +1, "Pathology: Inflammation and lipotoxicity activate TP53 DNA damage/stress response")`
   * `(16, 17, +1, "Adverse Outcome: p53 activation triggers Caspase-3 dependent hepatocyte apoptosis")`
   * `(13, 15, -1, "Bile acid retention via NTCP exacerbates inflammatory signaling")`
-* **Uitvoeribles Stap 1.1:** `fetch_real_hepatocyte_data.py` haalt gezonde (GTEx/HPA) en pathologische (GEO NAFLD) expressieprofielen op, berekent de `[19, 19]` afstandsmatrix en slaat alles op in `data/hepatocyte_features.pt` en `data/hepatocyte_baseline_data.json`. `m01_data_explorer.py` start het Marimo notebook met Plotly visualisaties om de gezonde vs pathologische profielen te vergelijken.
+* **Deliverables Step 1.1:** `fetch_real_hepatocyte_data.py` fetches healthy (GTEx/HPA) and pathological (GEO NAFLD) expression profiles, computes the `[19, 19]` distance matrix, and saves everything in `data/hepatocyte_features.pt` and `data/hepatocyte_baseline_data.json`. `m01_data_explorer.py` launches the Marimo notebook with Plotly visualizations to compare the healthy vs. pathological profiles.
 
-#### Mijlpaal 1, Stap 1.2: Graphormer Encoder (`m01_graph_embedding.py`)
-* **Invoer:** Laadt `data/hepatocyte_features.pt` uit Stap 1.1.
-* **Architectuur (`HepatocyteGraphormer`):** Input projectie (`8 -> 64`), Centrality embeddings, `[CLS]` token prependen, Spatial attention bias op basis van de `[19, 19]` Floyd-Warshall afstandsmatrix, 2 Graphormer transformer lagen, en een LayerNorm+Tanh readout naar $z_0 \in \mathbb{R}^{[1, 64]}$.
-* **Uitvoer:** Genereert standalone Plotly dashboard `01_network_and_embedding.html`.
-
----
-
-### MIJLPAAL 2: De Chemische Perturbatie-encoder (`m02_perturbation_encoder.py`)
-### MIJLPAAL 3: Het Dynamische Vectorveld & Neural ODE (`m03_neural_ode_trajectory.py`)
-### MIJLPAAL 4: Attractor-analyse & Kantelpunt Simulatie (`m04_attractor_simulation.py`)
+#### Milestone 1, Step 1.2: Graphormer Encoder (`m01_graph_embedding.py`)
+* **Input:** Loads `data/hepatocyte_features.pt` from Step 1.1.
+* **Architecture (`HepatocyteGraphormer`):** Input projection (`8 -> 64`), Centrality embeddings, `[CLS]` token prepending, Spatial attention bias based on the `[19, 19]` Floyd-Warshall distance matrix, 2 Graphormer transformer layers, and a LayerNorm+Tanh readout to $z_0 \in \mathbb{R}^{[1, 64]}$.
+* **Output:** Generates standalone Plotly dashboard `01_network_and_embedding.html`.
 
 ---
 
-## 4. Harde Uitvoeringsregels
-1. GPU Isolatie: Altijd via `CUDA_VISIBLE_DEVICES=1 uv run python <script>.py`.
-2. Geen Matplotlib: Uitsluitend Plotly.
-3. Determinisme: `torch.manual_seed(42)` en `np.random.seed(42)`.
-4. Verplichte Logging: Maak voor elke taak eerst een logbestand aan in `logs/` volgens het sjabloon in `.clinerules`.
+### MILESTONE 2: The Chemical Perturbation Encoder (`m02_perturbation_encoder.py`)
+### MILESTONE 3: The Dynamic Vector Field & Neural ODE (`m03_neural_ode_trajectory.py`)
+### MILESTONE 4: Attractor Analysis & Tipping Point Simulation (`m04_attractor_simulation.py`)
+
+---
+
+## 4. Hard Execution Rules
+1. GPU Isolation: Always via `CUDA_VISIBLE_DEVICES=1 uv run python <script>.py`.
+2. No Matplotlib: Exclusively Plotly.
+3. Determinism: `torch.manual_seed(42)` and `np.random.seed(42)`.
+4. Mandatory Logging: For every task, first create a log file in `logs/` according to the template in `.clinerules`.

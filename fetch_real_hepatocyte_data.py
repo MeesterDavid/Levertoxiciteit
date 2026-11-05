@@ -1,21 +1,21 @@
 """
-Mijlpaal 1, Stap 1.1: Echte Biologische Data-acquisitie & AOP-Netwerkdefinitie
-==============================================================================
-Kader: Promotieonderzoek Lectoraat Innovative Testing (Hogeschool Utrecht)
-Onderwerp: Multimodal & Multiscale AI voor Levertoxiciteit (Graphormer + Neural ODE)
+Milestone 1, Step 1.1: Real Biological Data Acquisition & AOP Network Definition
+================================================================================
+Framework: PhD Research at Research Group Innovative Testing (HU University of Applied Sciences Utrecht)
+Subject  : Multimodal & Multiscale AI for Liver Toxicity (Graphormer + Neural ODE)
 
-Dit script construeert het causale biologische genregulatienetwerk van de menselijke
-hepatocyt (18 sleutelgenen, 20 gerichte interacties) op basis van:
+This script constructs the causal biological gene regulatory network of the human
+hepatocyte (18 key genes, 20 directed interactions) based on:
 1. OECD AOP 34: LXR activation leading to hepatic steatosis (MIE 167 -> AO 345)
 2. OECD AOP 27: Cholestatic liver injury induced by BSEP inhibition (MIE 41 -> AO 357)
 3. Hepatocyte Physiological Maps (Staumont et al., 2025; Rodrigues et al., 2018)
 
-Het script haalt live humane gen- en eiwitstructuurdata op via de MyGene.info v3 API
-en experimentele eiwit-eiwit interactiescores via de STRING-db API (Homo sapiens, 9606),
-gecombineerd met gevalideerde mRNA-expressieprofielen (log2(TPM + 1)) voor:
-- Gezonde homeostatische hepatocyten (GTEx / Human Protein Atlas)
-- Pathologische Steatose / NAFLD (NCBI GEO GSE126848 / LXR-activatie)
-- Pathologische Cholestase / DILI (HepaRG BSEP-remming, Rodrigues et al., 2018)
+The script fetches live human gene and protein structure data via the MyGene.info v3 API
+and experimental protein-protein interaction scores via the STRING-db API (Homo sapiens, 9606),
+combined with validated mRNA expression profiles (log2(TPM + 1)) for:
+- Healthy homeostatic hepatocytes (GTEx / Human Protein Atlas)
+- Pathological Steatosis / NAFLD (NCBI GEO GSE126848 / LXR activation)
+- Pathological Cholestasis / DILI (HepaRG BSEP inhibition, Rodrigues et al., 2018)
 """
 
 from __future__ import annotations
@@ -29,26 +29,26 @@ import requests
 from scipy.sparse.csgraph import floyd_warshall
 import torch
 
-# Strikte reproduceerbaarheid conform .clinerules & ARCHITECTURE.md
+# Strict reproducibility in accordance with .clinerules & ARCHITECTURE.md
 torch.manual_seed(42)
 np.random.seed(42)
 
 
 # ==============================================================================
-# 1. EXACTE 18 SLEUTELGENEN MET FORMELE OECD AOP & PHYSIOLOGICAL MAP ANNOTATIES
+# 1. EXACT 18 KEY GENES WITH FORMAL OECD AOP & PHYSIOLOGICAL MAP ANNOTATIONS
 # ==============================================================================
-# Vaste volgorde (index 0 t/m 17) conform ARCHITECTURE.md en AGENTS.md.
-# Bevat per gen:
-# - symbol: Officieel HGNC-symbool
-# - group: Functionele AOP/fysiologische module
-# - role_index: Numerieke rol-codering (0.25=Receptor/TF, 0.50=Enzym, 0.75=Transporter, 1.00=Stress/Apoptose)
-# - expr_healthy_tpm: Gezonde basale leverexpressie in TPM (GTEx v8 / HPA Liver Hepatocytes)
-# - expr_steatosis_tpm: Pathologische expressie bij Steatose/NAFLD (GEO GSE126848 / AOP 34 LXR-activatie)
-# - expr_cholestasis_tpm: Pathologische expressie bij Cholestase (HepaRG BSEP-remming / AOP 27)
-# - aop_ref: Formele verwijzing naar OECD AOP Knowledge Base Key Events (KE) / MIE / AO
-# - description: Mechanistische toelichting
+# Fixed order (index 0 through 17) in accordance with ARCHITECTURE.md and AGENTS.md.
+# Contains per gene:
+# - symbol: Official HGNC symbol
+# - group: Functional AOP/physiological module
+# - role_index: Numerical role encoding (0.25=Receptor/TF, 0.50=Enzyme, 0.75=Transporter, 1.00=Stress/Apoptosis)
+# - expr_healthy_tpm: Healthy basal liver expression in TPM (GTEx v8 / HPA Liver Hepatocytes)
+# - expr_steatosis_tpm: Pathological expression in Steatosis/NAFLD (GEO GSE126848 / AOP 34 LXR activation)
+# - expr_cholestasis_tpm: Pathological expression in Cholestasis (HepaRG BSEP inhibition / AOP 27)
+# - aop_ref: Formal reference to OECD AOP Knowledge Base Key Events (KE) / MIE / AO
+# - description: Mechanistic explanation
 HEPATOCYTE_GENES: list[dict[str, Any]] = [
-    # --- GROEP 1: AOP 34 (LXR-activatie richting Steatose) ---
+    # --- GROUP 1: AOP 34 (LXR activation leading to Steatosis) ---
     {
         "idx": 0,
         "symbol": "NR1H3",
@@ -61,8 +61,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 46.0,
         "aop_ref": "OECD AOP 34 (MIE 167: Activation, LXR)",
         "description": (
-            "Moleculaire initiator (MIE 167) van AOP 34. Chemische agonisten (zoals T0901317) "
-            "activeren NR1H3, wat een feed-forward lipogene transcriptiecascade start."
+            "Molecular initiator (MIE 167) of AOP 34. Chemical agonists (such as T0901317) "
+            "activate NR1H3, initiating a feed-forward lipogenic transcriptional cascade."
         ),
         "fallback_bp": 21179,
         "fallback_exons": 11,
@@ -80,8 +80,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 58.0,
         "aop_ref": "OECD AOP 34 (KE 264: Up-regulation, SREBP-1c)",
         "description": (
-            "Meester-transcriptiefactor voor de novo lipogenese. Wordt direct transcriptioneel "
-            "opgereguleerd door geactiveerd LXR-alpha (NR1H3) en geremd door PPAR-alpha."
+            "Master transcription factor for de novo lipogenesis. Directly transcriptionally "
+            "upregulated by activated LXR-alpha (NR1H3) and inhibited by PPAR-alpha."
         ),
         "fallback_bp": 26538,
         "fallback_exons": 22,
@@ -99,8 +99,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 72.0,
         "aop_ref": "OECD AOP 34 (KE 116: Up-regulation, FAS & KE 89: De Novo FA Synthesis)",
         "description": (
-            "Multifunctioneel enzymcomplex dat palmitaat synthetiseert uit acetyl-CoA en malonyl-CoA. "
-            "Sterk opgereguleerd in steatotische hepatocyten (GEO GSE126848)."
+            "Multifunctional enzyme complex that synthesizes palmitate from acetyl-CoA and malonyl-CoA. "
+            "Strongly upregulated in steatotic hepatocytes (GEO GSE126848)."
         ),
         "fallback_bp": 19945,
         "fallback_exons": 43,
@@ -118,8 +118,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 31.0,
         "aop_ref": "OECD AOP 34 (KE 89: Increased, De Novo FA Synthesis)",
         "description": (
-            "Katalyseert de snelheidsbepalende carboxyleringsstap van acetyl-CoA naar malonyl-CoA "
-            "voor hepatische vetzuursynthese."
+            "Catalyzes the rate-limiting carboxylation step of acetyl-CoA to malonyl-CoA "
+            "for hepatic fatty acid synthesis."
         ),
         "fallback_bp": 329242,
         "fallback_exons": 59,
@@ -137,8 +137,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 115.0,
         "aop_ref": "OECD AOP 34 (KE 258: Up-regulation, SCD-1 & KE 291: Triglyceride accumulation)",
         "description": (
-            "Zet verzadigde vetzuren om in enkelvoudig onverzadigde vetzuren, essentieel voor "
-            "incorporatie in neutrale lipidedruppels (triglyceriden)."
+            "Converts saturated fatty acids into monounsaturated fatty acids, essential for "
+            "incorporation into neutral lipid droplets (triglycerides)."
         ),
         "fallback_bp": 17669,
         "fallback_exons": 6,
@@ -156,14 +156,14 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 36.0,
         "aop_ref": "OECD AOP 34 (KE 54: Up-regulation, CD36 & KE 115: FA Influx)",
         "description": (
-            "Membraantransporter die de influx van vrije vetzuren uit het bloed naar de hepatocyt "
-            "medieert. Direct doelgen van LXR (NR1H3); overexpressie drijft lipotoxiciteit aan."
+            "Membrane transporter mediating the influx of free fatty acids from the blood into the hepatocyte. "
+            "Direct target gene of LXR (NR1H3); overexpression drives lipotoxicity."
         ),
         "fallback_bp": 77168,
         "fallback_exons": 18,
         "fallback_aa": 472,
     },
-    # --- GROEP 2: Homeostatische Compensatie (Physiological Map: Beta-oxidatie & VLDL-export) ---
+    # --- GROUP 2: Homeostatic Compensation (Physiological Map: Beta-oxidation & VLDL export) ---
     {
         "idx": 6,
         "symbol": "PPARA",
@@ -176,8 +176,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 64.0,
         "aop_ref": "Physiological Map Homeostasis (Staumont et al., 2025: Beta-oxidation regulator)",
         "description": (
-            "Centrale homeostatische tegenkracht tegen steatose. Activeert mitochondriële en "
-            "peroxisomale vetzuurverbranding; raakt onderdrukt bij chronische lipogene overbelasting."
+            "Central homeostatic counter-force against steatosis. Activates mitochondrial and "
+            "peroxisomal fatty acid oxidation; becomes suppressed under chronic lipogenic overload."
         ),
         "fallback_bp": 93160,
         "fallback_exons": 10,
@@ -195,8 +195,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 55.0,
         "aop_ref": "Physiological Map Homeostasis (Mitochondrial FA import & Beta-oxidation)",
         "description": (
-            "Snelheidsbepalend enzym voor transport van langketen-vetzuren over het mitochondriële "
-            "membraan voor beta-oxidatie; transcriptioneel aangestuurd door PPARA."
+            "Rate-limiting enzyme for transporting long-chain fatty acids across the mitochondrial "
+            "membrane for beta-oxidation; transcriptionally driven by PPARA."
         ),
         "fallback_bp": 60345,
         "fallback_exons": 22,
@@ -214,8 +214,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 82.0,
         "aop_ref": "Physiological Map Homeostasis (VLDL lipidation & assembly)",
         "description": (
-            "Essentieel lumen-eiwit in het endoplasmatisch reticulum voor het laden van triglyceriden "
-            "op APOB voor hepatische VLDL-export."
+            "Essential luminal protein in the endoplasmic reticulum for loading triglycerides "
+            "onto APOB for hepatic VLDL export."
         ),
         "fallback_bp": 59845,
         "fallback_exons": 19,
@@ -233,14 +233,14 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 490.0,
         "aop_ref": "Physiological Map Homeostasis (VLDL secretion scaffold)",
         "description": (
-            "Structureel kerneiwit van VLDL-deeltjes waarmee de hepatocyt overtollige triglyceriden "
-            "exporteert naar de circulatie om de gezonde attractor te behouden."
+            "Structural core protein of VLDL particles enabling the hepatocyte to export excess triglycerides "
+            "into the circulation to maintain the healthy attractor."
         ),
         "fallback_bp": 42645,
         "fallback_exons": 29,
         "fallback_aa": 4563,
     },
-    # --- GROEP 3: AOP 27 (BSEP-remming richting Cholestase) ---
+    # --- GROUP 3: AOP 27 (BSEP inhibition leading to Cholestasis) ---
     {
         "idx": 10,
         "symbol": "NR1H4",
@@ -253,8 +253,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 135.0,
         "aop_ref": "OECD AOP 27 (KE 288: Activation of nuclear receptors / FXR adaptive feedback)",
         "description": (
-            "Intracellulaire galzuursensor. Activeert bij galzoutstapeling een beschermende "
-            "feedbackloop door ABCB11 te stimuleren en CYP7A1 + SLC10A1 te onderdrukken."
+            "Intracellular bile acid sensor. Upon bile salt accumulation, activates a protective "
+            "feedback loop by stimulating ABCB11 and repressing CYP7A1 + SLC10A1."
         ),
         "fallback_bp": 90231,
         "fallback_exons": 11,
@@ -272,8 +272,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 18.5,
         "aop_ref": "OECD AOP 27 (MIE 41: Inhibition, BSEP -> KE 214: Bile acid accumulation)",
         "description": (
-            "Canaliculaire ATP-afhankelijke galzout-exportpomp en het directe moleculaire doelwit "
-            "(MIE 41) van cholestatische geneesmiddelen zoals Bosentan en Troglitazone."
+            "Canalicular ATP-dependent bile salt export pump and the direct molecular target "
+            "(MIE 41) of cholestatic drugs such as Bosentan and Troglitazone."
         ),
         "fallback_bp": 108412,
         "fallback_exons": 28,
@@ -291,8 +291,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 22.0,
         "aop_ref": "OECD AOP 27 (Adaptive FXR-mediated repression of de novo bile acid synthesis)",
         "description": (
-            "Snelheidsbepalend cytochroom P450-enzym in de klassieke route van galzuursynthese uit "
-            "cholesterol. Wordt sterk onderdrukt via FXR/SHP tijdens cholestase."
+            "Rate-limiting cytochrome P450 enzyme in the classic pathway of bile acid synthesis from "
+            "cholesterol. Strongly repressed via FXR/SHP during cholestasis."
         ),
         "fallback_bp": 10072,
         "fallback_exons": 6,
@@ -310,14 +310,14 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 45.0,
         "aop_ref": "OECD AOP 27 (Adaptive repression of basolateral bile acid uptake)",
         "description": (
-            "Basolaterale transporter verantwoordelijk voor >80% van de opname van geconjugeerde "
-            "galzouten uit het sinusoïdale bloed naar de hepatocyt."
+            "Basolateral transporter responsible for >80% of conjugated bile salt uptake "
+            "from sinusoidal blood into the hepatocyte."
         ),
         "fallback_bp": 22960,
         "fallback_exons": 5,
         "fallback_aa": 349,
     },
-    # --- GROEP 4: Convergente Cellulaire Stress, Ontsteking & Apoptose (Adverse Outcome) ---
+    # --- GROUP 4: Convergent Cellular Stress, Inflammation & Apoptosis (Adverse Outcome) ---
     {
         "idx": 14,
         "symbol": "NFE2L2",
@@ -330,8 +330,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 185.0,
         "aop_ref": "OECD AOP 27 & 34 (KE 1115: Increased ROS -> Adaptive Nrf2 antioxidant response)",
         "description": (
-            "Meester-regulator van de cellulaire antioxidant-respons. Wordt geactiveerd door zowel "
-            "lipotoxische ROS (AOP 34) als cytotoxische galzuuraccumulatie (AOP 27)."
+            "Master regulator of the cellular antioxidant response. Activated by both "
+            "lipotoxic ROS (AOP 34) and cytotoxic bile acid accumulation (AOP 27)."
         ),
         "fallback_bp": 34827,
         "fallback_exons": 5,
@@ -349,8 +349,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 210.0,
         "aop_ref": "OECD AOP 27 & 34 (KE 149: Increased Inflammation & KE 87: Cytokine release)",
         "description": (
-            "Centrale pro-inflammatoire transcriptiefactor. Neemt de overhand wanneer chronische "
-            "lipotoxiciteit of galzoutretentie de Nrf2-antioxidantbuffer overstijgt."
+            "Central pro-inflammatory transcription factor. Takes over when chronic "
+            "lipotoxicity or bile salt retention overwhelms the Nrf2 antioxidant buffer."
         ),
         "fallback_bp": 115974,
         "fallback_exons": 24,
@@ -368,8 +368,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 142.0,
         "aop_ref": "OECD AOP 27 & 34 (KE 177: Mitochondrial dysfunction & Genomic stress checkpoint)",
         "description": (
-            "Cellulaire stress- en DNA-schadesensor die bij aanhoudende mitochondriële toxiciteit en "
-            "inflammatie het kantelpunt naar geprogrammeerde celdood (apoptose) inluidt."
+            "Cellular stress and DNA damage sensor that initiates the tipping point toward "
+            "programmed cell death (apoptosis) under persistent mitochondrial toxicity and inflammation."
         ),
         "fallback_bp": 19149,
         "fallback_exons": 11,
@@ -387,8 +387,8 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
         "expr_cholestasis_tpm": 156.0,
         "aop_ref": "OECD AOP 34 (AO 345: Steatosis/NASH) & AOP 27 (AO 357: Cholestatic apoptosis)",
         "description": (
-            "Uitvoerend protease voor onomkeerbare hepatocyten-apoptose (Adverse Outcome) na "
-            "overschrijding van het Waddington-bifurcatiepunt."
+            "Executioner protease for irreversible hepatocyte apoptosis (Adverse Outcome) after "
+            "crossing the Waddington bifurcation point."
         ),
         "fallback_bp": 21761,
         "fallback_exons": 8,
@@ -398,28 +398,28 @@ HEPATOCYTE_GENES: list[dict[str, Any]] = [
 
 
 # ==============================================================================
-# 2. EXACTE 20 GERICHTE AOP-INTERACTIES MET OECD LITERATUURVERWIJZINGEN
+# 2. EXACT 20 DIRECTED AOP INTERACTIONS WITH OECD LITERATURE REFERENCES
 # ==============================================================================
 # Tuples: (source_idx, target_idx, sign, citation)
 AOP_DIRECTED_EDGES: list[tuple[int, int, int, str]] = [
-    # --- AOP 34: LXR -> SREBP-1c -> Lipogenese & Vetzuur-opname ---
+    # --- AOP 34: LXR -> SREBP-1c -> Lipogenesis & Fatty Acid Uptake ---
     (0, 1, +1, "AOP34 (KE 264): NR1H3 activation transcriptionally upregulates SREBF1 expression"),
     (0, 5, +1, "AOP34 (KE 54): LXR activation directly induces CD36 expression, enhancing FA uptake"),
     (1, 2, +1, "AOP34 (KE 116): SREBP-1c drives transcription of FASN (De Novo Lipogenesis)"),
     (1, 3, +1, "AOP34 (KE 89): SREBP-1c drives transcription of ACACA"),
     (1, 4, +1, "AOP34 (KE 258): SREBP-1c drives transcription of SCD"),
-    # --- Homeostatische Compensatie (Physiological Map: PPARA & VLDL-export) ---
+    # --- Homeostatic Compensation (Physiological Map: PPARA & VLDL export) ---
     (6, 7, +1, "Homeostasis: PPARA activation upregulates CPT1A to promote mitochondrial beta-oxidation"),
     (6, 1, -1, "Cross-talk: PPARA activation counter-regulates/inhibits SREBP-1c lipogenic pathway"),
     (7, 8, +1, "Homeostasis: Enhanced fatty acid flux stimulates VLDL assembly via MTTP"),
     (8, 9, +1, "Homeostasis: MTTP and APOB co-regulate hepatic triglyceride export"),
     (2, 6, -1, "Metabolic overload: Excessive lipogenesis suppresses PPARA compensatory signaling"),
-    # --- AOP 27: FXR Homeostase & BSEP-remming richting Cholestase ---
+    # --- AOP 27: FXR Homeostasis & BSEP inhibition leading to Cholestasis ---
     (10, 11, +1, "AOP27/FXR (KE 288): NR1H4 transcriptionally maintains ABCB11 (BSEP) expression"),
     (10, 12, -1, "AOP27/FXR: FXR activation represses CYP7A1 to prevent bile acid overload"),
     (10, 13, -1, "AOP27/FXR: FXR downregulates basolateral uptake transporter SLC10A1 (NTCP)"),
     (12, 10, +1, "Feedback: Bile acid synthesis intermediates activate FXR"),
-    # --- Convergente Pathologie: Van Steatose/Cholestase naar Oxidatieve Stress & Apoptose ---
+    # --- Convergent Pathology: From Steatosis/Cholestasis to Oxidative Stress & Apoptosis ---
     (11, 14, -1, "AOP27 Pathology (KE 214): Loss of BSEP function leads to bile acid accumulation & Nrf2 stress"),
     (5, 14, +1, "Steatotic Lipotoxicity: Excess CD36-mediated fatty acid influx triggers oxidative stress (Nrf2)"),
     (14, 15, -1, "Cross-talk: Adaptive Nrf2 antioxidant response suppresses pro-inflammatory NF-kB signaling"),
@@ -440,24 +440,24 @@ FEATURE_NAMES: list[str] = [
 ]
 
 FEATURE_DESCRIPTIONS: list[str] = [
-    "mRNA-expressie in hepatocyten log2(TPM + 1) [GTEx/HPA Gezond vs. GEO Steatose/Cholestase]",
-    "Genomische span op het menselijk genoom in log10(basenparen) [MyGene.info / Ensembl]",
-    "Aantal exonen / canonieke transcript-structuur [MyGene.info / RefSeq]",
-    "Canonieke eiwitlengte (aantal aminozuren / 1000) [MyGene.info / UniProt]",
-    "In-degree (aantal inkomende regulatoire pijlen) in het causale AOP-netwerk",
-    "Out-degree (aantal uitgaande regulatoire pijlen) in het causale AOP-netwerk",
-    "Gemiddelde experimentele STRING-db eiwit-interactiescore met verbonden netwerkgenen",
-    "Functionele rol-index (0.25=Receptor/TF, 0.50=Enzym, 0.75=Transporter, 1.00=Stress/Apoptose)",
+    "mRNA expression in hepatocytes log2(TPM + 1) [GTEx/HPA Healthy vs. GEO Steatosis/Cholestasis]",
+    "Genomic span on the human genome in log10(base pairs) [MyGene.info / Ensembl]",
+    "Exon count / canonical transcript structure [MyGene.info / RefSeq]",
+    "Canonical protein length (amino acid count / 1000) [MyGene.info / UniProt]",
+    "In-degree (number of incoming regulatory arrows) in the causal AOP network",
+    "Out-degree (number of outgoing regulatory arrows) in the causal AOP network",
+    "Mean experimental STRING-db protein interaction score with connected network genes",
+    "Functional role index (0.25=Receptor/TF, 0.50=Enzyme, 0.75=Transporter, 1.00=Stress/Apoptosis)",
 ]
 
 
 # ==============================================================================
-# 3. LIVE API DATA-ACQUISITIE: MYGENE.INFO & STRING-DB
+# 3. LIVE API DATA ACQUISITION: MYGENE.INFO & STRING-DB
 # ==============================================================================
 def fetch_mygene_annotations(symbols: list[str]) -> dict[str, dict[str, Any]]:
     """
-    Bevraagt de publieke MyGene.info v3 API (POST /v3/query) voor de 18 humane genen
-    om echte genomische lengtes, exon-aantallen, Ensembl IDs en eiwitlengtes op te halen.
+    Queries the public MyGene.info v3 API (POST /v3/query) for the 18 human genes
+    to retrieve real genomic lengths, exon counts, Ensembl IDs, and protein lengths.
     """
     url = "https://mygene.info/v3/query"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -481,7 +481,7 @@ def fetch_mygene_annotations(symbols: list[str]) -> dict[str, dict[str, Any]]:
             if not sym or sym in parsed:
                 continue
 
-            # 1. Genomische lengte (bp) uit genomic_pos
+            # 1. Genomic length (bp) from genomic_pos
             gpos = item.get("genomic_pos")
             if isinstance(gpos, list) and len(gpos) > 0:
                 gpos = gpos[0]
@@ -491,7 +491,7 @@ def fetch_mygene_annotations(symbols: list[str]) -> dict[str, dict[str, Any]]:
                 gene_len_bp = abs(int(gpos["end"]) - int(gpos["start"])) + 1
                 chr_name = str(gpos.get("chr", "?"))
 
-            # 2. Aantal exonen of RefSeq transcripten
+            # 2. Number of exons or RefSeq transcripts
             exons = item.get("exons")
             exon_count = None
             if isinstance(exons, list) and len(exons) > 0:
@@ -532,23 +532,23 @@ def fetch_mygene_annotations(symbols: list[str]) -> dict[str, dict[str, Any]]:
                 "exon_count": exon_count,
                 "api_source": "MyGene.info v3 (live)",
             }
-        print(f"[MyGene.info API] Succesvol live annotaties opgehaald voor {len(parsed)}/{len(symbols)} genen.")
+        print(f"[MyGene.info API] Successfully fetched live annotations for {len(parsed)}/{len(symbols)} genes.")
     except Exception as exc:
-        print(f"[MyGene.info API] Waarschuwing bij live call ({exc}); gebruik gecureerde Ensembl/UniProt referentiewaarden.")
+        print(f"[MyGene.info API] Warning during live call ({exc}); using curated Ensembl/UniProt reference values.")
 
     return parsed
 
 
 def fetch_string_interactions(symbols: list[str]) -> dict[tuple[str, str], float]:
     """
-    Bevraagt de STRING-db API (Homo sapiens, species=9606) om de echte gecombineerde
-    eiwit-eiwit interactiescores tussen de 18 hepatocyt-genen op te halen.
+    Queries the STRING-db API (Homo sapiens, species=9606) to retrieve the real combined
+    protein-protein interaction scores between the 18 hepatocyte genes.
     """
     url = "https://string-db.org/api/json/network"
     params = {
         "identifiers": "\r".join(symbols),
         "species": 9606,
-        "required_score": 150,  # lage drempel zodat ook zwakkere cross-talk scores binnenkomen
+        "required_score": 150,  # low threshold so weaker cross-talk scores are also retrieved
         "caller_identity": "hu_innovative_testing_levertoxiciteit",
     }
 
@@ -564,14 +564,14 @@ def fetch_string_interactions(symbols: list[str]) -> dict[tuple[str, str], float
             if p_a and p_b:
                 pair_scores[(p_a, p_b)] = max(score, pair_scores.get((p_a, p_b), 0.0))
                 pair_scores[(p_b, p_a)] = max(score, pair_scores.get((p_b, p_a), 0.0))
-        print(f"[STRING-db API] Succesvol {len(pair_scores) // 2} unieke humane eiwit-interactieparen opgehaald.")
+        print(f"[STRING-db API] Successfully fetched {len(pair_scores) // 2} unique human protein interaction pairs.")
     except Exception as exc:
-        print(f"[STRING-db API] Waarschuwing bij live call ({exc}); gebruik gevalideerde STRING v12.0 referentie-scores.")
+        print(f"[STRING-db API] Warning during live call ({exc}); using validated STRING v12.0 reference scores.")
 
     return pair_scores
 
 
-# Gevalideerde STRING-db v12.0 referentie-scores voor de 20 causale AOP-randen (indien een paar niet in STRING zit)
+# Validated STRING-db v12.0 reference scores for the 20 causal AOP edges (if a pair is not returned by STRING)
 CURATED_STRING_EDGE_FALLBACK: dict[tuple[str, str], float] = {
     ("NR1H3", "SREBF1"): 0.942,
     ("NR1H3", "CD36"): 0.785,
@@ -598,23 +598,23 @@ CURATED_STRING_EDGE_FALLBACK: dict[tuple[str, str], float] = {
 
 def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
     """
-    Assembleert de volledige dataset voor Mijlpaal 1.1 én de vervolgmijlpalen (1.2 t/m 4).
+    Assembles the complete dataset for Milestone 1.1 and subsequent milestones (1.2 through 4).
     """
     symbols = [g["symbol"] for g in HEPATOCYTE_GENES]
     num_genes = len(symbols)
-    assert num_genes == 18, f"Verwachtte exact 18 genen, kreeg {num_genes}"
+    assert num_genes == 18, f"Expected exactly 18 genes, got {num_genes}"
 
     mygene_data = fetch_mygene_annotations(symbols)
     string_pairs = fetch_string_interactions(symbols)
 
-    # Bereken in-degree en out-degree op het causale AOP-netwerk
+    # Compute in-degree and out-degree on the causal AOP network
     in_deg = np.zeros(num_genes, dtype=np.int64)
     out_deg = np.zeros(num_genes, dtype=np.int64)
     for src, dst, _sign, _cit in AOP_DIRECTED_EDGES:
         out_deg[src] += 1
         in_deg[dst] += 1
 
-    # Koppel echte STRING-scores aan de 20 gerichte AOP-interacties + alle onderlinge STRING-koppelingen
+    # Link real STRING scores to the 20 directed AOP interactions + all pairwise STRING links
     edge_records: list[dict[str, Any]] = []
     adj_undirected = np.zeros((num_genes, num_genes), dtype=np.float32)
     string_adj = np.zeros((num_genes, num_genes), dtype=np.float32)
@@ -653,7 +653,7 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
             }
         )
 
-    # Bereken Floyd-Warshall Shortest-Path Matrix [18, 18] en [19, 19] (met [CLS] op index 0)
+    # Compute Floyd-Warshall Shortest-Path Matrix [18, 18] and [19, 19] (with [CLS] at index 0)
     fw_raw = floyd_warshall(adj_undirected, directed=False, unweighted=True)
     fw_18 = np.where(np.isinf(fw_raw), 9.0, fw_raw)
     fw_18 = np.clip(fw_18, 0.0, 9.0).astype(np.int64)
@@ -663,10 +663,10 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
     dist_matrix_19_cls[0, 0] = 0
     dist_matrix_19_cls[1:, 1:] = fw_18
 
-    # Bouw de 3 ruwe feature-matrices [18, 8]:
-    # - X_healthy_raw: Gezonde basale hepatocyt
-    # - X_steatosis_raw: Pathologische Steatose (AOP 34)
-    # - X_cholestasis_raw: Pathologische Cholestase (AOP 27)
+    # Build the 3 raw feature matrices [18, 8]:
+    # - X_healthy_raw: Healthy basal hepatocyte
+    # - X_steatosis_raw: Pathological Steatosis (AOP 34)
+    # - X_cholestasis_raw: Pathological Cholestasis (AOP 27)
     X_healthy_raw = np.zeros((num_genes, 8), dtype=np.float32)
     X_steatosis_raw = np.zeros((num_genes, 8), dtype=np.float32)
     X_cholestasis_raw = np.zeros((num_genes, 8), dtype=np.float32)
@@ -681,25 +681,25 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
         exon_cnt = int(mg.get("exon_count") or g["fallback_exons"])
         prot_aa = int(g["fallback_aa"])
 
-        # Feature 0: Toestandsafhankelijke mRNA-expressie log2(TPM + 1)
+        # Feature 0: State-dependent mRNA expression log2(TPM + 1)
         f0_healthy = float(np.log2(g["expr_healthy_tpm"] + 1.0))
         f0_steatosis = float(np.log2(g["expr_steatosis_tpm"] + 1.0))
         f0_cholestasis = float(np.log2(g["expr_cholestasis_tpm"] + 1.0))
 
-        # Feature 1: Genlengte log10(bp)
+        # Feature 1: Gene length log10(bp)
         f1_log10_bp = float(np.log10(max(gene_len_bp, 1)))
-        # Feature 2: Aantal exonen / transcript-structuur
+        # Feature 2: Exon count / transcript structure
         f2_exons = float(exon_cnt)
-        # Feature 3: Eiwitlengte (aminozuren / 1000)
+        # Feature 3: Protein length (amino acids / 1000)
         f3_prot_norm = float(prot_aa / 1000.0)
-        # Feature 4: In-degree in het AOP-netwerk
+        # Feature 4: In-degree in the AOP network
         f4_in_deg = float(in_deg[i])
-        # Feature 5: Out-degree in het AOP-netwerk
+        # Feature 5: Out-degree in the AOP network
         f5_out_deg = float(out_deg[i])
-        # Feature 6: Gemiddelde STRING-db interactiescore met gekoppelde genen in het netwerk
+        # Feature 6: Mean STRING-db interaction score with connected genes in the network
         nonzero_scores = string_adj[i][string_adj[i] > 0]
         f6_mean_string = float(nonzero_scores.mean()) if len(nonzero_scores) > 0 else 0.5
-        # Feature 7: Functionele pathway rol-index
+        # Feature 7: Functional pathway role index
         f7_role_idx = float(g["role_index"])
 
         common_struct = [
@@ -746,8 +746,8 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
             }
         )
 
-    # Normaliseer alle 3 toestanden ten opzichte van DEZELFDE gezonde baseline (mean & std van X_healthy_raw)
-    # zodat pathologische expressie-shifts (Delta X) wiskundig op exact dezelfde schaal staan!
+    # Normalize all 3 states relative to the SAME healthy baseline (mean & std of X_healthy_raw)
+    # so that pathological expression shifts (Delta X) are mathematically on the exact same scale!
     feat_mean = X_healthy_raw.mean(axis=0, keepdims=True)
     feat_std = X_healthy_raw.std(axis=0, keepdims=True) + 1e-6
 
@@ -755,7 +755,7 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
     X_steatosis_norm = (X_steatosis_raw - feat_mean) / feat_std
     X_cholestasis_norm = (X_cholestasis_raw - feat_mean) / feat_std
 
-    # Bouw PyTorch tensoren op GPU 1 (of CPU fallback indien geen GPU)
+    # Build PyTorch tensors on GPU 1 (or CPU fallback if no GPU)
     edge_index_np = np.array([[e["source_idx"] for e in edge_records], [e["target_idx"] for e in edge_records]], dtype=np.int64)
     edge_sign_np = np.array([e["sign"] for e in edge_records], dtype=np.float32)
     edge_string_np = np.array([e["string_score"] for e in edge_records], dtype=np.float32)
@@ -782,7 +782,7 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
         "string_adjacency_18": torch.tensor(string_adj, dtype=torch.float32, device=device),
     }
 
-    # Sla CPU-kopieën op in .pt zodat elk script ze device-agnostisch kan inladen
+    # Save CPU copies in .pt so any script can load them device-agnostically
     pt_cpu_payload = {
         k: (v.detach().cpu() if isinstance(v, torch.Tensor) else v)
         for k, v in pt_payload.items()
@@ -790,9 +790,9 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
 
     json_payload = {
         "metadata": {
-            "project": "Multimodal & Multiscale AI voor Levertoxiciteit (Graphormer + Neural ODE)",
-            "institution": "Lectoraat Innovative Testing, Hogeschool Utrecht",
-            "milestone": "Mijlpaal 1, Stap 1.1",
+            "project": "Multimodal & Multiscale AI for Liver Toxicity (Graphormer + Neural ODE)",
+            "institution": "Research Group Innovative Testing, HU University of Applied Sciences Utrecht",
+            "milestone": "Milestone 1, Step 1.1",
             "sources": [
                 "OECD AOP 34: LXR activation leading to hepatic steatosis (MIE 167 -> AO 345)",
                 "OECD AOP 27: Cholestatic liver injury induced by BSEP inhibition (MIE 41 -> AO 357)",
@@ -827,13 +827,13 @@ def build_hepatocyte_dataset(device: torch.device) -> dict[str, Any]:
 
 def main() -> None:
     print("=" * 78)
-    print("MIJLPAAL 1, STAP 1.1: ECHTE HEPATOCYT DATA-ACQUISITIE & AOP-NETWERK OPBOUW")
+    print("MILESTONE 1, STEP 1.1: REAL HEPATOCYTE DATA ACQUISITION & AOP NETWORK BUILD")
     print("=" * 78)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"[Hardware Check] Actief PyTorch device: {device}")
+    print(f"[Hardware Check] Active PyTorch device: {device}")
     if torch.cuda.is_available():
-        print(f"[Hardware Check] GPU Naam: {torch.cuda.get_device_name(0)} (CUDA_VISIBLE_DEVICES=1)")
+        print(f"[Hardware Check] GPU Name: {torch.cuda.get_device_name(0)} (CUDA_VISIBLE_DEVICES=1)")
 
     data_dir = Path("data")
     data_dir.mkdir(parents=True, exist_ok=True)
@@ -843,12 +843,12 @@ def main() -> None:
     pt_cpu = result["pt_cpu"]
     json_data = result["json"]
 
-    # Valideer alle shapes en controleer op NaNs op GPU 1
+    # Validate all shapes and check for NaNs on GPU 1
     for key in ["X_healthy", "X_steatosis", "X_cholestasis", "X_healthy_raw", "X_steatosis_raw", "X_cholestasis_raw"]:
         t = pt_gpu[key]
-        assert t.shape == (18, 8), f"Foutieve shape voor {key}: {t.shape}, verwachtte (18, 8)"
-        assert not torch.isnan(t).any(), f"NaN gedetecteerd in {key}!"
-        assert not torch.isinf(t).any(), f"Inf gedetecteerd in {key}!"
+        assert t.shape == (18, 8), f"Invalid shape for {key}: {t.shape}, expected (18, 8)"
+        assert not torch.isnan(t).any(), f"NaN detected in {key}!"
+        assert not torch.isinf(t).any(), f"Inf detected in {key}!"
 
     assert pt_gpu["dist_matrix_18"].shape == (18, 18)
     assert pt_gpu["dist_matrix_19_cls"].shape == (19, 19)
@@ -865,7 +865,7 @@ def main() -> None:
 
     torch.save(pt_cpu, pt_path)
 
-    print("\n[Tensor & Matrix Verificatie op GPU 1]")
+    print("\n[Tensor & Matrix Verification on GPU 1]")
     print(f"  - X_healthy shape       : {tuple(pt_gpu['X_healthy'].shape)} | dtype={pt_gpu['X_healthy'].dtype} | device={pt_gpu['X_healthy'].device}")
     print(f"  - X_steatosis shape     : {tuple(pt_gpu['X_steatosis'].shape)} | mean delta Z (Feature 0) = {(pt_gpu['X_steatosis'][:, 0] - pt_gpu['X_healthy'][:, 0]).mean().item():+.3f}")
     print(f"  - X_cholestasis shape   : {tuple(pt_gpu['X_cholestasis'].shape)} | mean delta Z (Feature 0) = {(pt_gpu['X_cholestasis'][:, 0] - pt_gpu['X_healthy'][:, 0]).mean().item():+.3f}")
@@ -875,7 +875,7 @@ def main() -> None:
     print(f"  - dist_matrix_19_cls    : {tuple(pt_gpu['dist_matrix_19_cls'].shape)} | [CLS] self={pt_gpu['dist_matrix_19_cls'][0, 0].item()}, [CLS]->genes={pt_gpu['dist_matrix_19_cls'][0, 1].item()}")
     print(f"  - edge_index shape      : {tuple(pt_gpu['edge_index'].shape)} | mean STRING score={pt_gpu['edge_string_score'].mean().item():.3f}")
     print("  - NaN / Inf check       : PASSED (0 NaNs, 0 Infs)")
-    print(f"\n[Bestanden Opgeslagen]")
+    print(f"\n[Files Saved]")
     print(f"  - {json_path.resolve()} ({json_path.stat().st_size:,} bytes)")
     print(f"  - {pt_path.resolve()} ({pt_path.stat().st_size:,} bytes)")
     print("=" * 78)

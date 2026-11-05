@@ -1,2 +1,2 @@
 def main() -> None:
-    print("Hello from levertoxiciteit!")
+    print("Hello from liver toxicity simulator!")

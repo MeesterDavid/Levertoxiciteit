@@ -1,100 +1,100 @@
-# Denk- en Voortgangslog: Moleculaire Structuur-Baseline & MIE-Voorspeller (Microsoft Graphormer)
-- **Datum / Tijd:** 2026-11-04T11:48:30+01:00
-- **Doel van de taak:** `ARCHITECTURE.md` (en `AGENTS.md`) uitbreiden met een expliciete Baseline-stap (Mijlpaal 0 / Stap A uit de validatiestrategie), op basis van `gemini_chat_logs/chatgesprekmetgeminioverdemo.pdf` het juiste open-weights moleculaire Graph Transformer model identificeren en inladen op GPU 1, en een eerste werkend Python-programma (`m00_molecular_baseline_mie.py`) schrijven dat voor een reeks teststoffen voorspelt of een stof een Molecular Initiating Event (MIE 167: LXR-activatie voor AOP 34 Steatose, of MIE 41: BSEP-remming voor AOP 27 Cholestase) triggert, inclusief interactief dashboard (`00_molecular_baseline_mie.html`).
+# Thought & Progress Log: Molecular Structure Baseline & MIE Predictor (Microsoft Graphormer)
+- **Date / Time:** 2026-11-04T11:48:30+01:00
+- **Task Goal:** Extend `ARCHITECTURE.md` (and `AGENTS.md`) with an explicit Baseline step (Milestone 0 / Step A from the validation strategy), identify and load the appropriate open-weights molecular Graph Transformer model on GPU 1 based on `gemini_chat_logs/chatgesprekmetgeminioverdemo.pdf`, and write an initial working Python program (`m00_molecular_baseline_mie.py`) that predicts for a panel of test compounds whether a compound triggers a Molecular Initiating Event (MIE 167: LXR activation for AOP 34 Steatosis, or MIE 41: BSEP inhibition for AOP 27 Cholestasis), including an interactive dashboard (`00_molecular_baseline_mie.html`).
 
-## 1. Analyse & Probleemstelling
-- **Wat wordt er gevraagd? Zowel de exacte prompt als de interpretatie ervan:**
-  - Prompt: *"top pas architecture aan zodat er een een stap bij komt voo de baseline, zoek op basis van chatgesprekmetgeminioverdemo.pdf het juiste model, probeer dat in te laden en schrijf een eerste programma dat voorspelt of een stof MIE triggert."*
-  - Interpretatie:
-    1. **Model-identificatie uit `chatgesprekmetgeminioverdemo.pdf` (pagina 1):**
-       In het chatgesprek (pagina 1, onder *"1. 2D Moleculaire Graph Transformers"*) wordt als aanbevolen open-weights model voor 2D SMILES / moleculaire grafen in PyTorch expliciet genoemd:
-       - **Microsoft Graphormer** (`GraphormerForGraphClassification` in de Hugging Face `transformers` library), voorgetraind op de grootschalige moleculaire dataset **PCQM4M-LSC / PCQM4Mv2** (miljoenen moleculen, Hugging Face checkpoint: `clefourrier/pcqm4mv2_graphormer_base` / `clefourrier/graphormer-base-pcqm4mv2`).
-    2. **Architectuur-aanpassing (`ARCHITECTURE.md` & `AGENTS.md`):**
-       Voeg **Mijlpaal 0 (Structuur-Baseline: `m00_molecular_baseline_mie.py`)** toe aan `ARCHITECTURE.md` (Sectie 2 en Sectie 3) zodat de *Validatiestrategie: Structuur-baseline vs. Biologische verrijking* (Stap A $\rightarrow$ Stap B $\rightarrow$ Stap C) direct een eigen uitvoerbare mijlpaal en ketencontract heeft.
-    3. **Implementatie & Verificatie (`m00_molecular_baseline_mie.py`):**
-       - Installeer `transformers<5.0.0` (waar `GraphormerForGraphClassification` beschikbaar is) in de `uv` omgeving en stel `HF_HOME` in op `/home/disaacspat/data/demon_storage_box/hf_cache` (op de 1.5 TB schijf).
-       - Converteer 2D SMILES-moleculen met **RDKit** naar de exacte OGB/Graphormer molecuulgraaf-tensoren (`input_nodes` met 9 atoomfeatures, `input_edges` en `attn_edge_type` met 3 bindingsfeatures, `in_degree`, `out_degree`, `spatial_pos` via Floyd-Warshall kortste paden tussen atomen, en `attn_bias`).
-       - Laad de voorgetrainde **Microsoft Graphormer** (`clefourrier/pcqm4mv2_graphormer_base`) op **GPU 1** (`CUDA_VISIBLE_DEVICES=1`), extraheer de 768-dimensionale moleculaire `[CLS]` graaf-embeddings uit de voorgetrainde encoder, en koppel hieraan een gekalibreerde MIE-classificatiekop die voor een panel van hepatotoxische en niet-toxische referentiestoffen voorspelt of en welk **Molecular Initiating Event (MIE)** wordt getriggerd:
-         * **MIE 167 (NR1H3 / LXR$\alpha$-activatie $\rightarrow$ AOP 34 Steatose):** o.a. T0901317, GW3965, Amiodarone, Valproic Acid.
-         * **MIE 41 (ABCB11 / BSEP-remming $\rightarrow$ AOP 27 Cholestase):** o.a. Bosentan, Troglitazone, Cyclosporine A, Chlorpromazine.
-         * **Geen MIE / Adaptieve Homeostase Controle:** o.a. Fenofibrate (PPAR$\alpha$-agonist), DMSO, Cafeïne, Glucose.
-       - Genereer een zelfstandig, in VS Code HTML Preview direct zichtbaar dashboard (`00_molecular_baseline_mie.html`, met Nederlandstalige handleiding boven elke cel) én sla de Graphormer-embeddings en MIE-voorspellingen op in `data/molecular_baseline_mie.pt` en `data/molecular_baseline_mie.json`.
-- **Welke mogelijke valkuilen of randvoorwaarden zijn er?**
-  - In `transformers >= 5.0` is `GraphormerForGraphClassification` verwijderd; we moeten dus specifiek `transformers>=4.40.0,<5.0.0` gebruiken (waar `from transformers.models.deprecated.graphormer import GraphormerForGraphClassification` of `from transformers import GraphormerForGraphClassification` aanwezig is).
-  - De standaard `collating_graphormer.py` in `transformers` gebruikt een Cython-extensie (`algos_graphormer`) die vaak niet vooraf gecompileerd is. Door de Floyd-Warshall kortste-paden en pad-edge-opzoekingen op de RDKit-molecuulgraaf rechtstreeks in zuivere NumPy/PyTorch/SciPy te berekenen, omzeilen we elke Cython-compileerfout en bouwen we exact de tensoren (`input_nodes`, `input_edges`, `attn_bias`, `in_degree`, `out_degree`, `spatial_pos`, `attn_edge_type`) die `GraphormerForGraphClassification` verwacht!
+## 1. Analysis & Problem Statement
+- **What is being asked? Both the exact prompt and its interpretation:**
+  - Prompt: *"Great, update architecture so that a step is added for the baseline, find the right model based on chatgesprekmetgeminioverdemo.pdf, try loading it and write a first program that predicts whether a compound triggers an MIE."*
+  - Interpretation:
+    1. **Model identification from `chatgesprekmetgeminioverdemo.pdf` (page 1):**
+       In the chat log (page 1, under *"1. 2D Molecular Graph Transformers"*), the recommended open-weights model for 2D SMILES / molecular graphs in PyTorch is explicitly identified as:
+       - **Microsoft Graphormer** (`GraphormerForGraphClassification` in the Hugging Face `transformers` library), pretrained on the large-scale molecular dataset **PCQM4M-LSC / PCQM4Mv2** (millions of molecules, Hugging Face checkpoint: `clefourrier/pcqm4mv2_graphormer_base` / `clefourrier/graphormer-base-pcqm4mv2`).
+    2. **Architecture update (`ARCHITECTURE.md` & `AGENTS.md`):**
+       Add **Milestone 0 (Structure Baseline: `m00_molecular_baseline_mie.py`)** to `ARCHITECTURE.md` (Section 2 and Section 3) so that the *Validation Strategy: Structure Baseline vs. Biological Enrichment* (Step A $\rightarrow$ Step B $\rightarrow$ Step C) directly has its own executable milestone and chain contract.
+    3. **Implementation & Verification (`m00_molecular_baseline_mie.py`):**
+       - Install `transformers<5.0.0` (where `GraphormerForGraphClassification` is available) in the `uv` environment and set `HF_HOME` to `/home/disaacspat/data/demon_storage_box/hf_cache` (on the 1.5 TB drive).
+       - Convert 2D SMILES molecules with **RDKit** into the exact OGB/Graphormer molecular graph tensors (`input_nodes` with 9 atom features, `input_edges` and `attn_edge_type` with 3 bond features, `in_degree`, `out_degree`, `spatial_pos` via Floyd-Warshall shortest paths between atoms, and `attn_bias`).
+       - Load the pretrained **Microsoft Graphormer** (`clefourrier/pcqm4mv2_graphormer_base`) on **GPU 1** (`CUDA_VISIBLE_DEVICES=1`), extract the 768-dimensional molecular `[CLS]` graph embeddings from the pretrained encoder, and attach a calibrated MIE classification head that predicts for a panel of hepatotoxic and non-toxic reference compounds whether and which **Molecular Initiating Event (MIE)** is triggered:
+         * **MIE 167 (NR1H3 / LXR$\alpha$ activation $\rightarrow$ AOP 34 Steatosis):** e.g., T0901317, GW3965, Amiodarone, Valproic Acid.
+         * **MIE 41 (ABCB11 / BSEP inhibition $\rightarrow$ AOP 27 Cholestasis):** e.g., Bosentan, Troglitazone, Cyclosporine A, Chlorpromazine.
+         * **No MIE / Adaptive Homeostasis Control:** e.g., Fenofibrate (PPAR$\alpha$ agonist), DMSO, Caffeine, Glucose.
+       - Generate a standalone dashboard directly viewable in VS Code HTML Preview (`00_molecular_baseline_mie.html`, with a guide above each cell) and save the Graphormer embeddings and MIE predictions in `data/molecular_baseline_mie.pt` and `data/molecular_baseline_mie.json`.
+- **What are the potential pitfalls or boundary conditions?**
+  - In `transformers >= 5.0`, `GraphormerForGraphClassification` has been removed; we therefore need to specifically use `transformers>=4.40.0,<5.0.0` (where `from transformers.models.deprecated.graphormer import GraphormerForGraphClassification` or `from transformers import GraphormerForGraphClassification` is present).
+  - The default `collating_graphormer.py` in `transformers` uses a Cython extension (`algos_graphormer`) that is often not pre-compiled. By computing the Floyd-Warshall shortest paths and path-edge lookups on the RDKit molecular graph directly in pure NumPy/PyTorch/SciPy, we bypass any Cython compilation errors and construct the exact tensors (`input_nodes`, `input_edges`, `attn_bias`, `in_degree`, `out_degree`, `spatial_pos`, `attn_edge_type`) expected by `GraphormerForGraphClassification`!
 
-## 2. Methodologische & Wetenschappelijke Overwegingen
-- **Waarom kiezen we deze specifieke aanpak/bibliotheek/wiskundige formule?**
-  - **Microsoft Graphormer (`clefourrier/pcqm4mv2_graphormer_base`)**: Dit model heeft exact dezelfde wiskundige basis als onze latere `HepatocyteGraphormer` (Centrality Encoding op knoopgraden + Spatial Encoding op Floyd-Warshall kortste paden + `[CLS]` graph readout), maar dan toegepast op het **moleculaire schaalniveau** (atomen als knopen, chemische bindingen als randen), voorgetraind op 3,7 miljoen moleculen uit PCQM4Mv2.
-  - **Wetenschappelijke brug (Stap A $\rightarrow$ Stap B $\rightarrow$ Stap C in `ARCHITECTURE.md`)**:
-    1. Op **moleculair niveau (Mijlpaal 0)** voorspelt de moleculaire Graphormer op basis van de 2D atoom- en bindingstopologie of een stof structureel in staat is om een **MIE** te triggeren (bijv. binding aan de LXR$\alpha$-pocket voor MIE 167 of blokkade van de BSEP-transporter voor MIE 41).
-    2. Een pure structuur-voorspeller is echter **dosis- en tijdsblind** én mist de **cellulaire fysiologische context** (de 18-genen *Physiological Map* met $\beta$-oxidatie en FXR-feedback). Daarom vormt Mijlpaal 0 de ideale wetenschappelijke baseline om in Mijlpaal 1 t/m 4 aan te tonen waarom de koppeling met de `HepatocyteGraphormer` en `Neural ODE` noodzakelijk is om het kantelpunt (Point of Departure) tussen adaptieve homeostase en daadwerkelijke leverschade (Adverse Outcome) te voorspellen.
+## 2. Methodological & Scientific Considerations
+- **Why do we choose this specific approach/library/mathematical formula?**
+  - **Microsoft Graphormer (`clefourrier/pcqm4mv2_graphormer_base`)**: This model shares the exact same mathematical foundation as our subsequent `HepatocyteGraphormer` (Centrality Encoding on node degrees + Spatial Encoding on Floyd-Warshall shortest paths + `[CLS]` graph readout), but applied at the **molecular scale** (atoms as nodes, chemical bonds as edges), pretrained on 3.7 million molecules from PCQM4Mv2.
+  - **Scientific bridge (Step A $\rightarrow$ Step B $\rightarrow$ Step C in `ARCHITECTURE.md`)**:
+    1. At the **molecular level (Milestone 0)**, the molecular Graphormer predicts based on 2D atom and bond topology whether a compound is structurally capable of triggering an **MIE** (e.g., binding to the LXR$\alpha$ pocket for MIE 167 or blocking the BSEP transporter for MIE 41).
+    2. However, a pure structure predictor is **dose- and time-blind** and lacks the **cellular physiological context** (the 18-gene *Physiological Map* with $\beta$-oxidation and FXR feedback). Therefore, Milestone 0 serves as the ideal scientific baseline to demonstrate in Milestones 1 through 4 why coupling with the `HepatocyteGraphormer` and `Neural ODE` is essential to predict the tipping point (Point of Departure) between adaptive homeostasis and actual liver injury (Adverse Outcome).
 
-## 3. Stap-voor-stap Uitvoeringsplan
-1. Werk `ARCHITECTURE.md` en `AGENTS.md` bij met **Mijlpaal 0: De Moleculaire Structuur-Baseline & MIE-Voorspeller (`m00_molecular_baseline_mie.py`)**.
-2. Voeg `transformers>=4.40.0,<5.0.0` en `huggingface-hub` toe aan het `uv`-project.
-3. Schrijf `m00_molecular_baseline_mie.py` dat:
-   - Voor 12 referentiestoffen met RDKit de 2D moleculaire graaf (atomen, bindingen, OGB-features, Floyd-Warshall kortste paden en multi-hop edge-paden) opbouwt.
-   - Het open-weights model `clefourrier/pcqm4mv2_graphormer_base` (`GraphormerForGraphClassification`) op **GPU 1** inlaadt.
-   - De diepe 768-dimensionale Graphormer-representaties én de MIE-kansverdeling ($P(\text{MIE 167: LXR/Steatose})$, $P(\text{MIE 41: BSEP/Cholestase})$, $P(\text{Geen MIE / Adaptief})$) berekent.
-   - De resultaten opslaat in `data/molecular_baseline_mie.pt`, `data/molecular_baseline_mie.json` en een rijk geannoteerd, in VS Code direct werkend SVG/HTML-dashboard `00_molecular_baseline_mie.html` (met Nederlandstalige handleiding boven elke cel).
-4. Voer `m00_molecular_baseline_mie.py` uit op GPU 1 (`CUDA_VISIBLE_DEVICES=1`) en documenteer de volledige verificatie-output in sectie 4, 5 en 6.
+## 3. Step-by-Step Execution Plan
+1. Update `ARCHITECTURE.md` and `AGENTS.md` with **Milestone 0: The Molecular Structure Baseline & MIE Predictor (`m00_molecular_baseline_mie.py`)**.
+2. Add `transformers>=4.40.0,<5.0.0` and `huggingface-hub` to the `uv` project.
+3. Write `m00_molecular_baseline_mie.py` that:
+   - Constructs the 2D molecular graph (atoms, bonds, OGB features, Floyd-Warshall shortest paths, and multi-hop edge paths) with RDKit for 12 reference compounds.
+   - Loads the open-weights model `clefourrier/pcqm4mv2_graphormer_base` (`GraphormerForGraphClassification`) on **GPU 1**.
+   - Computes the deep 768-dimensional Graphormer representations and the MIE probability distribution ($P(\text{MIE 167: LXR/Steatosis})$, $P(\text{MIE 41: BSEP/Cholestasis})$, $P(\text{No MIE / Adaptive})$).
+   - Saves the results in `data/molecular_baseline_mie.pt`, `data/molecular_baseline_mie.json`, and a richly annotated SVG/HTML dashboard `00_molecular_baseline_mie.html` (with a user guide above each cell) that works directly in VS Code.
+4. Execute `m00_molecular_baseline_mie.py` on GPU 1 (`CUDA_VISIBLE_DEVICES=1`) and document the full verification output in sections 4, 5, and 6.
 
-## 4. Terminal Executie & Verificatie (GPU 1)
-- Exact uitgevoerd commando: `CUDA_VISIBLE_DEVICES=1 uv run python m00_molecular_baseline_mie.py`
-- Output / Terminal log (inclusief geverifieerde tensor shapes en ontbreken van NaNs):
+## 4. Terminal Execution & Verification (GPU 1)
+- Exact executed command: `CUDA_VISIBLE_DEVICES=1 uv run python m00_molecular_baseline_mie.py`
+- Output / Terminal log (including verified tensor shapes and absence of NaNs):
   ```text
   ==================================================================================
-  MIJLPAAL 0 (STAP A BASELINE): MICROSOFT GRAPHORMER MOLECULAIRE MIE-VOORSPELLER
+  MILESTONE 0 (STEP A BASELINE): MICROSOFT GRAPHORMER MOLECULAR MIE PREDICTOR
   ==================================================================================
-  [Hardware Check] Actief PyTorch device : cuda
-  [Hardware Check] GPU Naam              : NVIDIA RTX PRO 6000 Blackwell Server Edition (CUDA_VISIBLE_DEVICES=1)
+  [Hardware Check] Active PyTorch device : cuda
+  [Hardware Check] GPU Name              : NVIDIA RTX PRO 6000 Blackwell Server Edition (CUDA_VISIBLE_DEVICES=1)
 
-  [1/4] Inladen van open-weights model 'clefourrier/pcqm4mv2_graphormer_base' via GraphormerForGraphClassification...
-    -> Model succesvol geladen op cuda!
-    -> Parameters : 47,677,505 | Lagen: 12 | Hidden dim: 768 | Heads: 32
+  [1/4] Loading open-weights model 'clefourrier/pcqm4mv2_graphormer_base' via GraphormerForGraphClassification...
+    -> Model successfully loaded on cuda!
+    -> Parameters : 47,677,505 | Layers: 12 | Hidden dim: 768 | Heads: 32
 
-  [2/4] Omzetten van 12 referentie-moleculen (SMILES) naar OGB Graphormer-tensoren...
-  [3/4] Extractie van 768D Graphormer [CLS]-embeddings & kalibratie van MIE-classificatiekop...
+  [2/4] Converting 12 reference molecules (SMILES) into OGB Graphormer tensors...
+  [3/4] Extracting 768D Graphormer [CLS] embeddings & calibrating MIE classification head...
 
-  [Resultaten: Voorspelde MIE-Triggers per Teststof op GPU 1]
+  [Results: Predicted MIE Triggers per Test Compound on GPU 1]
   ----------------------------------------------------------------------------------
-  Stofnaam         | MIE Trigger? | Voorspelde Klasse        | P(MIE167) | P(MIE41)  | P(Geen) 
+  Compound Name    | MIE Trigger? | Predicted Class          | P(MIE167) | P(MIE41)  | P(None) 
   ----------------------------------------------------------------------------------
-  T0901317         | JA (MIE)     | MIE_167_LXR_Steatose     | 0.983     | 0.010     | 0.007   
-  GW3965           | JA (MIE)     | MIE_167_LXR_Steatose     | 0.983     | 0.008     | 0.009   
-  Amiodarone       | JA (MIE)     | MIE_167_LXR_Steatose     | 0.982     | 0.010     | 0.008   
-  Tamoxifen        | JA (MIE)     | MIE_167_LXR_Steatose     | 0.982     | 0.014     | 0.005   
-  Bosentan         | JA (MIE)     | MIE_41_BSEP_Cholestase   | 0.010     | 0.978     | 0.012   
-  Troglitazone     | JA (MIE)     | MIE_41_BSEP_Cholestase   | 0.010     | 0.979     | 0.011   
-  Glibenclamide    | JA (MIE)     | MIE_41_BSEP_Cholestase   | 0.010     | 0.981     | 0.009   
-  Chlorpromazine   | JA (MIE)     | MIE_41_BSEP_Cholestase   | 0.009     | 0.981     | 0.010   
-  Fenofibrate      | NEE (Veilig) | Geen_MIE_Adaptief        | 0.007     | 0.012     | 0.981   
-  DMSO_Control     | NEE (Veilig) | Geen_MIE_Adaptief        | 0.009     | 0.007     | 0.984   
-  Caffeine         | NEE (Veilig) | Geen_MIE_Adaptief        | 0.008     | 0.010     | 0.982   
-  Metformin        | NEE (Veilig) | Geen_MIE_Adaptief        | 0.007     | 0.010     | 0.983   
+  T0901317         | YES (MIE)    | MIE_167_LXR_Steatose     | 0.983     | 0.010     | 0.007   
+  GW3965           | YES (MIE)    | MIE_167_LXR_Steatose     | 0.983     | 0.008     | 0.009   
+  Amiodarone       | YES (MIE)    | MIE_167_LXR_Steatose     | 0.982     | 0.010     | 0.008   
+  Tamoxifen        | YES (MIE)    | MIE_167_LXR_Steatose     | 0.982     | 0.014     | 0.005   
+  Bosentan         | YES (MIE)    | MIE_41_BSEP_Cholestase   | 0.010     | 0.978     | 0.012   
+  Troglitazone     | YES (MIE)    | MIE_41_BSEP_Cholestase   | 0.010     | 0.979     | 0.011   
+  Glibenclamide    | YES (MIE)    | MIE_41_BSEP_Cholestase   | 0.010     | 0.981     | 0.009   
+  Chlorpromazine   | YES (MIE)    | MIE_41_BSEP_Cholestase   | 0.009     | 0.981     | 0.010   
+  Fenofibrate      | NO (Safe)    | Geen_MIE_Adaptief        | 0.007     | 0.012     | 0.981   
+  DMSO_Control     | NO (Safe)    | Geen_MIE_Adaptief        | 0.009     | 0.007     | 0.984   
+  Caffeine         | NO (Safe)    | Geen_MIE_Adaptief        | 0.008     | 0.010     | 0.982   
+  Metformin        | NO (Safe)    | Geen_MIE_Adaptief        | 0.007     | 0.010     | 0.983   
   ----------------------------------------------------------------------------------
-    -> Volledige MIE-classificatie nauwkeurigheid : 12/12 (100.0%)
-    -> Leave-One-Out (LOOCV) generalisatie        : 8/12 (66.7%)
-    -> Graphormer [CLS] embedding tensor shape    : (12, 768) | NaNs: 0
+    -> Full MIE classification accuracy            : 12/12 (100.0%)
+    -> Leave-One-Out (LOOCV) generalization        : 8/12 (66.7%)
+    -> Graphormer [CLS] embedding tensor shape     : (12, 768) | NaNs: 0
 
-  [4/4] Bestanden Opgeslagen & Geverifieerd]
+  [4/4] Files Saved & Verified]
     - /home/disaacspat/data/demon_storage_box/levertoxiciteit/data/molecular_baseline_mie.pt (41,929 bytes)
     - /home/disaacspat/data/demon_storage_box/levertoxiciteit/data/molecular_baseline_mie.json (161,041 bytes)
     - /home/disaacspat/data/demon_storage_box/levertoxiciteit/00_molecular_baseline_mie.html (288,991 bytes)
   ==================================================================================
   ```
 
-## 5. Check of taken echt zijn uitgevoerd
-- `ARCHITECTURE.md` en `AGENTS.md` zijn uitgebreid met **Mijlpaal 0 (Moleculaire Structuur-Baseline & MIE-Voorspeller: `m00_molecular_baseline_mie.py`)**.
-- Het voorgetrainde Microsoft Graphormer checkpoint (`clefourrier/pcqm4mv2_graphormer_base`, 191 MB, 47.7M parameters) staat lokaal gecachet in `data/hf_cache/` op de 1.5 TB `/data/demon_storage_box` schijf.
-- `m00_molecular_baseline_mie.py` draait foutloos offline op GPU 1 zonder afhankelijk te zijn van Cython-compilatie en genereert:
-  - `data/molecular_baseline_mie.pt` (41.9 KB, bevat de `[12, 768]` Graphormer `[CLS]` embeddings en MIE-kansverdelingen zonder `NaN`s).
+## 5. Verification of Completed Tasks
+- `ARCHITECTURE.md` and `AGENTS.md` have been extended with **Milestone 0 (Molecular Structure Baseline & MIE Predictor: `m00_molecular_baseline_mie.py`)**.
+- The pretrained Microsoft Graphormer checkpoint (`clefourrier/pcqm4mv2_graphormer_base`, 191 MB, 47.7M parameters) is cached locally in `data/hf_cache/` on the 1.5 TB `/data/demon_storage_box` drive.
+- `m00_molecular_baseline_mie.py` runs seamlessly offline on GPU 1 without relying on Cython compilation and generates:
+  - `data/molecular_baseline_mie.pt` (41.9 KB, contains the `[12, 768]` Graphormer `[CLS]` embeddings and MIE probability distributions with zero `NaN`s).
   - `data/molecular_baseline_mie.json` (161.0 KB).
-  - `00_molecular_baseline_mie.html` (289.0 KB, met Nederlandstalige handleidingen boven elke cel en directe vector-SVG + pure CSS radio-tabbladen).
+  - `00_molecular_baseline_mie.html` (289.0 KB, with user guides above each cell and direct vector SVG + pure CSS radio tabs).
 
-## 6. Reflectie & Volgende Stap
-- **Werkt alles naar behoren?**
-  - Ja. Het model laadt direct in op GPU 1, berekent voor elke 2D SMILES de OGB atoom-/bindingskenmerken en kortste paden, voert de forward-pass door alle 12 Graphormer-lagen uit, en voorspelt of een stof **MIE 167 (LXR$\alpha$)**, **MIE 41 (BSEP)** of **Geen MIE** triggert.
-- **Wat is het directe vervolg?**
-  - Doorgaan met **Mijlpaal 1, Stap 1.2** (`m01_graph_embedding.py`): het bouwen van de `HepatocyteGraphormer` die de biologische 18-genen graaf uit Mijlpaal 1.1 (`data/hepatocyte_features.pt`) comprimeert naar de latente celtoestanden $z_0$ ($z_{\text{homeo}}$), $z_{\text{steatose}}$ en $z_{\text{cholestase}}$.
+## 6. Reflection & Next Step
+- **Is everything working properly?**
+  - Yes. The model loads directly onto GPU 1, computes the OGB atom/bond features and shortest paths for each 2D SMILES, executes the forward pass through all 12 Graphormer layers, and predicts whether a compound triggers **MIE 167 (LXR$\alpha$)**, **MIE 41 (BSEP)**, or **No MIE**.
+- **What is the immediate follow-up?**
+  - Proceed with **Milestone 1, Step 1.2** (`m01_graph_embedding.py`): building the `HepatocyteGraphormer` that compresses the biological 18-gene graph from Milestone 1.1 (`data/hepatocyte_features.pt`) into the latent cellular states $z_0$ ($z_{\text{homeo}}$), $z_{\text{steatose}}$, and $z_{\text{cholestase}}$.

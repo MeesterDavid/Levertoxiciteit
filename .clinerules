@@ -1,57 +1,56 @@
-# Project Regels voor Cline (uv + Multi-GPU Setup)
+# Project Rules for Cline (uv + Multi-GPU Setup)
 
-## 1. Hardware Isolatie & Omgeving (Strikt)
-- GPU 0 is exclusief gereserveerd voor lokale LLM's. Raak deze verder NOOIT aan.
-- GPU 1 is voor PyTorch, simulaties en training.
-- Dit project gebruikt 'uv'. Voer Python-taken ALTIJD uit via:
-  CUDA_VISIBLE_DEVICES=1 uv run python <scriptnaam>.py
+## 1. Hardware Isolation & Environment (Strict)
+- GPU 0 is exclusively reserved for local LLMs. NEVER touch it.
+- GPU 1 is for PyTorch, simulations, and training.
+- This project uses 'uv'. ALWAYS execute Python tasks via:
+  CUDA_VISIBLE_DEVICES=1 uv run python <script_name>.py
 
-## 2. Codekwaliteit, Architectuur & Agent-Contracten
-- Lees ALTIJD eerst `AGENTS.md` en `ARCHITECTURE.md` volledig door voordat je aan een taak begint.
-- Schrijf NOOIT volledige Python-scripts als platte tekst in de chat; gebruik ALTIJD direct je bestands-tool (`write_to_file` / `replace_in_file`) om bestanden daadwerkelijk op de schijf aan te maken.
-- Houd je strikt aan de vastgelegde tensor-shapes (`X`: `[18, 8]`, `z0`: `[B, 64]`, `p`: `[B, 33]`, `trajectories`: `[T, B, 64]`) en modulenamen uit `AGENTS.md`.
-- Gebruik PyTorch (CUDA), torchdiffeq en RDKit conform pyproject.toml.
-- Schrijf modulaire code zonder lege placeholders.
-- Test elk aangemaakt script direct via terminalverificatie op GPU 1.
+## 2. Code Quality, Architecture & Agent Contracts
+- ALWAYS read `AGENTS.md` and `ARCHITECTURE.md` completely before starting any task.
+- NEVER write complete Python scripts as plain text in the chat; ALWAYS directly use your file tool (`write_to_file` / `replace_in_file`) to actually create files on disk.
+- Strictly adhere to the established tensor shapes (`X`: `[18, 8]`, `z0`: `[B, 64]`, `p`: `[B, 33]`, `trajectories`: `[T, B, 64]`) and module names from `AGENTS.md`.
+- Use PyTorch (CUDA), torchdiffeq, and RDKit in accordance with pyproject.toml.
+- Write modular code without empty placeholders.
+- Test every created script immediately via terminal verification on GPU 1.
 
-## 3. Verplicht Denkproces- en Taaklogboek (Harde Regel)
-VOORDAT je enige code schrijft of aanpast voor een taak, ben je verplicht een logbestand aan te maken in de map `logs/` (bijv. `logs/task_<korte_naam>_thought.md`). 
+## 3. Mandatory Thought Process & Task Log (Hard Rule)
+BEFORE writing or modifying any code for a task, you are required to create a log file in the `logs/` directory (e.g., `logs/task_<short_name>_thought.md`).
 
-Dit logbestand **moet** dit exact aangehouden Markdown-sjabloon bevatten:
+This log file **must** contain this exact Markdown template:
 
 ```markdown
-# Denk- en Voortgangslog: [Taaknaam]
-- **Datum / Tijd:** [Timestamp]
-- **Doel van de taak:** [Welk onderdeel van ARCHITECTURE.md lossen we op?]
+# Thought & Progress Log: [Task Name]
+- **Date / Time:** [Timestamp]
+- **Task Goal:** [Which part of ARCHITECTURE.md are we solving?]
 
-## 1. Analyse & Probleemstelling
-- Wat wordt er gevraagd? Zowel de exacte prompt als de interpretatie ervan
-- Welke mogelijke valkuilen of randvoorwaarden zijn er?
+## 1. Analysis & Problem Statement
+- What is being asked? Both the exact prompt and its interpretation
+- What are the potential pitfalls or boundary conditions?
 
-## 2. Methodologische & Wetenschappelijke Overwegingen
-- Waarom kiezen we deze specifieke aanpak/bibliotheek/wiskundige formule?
-- Hoe sluit dit aan bij het onderzoeksvoorstel (bijv. AOP's, attractor dynamics, API-bronnen)?
+## 2. Methodological & Scientific Considerations
+- Why do we choose this specific approach/library/mathematical formula?
+- How does this align with the research proposal (e.g., AOPs, attractor dynamics, API sources)?
 
-## 3. Stap-voor-stap Uitvoeringsplan
-- Welke bestanden worden aangemaakt of gewijzigd?
-- Wat is de opbouw van de logica?
+## 3. Step-by-Step Execution Plan
+- Which files will be created or modified?
+- What is the structure of the logic?
 
-## 4. Terminal Executie & Verificatie (GPU 1)
-- Exact uitgevoerd commando: `CUDA_VISIBLE_DEVICES=1 uv run python ...`
-- Output / Terminal log (inclusief geverifieerde tensor shapes en ontbreken van NaNs):
+## 4. Terminal Execution & Verification (GPU 1)
+- Exact executed command: `CUDA_VISIBLE_DEVICES=1 uv run python ...`
+- Output / Terminal log (including verified tensor shapes and absence of NaNs):
 
-## 5. Check of taken echt zijn uitgevoerd
-- Check of je alle bestanden hebt aangemaakt en aangepast waarvan je zegt dat je die hebt aangemaakt.
-- Als dit niet zo is reflecteer dan waarom dit niet is gelukt en probeer nog eens, herhaal stap 5 tot het klopt
+## 5. Verification of Completed Tasks
+- Check whether you have actually created and modified all files you claim to have created.
+- If not, reflect on why this failed and try again; repeat step 5 until it is accurate.
 
-## 6. Reflectie & Volgende Stap
-- Werkt alles naar behoren? 
-- Wat is het directe vervolg?
+## 6. Reflection & Next Step
+- Is everything working properly?
+- What is the immediate follow-up?
 ```
 
-Na de uitvoering op GPU 1 moet je sectie 4, 5 en 6 van dit logbestand invullen met de daadwerkelijke resultaten.
+After execution on GPU 1, you must populate sections 4, 5, and 6 of this log file with the actual results.
 
-## 4. Visualisatie & Kwaliteit
-- Gebruik NOOIT matplotlib. Gebruik uitsluitend Plotly (`plotly.graph_objects` / `subplots`) en sla dashboards op als standalone HTML-bestanden.
-- Schrijf volledige, werkende code zonder placeholders.
-
+## 4. Visualization & Quality
+- NEVER use matplotlib. Exclusively use Plotly (`plotly.graph_objects` / `subplots`) and save dashboards as standalone HTML files.
+- Write complete, working code without placeholders.
