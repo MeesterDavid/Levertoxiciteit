@@ -100,6 +100,14 @@ MERMAID_TOXTRANSFORMER = """flowchart LR
     DATA2 ==> PREP2 ==> MODEL2 ==> OUT2"""
 
 
+def _text_px(text: str, font_size: float, mono: bool = False) -> float:
+    """
+    Approximate rendered width (px) of a single-line label for the Inter/monospace
+    stacks used in these diagrams (a deliberate slight over-estimate).
+    """
+    return len(text) * font_size * (0.6 if mono else 0.56)
+
+
 def _render_pipeline_svg(
     title: str,
     subtitle: str,
@@ -112,11 +120,14 @@ def _render_pipeline_svg(
     - Top-to-Bottom stacked boxes with vertical flow arrows inside each column
     - Layer type & tensor dimension badges on every block
     """
-    svg_w = 1860
+    svg_w = 1960
     svg_h = 1040
 
-    # Column widths: make Column 3 (AI Model Architecture) wider for detailed layer specs
-    col_widths = [360, 410, 560, 360]
+    # Column widths: make Column 3 (AI Model Architecture) wider for detailed layer specs.
+    # Columns 1 and 4 were widened as well: their headings ("1D. Farmacofoor &
+    # Fysicochemische Regels", "4D. Opgeslagen Bestanden (Contract M2/M4)") collided with
+    # the right-aligned badge that shares the same row.
+    col_widths = [380, 420, 590, 420]
     col_gap = 38
     left_margin = 28
     top_y = 98
@@ -205,20 +216,34 @@ def _render_pipeline_svg(
                 f'<rect x="{bx}" y="{curr_y}" width="{bw}" height="{bh}" rx="8" fill="{b_fill}" stroke="{b_border}" stroke-width="1.3" />'
             )
 
-            # Top row inside box: Title + Badge (type / tensor shape)
+            # Top row inside box: Title + Badge (type / tensor shape).
+            # The badge is right-aligned, so the heading is measured and shrunk (then
+            # ellipsised) to guarantee it never runs underneath the badge.
+            heading = it["heading"]
+            badge_txt = it.get("badge") or ""
+            badge_col = it.get("badge_color", c_color)
+            badge_w = max(_text_px(badge_txt, 9.4, mono=True) + 16.0, 70.0) if badge_txt else 0.0
+            badge_x = bx + bw - badge_w - 8 if badge_txt else bx + bw
+            heading_room = badge_x - (bx + 12) - 10
+
+            heading_fs = 12.2
+            while heading_fs > 9.0 and _text_px(heading, heading_fs) > heading_room:
+                heading_fs -= 0.4
+            heading_txt = heading
+            while heading_txt and _text_px(heading_txt, heading_fs) > heading_room:
+                heading_txt = heading_txt[:-2]
+            if heading_txt != heading:
+                heading_txt = heading_txt.rstrip(" ,-–—") + "…"
+
             parts.append(
-                f'<text x="{bx + 12}" y="{curr_y + 21}" fill="#F8FAFC" font-size="12.2" font-weight="700">{html_lib.escape(it["heading"])}</text>'
+                f'<text x="{bx + 12}" y="{curr_y + 21}" fill="#F8FAFC" font-size="{heading_fs:.1f}" font-weight="700">{html_lib.escape(heading_txt)}</text>'
             )
-            if it.get("badge"):
-                badge_txt = it["badge"]
-                badge_w = max(len(badge_txt) * 6.5 + 16, 70)
-                badge_x = bx + bw - badge_w - 8
-                badge_col = it.get("badge_color", c_color)
+            if badge_txt:
                 parts.append(
                     f'<rect x="{badge_x:.1f}" y="{curr_y + 6}" width="{badge_w:.1f}" height="20" rx="5" fill="#0B1120" stroke="{badge_col}" stroke-width="1" />'
                 )
                 parts.append(
-                    f'<text x="{badge_x + badge_w / 2:.1f}" y="{curr_y + 19.5}" text-anchor="middle" fill="{badge_col}" font-size="10.2" font-family="monospace" font-weight="700">{html_lib.escape(badge_txt)}</text>'
+                    f'<text x="{badge_x + badge_w / 2:.1f}" y="{curr_y + 19.5}" text-anchor="middle" fill="{badge_col}" font-size="9.4" font-family="monospace" font-weight="700">{html_lib.escape(badge_txt)}</text>'
                 )
 
             # Divider line inside box

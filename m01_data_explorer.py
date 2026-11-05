@@ -333,7 +333,7 @@ def _(
                 f"<title>{html_lib.escape(tip)}</title></g>"
             )
 
-        # Legend at bottom
+        # Legend at bottom (flows onto a second row instead of running out of the viewBox)
         leg_items = [
             ("#FF5964", "AOP 34: Steatosis/Lipogenesis"),
             ("#2EC4B6", "Homeostasis: β-Oxidation & VLDL"),
@@ -343,10 +343,15 @@ def _(
             ("#F43F5E", "Repression / Injury (-1 arrow)"),
         ]
         lx_cur = 28
+        ly_base = H - 14
         for lcol, llbl in leg_items:
-            svg.append(f'<circle cx="{lx_cur}" cy="{H - 18}" r="6" fill="{lcol}"/>')
-            svg.append(f'<text x="{lx_cur + 11}" y="{H - 14}" fill="#CBD5E1" font-size="11.5">{html_lib.escape(llbl)}</text>')
-            lx_cur += len(llbl) * 6.8 + 34
+            item_w = 11 + len(llbl) * 6.8 + 24
+            if lx_cur + item_w > W - 20 and lx_cur > 28:
+                lx_cur = 28
+                ly_base -= 20
+            svg.append(f'<circle cx="{lx_cur}" cy="{ly_base - 4}" r="6" fill="{lcol}"/>')
+            svg.append(f'<text x="{lx_cur + 11}" y="{ly_base}" fill="#CBD5E1" font-size="11.5">{html_lib.escape(llbl)}</text>')
+            lx_cur += item_w
 
         svg.append("</svg>")
         return "\n".join(svg)
@@ -462,7 +467,7 @@ def _(genes, group_filter, html_lib, mo):
                 f'<text x="{cx:.1f}" y="{p2_y0 + p2_h + 14:.1f}" fill="#E2E8F0" font-size="9.5" font-weight="600" text-anchor="end" transform="rotate(-40 {cx:.1f} {p2_y0 + p2_h + 14:.1f})">{_g["symbol"]}</text>'
             )
 
-        # Legend at bottom
+        # Legend at bottom (flows onto a second row instead of running out of the viewBox)
         legs = [
             ("#2EC4B6", "Healthy (GTEx/HPA Homeostasis)"),
             ("#FF5964", "Steatosis (GEO NAFLD / AOP 34)"),
@@ -471,10 +476,15 @@ def _(genes, group_filter, html_lib, mo):
             ("#FBBF24", "Δlog2FC Cholestasis vs. Healthy"),
         ]
         lx = 45
+        ly = H - 12
         for lcol, llbl in legs:
-            svg.append(f'<rect x="{lx}" y="{H - 22}" width="12" height="12" fill="{lcol}" rx="2"/>')
-            svg.append(f'<text x="{lx + 17}" y="{H - 12}" fill="#CBD5E1" font-size="11.5">{html_lib.escape(llbl)}</text>')
-            lx += len(llbl) * 6.8 + 42
+            item_w = 17 + len(llbl) * 6.8 + 26
+            if lx + item_w > W - 20 and lx > 45:
+                lx = 45
+                ly -= 20
+            svg.append(f'<rect x="{lx}" y="{ly - 10}" width="12" height="12" fill="{lcol}" rx="2"/>')
+            svg.append(f'<text x="{lx + 17}" y="{ly}" fill="#CBD5E1" font-size="11.5">{html_lib.escape(llbl)}</text>')
+            lx += item_w
 
         svg.append("</svg>")
         return "\n".join(svg)
@@ -635,7 +645,7 @@ def _(genes, html_lib, matrices, mo, np):
         dist_19 = np.array(matrices["dist_matrix_19_cls"], dtype=int)
         cls_labels = ["00:[CLS]"] + [f"{_g['idx'] + 1:02d}:{_g['symbol']}" for _g in genes]
 
-        W, H = 1160, 600
+        W, H = 1160, 640
         svg = [
             f'<svg viewBox="0 0 {W} {H}" width="100%" height="auto" style="background:#0F172A;border-radius:10px;border:1px solid #1E293B;font-family:Inter,system-ui,sans-serif;">',
             f'<text x="22" y="28" fill="#F8FAFC" font-size="16" font-weight="700">Visualization 4: Graphormer Structural Encodings — [19×19] Shortest-Path Matrix D (incl. [CLS]) &amp; Degree Centrality</text>',
@@ -643,7 +653,9 @@ def _(genes, html_lib, matrices, mo, np):
         ]
 
         # Panel 1 (Left): [19 x 19] matrix
-        mx0, my0, mw, mh = 92, 95, 550, 475
+        # my0 was 95: the -45 deg rotated column labels of the matrix reached up into the
+        # panel title at y=72. Extra top headroom + a steeper rotation keeps them clear.
+        mx0, my0, mw, mh = 92, 128, 550, 460
         cw = mw / 19.0
         ch = mh / 19.0
 
@@ -669,7 +681,7 @@ def _(genes, html_lib, matrices, mo, np):
             cx = mx0 + (i + 0.5) * cw
             cy = my0 + (i + 0.5) * ch
             svg.append(
-                f'<text x="{cx:.1f}" y="{my0 - 6:.1f}" fill="#CBD5E1" font-size="8.5" font-weight="600" text-anchor="start" transform="rotate(-45 {cx:.1f} {my0 - 6:.1f})">{cls_labels[i]}</text>'
+                f'<text x="{cx:.1f}" y="{my0 - 6:.1f}" fill="#CBD5E1" font-size="8.5" font-weight="600" text-anchor="start" transform="rotate(-58 {cx:.1f} {my0 - 6:.1f})">{cls_labels[i]}</text>'
             )
             svg.append(
                 f'<text x="{mx0 - 6:.1f}" y="{cy + 3:.1f}" fill="#CBD5E1" font-size="9" font-weight="600" text-anchor="end">{cls_labels[i]}</text>'
@@ -688,7 +700,9 @@ def _(genes, html_lib, matrices, mo, np):
                 )
 
         # Panel 2 (Right): In-Degree & Out-Degree per gene
-        bx0, by0, bw, bh = 720, 95, 405, 475
+        # Same vertical band as Panel A, so the degree tick labels (by0+bh+16) stay well
+        # above the In/Out-Degree legend at H-9.
+        bx0, by0, bw, bh = 720, 128, 405, 460
         rh = bh / 18.0
         max_deg = 4.0
         svg.append(f'<text x="{bx0 + bw/2:.1f}" y="72" fill="#38BDF8" font-size="12.5" font-weight="700" text-anchor="middle">Panel B: Graphormer Degree Centrality (In vs. Out)</text>')

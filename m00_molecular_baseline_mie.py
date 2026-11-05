@@ -1207,6 +1207,58 @@ ATOM_COLORS = {
 }
 
 
+def svg_text_px(text: str, font_size: float, bold: bool = False) -> float:
+    """
+    Approximate rendered width (px) of a single-line SVG label.
+
+    Deliberately a slight *over*-estimate for the Inter/Helvetica sans stack used in
+    these SVGs, so that wrapping never leaves a label sticking out of the viewBox.
+    """
+    return len(text) * font_size * (0.58 if bold else 0.56)
+
+
+def _boxes_overlap(a: tuple[float, float, float, float], b: tuple[float, float, float, float], tol: float = 2.0) -> bool:
+    """True when two (x0, y0, x1, y1) boxes genuinely intersect (2 px slack)."""
+    return min(a[2], b[2]) - max(a[0], b[0]) > tol and min(a[3], b[3]) - max(a[1], b[1]) > tol
+
+
+def wrap_svg_text(
+    text: str,
+    font_size: float,
+    max_width_px: float,
+    max_lines: int = 3,
+    bold: bool = False,
+) -> list[str]:
+    """
+    Greedy pixel-accurate word-wrap for raw SVG <text> labels.
+
+    Long sentences used to be cut with a fixed character slice (``note[:92]``), which
+    clipped text outside the panel. Wrapping is the only way to guarantee the label
+    stays inside its card for every compound.
+    """
+    words = str(text).split()
+    lines: list[str] = []
+    current = ""
+    for word in words:
+        candidate = word if not current else f"{current} {word}"
+        if not current or svg_text_px(candidate, font_size, bold) <= max_width_px:
+            current = candidate
+        else:
+            lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+
+    if len(lines) > max_lines:
+        kept = lines[:max_lines]
+        tail = kept[-1].split()
+        while tail and svg_text_px(" ".join(tail) + " …", font_size, bold) > max_width_px:
+            tail.pop()
+        kept[-1] = (" ".join(tail) + " …") if tail else "…"
+        lines = kept
+    return lines
+
+
 def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
     """
     Renders Cell 1:
@@ -1233,8 +1285,10 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
     span_x = max(max_x - min_x, 1.5)
     span_y = max(max_y - min_y, 1.5)
 
-    # Top-left canvas for the 2D molecular graph: x in [45, 640], y in [80, 385]
-    pad_l, pad_r, pad_t, pad_b = 55, 630, 82, 378
+    # Top-left canvas for the 2D molecular graph: x in [45, 640], y in [102, 386]
+    # NOTE: pad_t must stay well below the "Model 1 - Microsoft Graphormer ..." caption
+    # (baseline y=80, box 71-83); otherwise the drawn molecule is painted over the title.
+    pad_l, pad_r, pad_t, pad_b = 55, 630, 102, 386
     avail_w = pad_r - pad_l
     avail_h = pad_b - pad_t
     scale = min(avail_w / span_x, avail_h / span_y)
@@ -1254,11 +1308,13 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
     ]
 
     # Draw bonds (edges)
+    bond_px: list[float] = []
     for b in bonds:
         u_atom = atoms[b["u"]]
         v_atom = atoms[b["v"]]
         x1, y1 = to_px(u_atom["x"], u_atom["y"])
         x2, y2 = to_px(v_atom["x"], v_atom["y"])
+        bond_px.append(math.hypot(x2 - x1, y2 - y1))
         btype = b["bond_type"]
         stroke_col = "#64748B" if not b["is_aromatic"] else "#38BDF8"
         stroke_w = 2.5 if btype == "SINGLE" else 3.6
@@ -1272,14 +1328,22 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
             f"</g>"
         )
 
+    # Atoms must never swallow their neighbours: cap the marker radius and the element
+    # symbol relative to the shortest bond actually drawn. Without this cap the opaque
+    # atom circles are painted on top of a neighbouring atom label (dense molecules
+    # such as Amiodarone/Troglitazone ended up with unreadable element symbols).
+    min_bond_px = min(bond_px) if bond_px else 40.0
+    r_cap = max(6.0, min(17.5, 0.34 * min_bond_px))
+    sym_fs = max(6.2, min(10.5, 0.95 * min_bond_px))
+
     # Draw atoms (nodes) with Graphormer saliency halo
     for i, a in enumerate(atoms):
         cx, cy = to_px(a["x"], a["y"])
         sal = float(saliency[i])
         sym = a["symbol"]
         base_col = ATOM_COLORS.get(sym, "#CBD5E1")
-        r = 10.5 + 7.0 * sal
-        halo_r = r + 5.0
+        r = min(10.5 + 7.0 * sal, r_cap)
+        halo_r = r + 4.0
         halo_op = 0.15 + 0.55 * sal
         halo_col = "#F43F5E" if sal >= 0.65 else ("#FACC15" if sal >= 0.35 else "#38BDF8")
         a_tip = html_lib.escape(
@@ -1294,7 +1358,7 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
             )
         parts.append(
             f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="#0F172A" stroke="{base_col}" stroke-width="2.3"/>'
-            f'<text x="{cx:.1f}" y="{cy + 3.8:.1f}" text-anchor="middle" fill="{base_col}" font-size="10.5" font-weight="700">{sym}</text>'
+            f'<text x="{cx:.1f}" y="{cy + sym_fs * 0.36:.1f}" text-anchor="middle" fill="{base_col}" font-size="{sym_fs:.1f}" font-weight="700">{sym}</text>'
             f"</g>"
         )
 
@@ -1407,14 +1471,21 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
                 f'<text x="1058" y="{sy + 10}" fill="#E2E8F0" font-size="10.5" font-weight="700">{s_prob * 100:.1f}%</text>'
             )
 
+    # The limitation note used to be hard-sliced (note[:92] / note[92:188]) which clipped
+    # text outside the 675-1120 panel for several compounds. Wrap it in pixels instead.
+    note_lines = wrap_svg_text(comp["limitation_note_nl"], 10.8, 405.0, max_lines=3)
+    note_svg = "".join(
+        f'<text x="693" y="{512 + i * 15}" fill="#94A3B8" font-size="10.8">{html_lib.escape(line)}</text>'
+        for i, line in enumerate(note_lines)
+    )
+
     parts.append(
         f'<line x1="693" y1="415" x2="1102" y2="415" stroke="#1E293B" stroke-width="1.5"/>'
         f'<text x="693" y="434" fill="#38BDF8" font-size="12" font-weight="700">Quantum &amp; Physicochemical Properties:</text>'
         f'<text x="693" y="452" fill="#CBD5E1" font-size="11.5">• PCQM4Mv2 HOMO-LUMO Gap: <tspan fill="#F8FAFC" font-weight="700">{comp["homo_lumo_gap_ev"]:.3f} eV</tspan> | MW: <tspan fill="#F8FAFC" font-weight="700">{desc["mw"]} Da</tspan> | LogP: <tspan fill="#F8FAFC" font-weight="700">{desc["logp"]}</tspan></text>'
         f'<text x="693" y="470" fill="#CBD5E1" font-size="11.5">• TPSA: <tspan fill="#F8FAFC" font-weight="700">{desc["tpsa"]} Å²</tspan> | Rings: <tspan fill="#F8FAFC" font-weight="700">{desc["rings"]}</tspan> | Halogens: <tspan fill="#F8FAFC" font-weight="700">{desc["halogens"]}</tspan></text>'
         f'<text x="693" y="494" fill="#FACC15" font-size="11.5" font-weight="700">⚠️ Why Milestones 1–4 are required after this dual baseline:</text>'
-        f'<text x="693" y="512" fill="#94A3B8" font-size="10.8">{html_lib.escape(comp["limitation_note_nl"][:92])}</text>'
-        f'<text x="693" y="527" fill="#94A3B8" font-size="10.8">{html_lib.escape(comp["limitation_note_nl"][92:188])}</text>'
+        f"{note_svg}"
     )
 
     parts.append("</svg>")
@@ -1538,10 +1609,14 @@ def render_embedding_space_svg(
             f'<text x="{x0 + 14}" y="240" text-anchor="middle" fill="#94A3B8" font-size="10.5" transform="rotate(-90 {x0 + 14} 240)">{title_y}</text>'
         )
 
+        # Pass 1: markers only. Pass 2 (below) paints every label on top, so a
+        # neighbouring PCA marker can never occlude a compound name.
+        points: list[tuple[float, float, str, dict[str, Any]]] = []
         for i, c in enumerate(compounds):
             cx = x0 + 38.0 + ((float(coords[i, 0]) - px_min) / sx) * 260.0
             cy = 395.0 - ((float(coords[i, 1]) - py_min) / sy) * 305.0
             col = MIE_CLASS_COLORS[c["true_class"]]
+            points.append((cx, cy, col, c))
             tip = html_lib.escape(
                 f"{c['name']} ({c['mie_code']}) — {model_tag}\n"
                 f"PC1={coords[i, 0]:.3f}, PC2={coords[i, 1]:.3f}\n"
@@ -1549,9 +1624,31 @@ def render_embedding_space_svg(
             )
             parts.append(
                 f"<g><title>{tip}</title>"
-                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="8.5" fill="{col}" fill-opacity="0.88" stroke="#F8FAFC" stroke-width="1.6"/>'
-                f'<text x="{cx:.1f}" y="{cy - 11:.1f}" text-anchor="middle" fill="#F8FAFC" font-size="10" font-weight="700">{html_lib.escape(c["name"][:10])}</text>'
+                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="7.5" fill="{col}" fill-opacity="0.88" stroke="#F8FAFC" stroke-width="1.4"/>'
                 f"</g>"
+            )
+
+        # Pass 2: labels on top of all markers. Each label tries a short list of
+        # offsets (above / below the marker) and keeps the first one that does not
+        # collide with an already placed label - two compounds with nearly identical
+        # PCA coordinates used to print straight through each other.
+        placed: list[tuple[float, float, float, float]] = []
+        for cx, cy, col, c in points:
+            name = c["name"][:10]
+            half_w = svg_text_px(name, 9.6, bold=True) / 2.0
+            offsets = (-11.5, 17.0, -24.0, 27.5, -37.0, 40.0)
+            chosen_dy = offsets[0]
+            for dy in offsets:
+                box = (cx - half_w, cy + dy - 7.5, cx + half_w, cy + dy + 2.2)
+                if not any(_boxes_overlap(box, prev) for prev in placed):
+                    chosen_dy = dy
+                    placed.append(box)
+                    break
+            else:
+                placed.append((cx - half_w, cy + chosen_dy - 7.5, cx + half_w, cy + chosen_dy + 2.2))
+            parts.append(
+                f'<text x="{cx:.1f}" y="{cy + chosen_dy:.1f}" text-anchor="middle" fill="#F8FAFC" '
+                f'font-size="9.6" font-weight="700">{html_lib.escape(name)}</text>'
             )
 
     _draw_pca_panel(graph_pca_coords, 20.0, "Graphormer PC 1 (2D Graph Topology)", "Graphormer PC 2", "Microsoft Graphormer")
@@ -1563,9 +1660,13 @@ def render_embedding_space_svg(
     hx0, hy0 = 795.0, 86.0
     for i in range(n):
         short_i = compounds[i]["name"][:9]
+        # Column headers: 60-degree rotation + shorter label so the 26.5 px column pitch
+        # can hold them (at -42 deg the horizontal extent exceeded the pitch and the
+        # 12 compound names were printed on top of each other).
+        short_top = compounds[i]["name"][:8]
         parts.append(
             f'<text x="{hx0 - 5}" y="{hy0 + i * cell + 17:.1f}" text-anchor="end" fill="{MIE_CLASS_COLORS[compounds[i]["true_class"]]}" font-size="9.5" font-weight="700">{html_lib.escape(short_i)}</text>'
-            f'<text x="{hx0 + i * cell + 12:.1f}" y="{hy0 - 5}" text-anchor="start" fill="{MIE_CLASS_COLORS[compounds[i]["true_class"]]}" font-size="9.5" font-weight="700" transform="rotate(-42 {hx0 + i * cell + 12:.1f} {hy0 - 5})">{html_lib.escape(short_i)}</text>'
+            f'<text x="{hx0 + i * cell + 12:.1f}" y="{hy0 - 5}" text-anchor="start" fill="{MIE_CLASS_COLORS[compounds[i]["true_class"]]}" font-size="8.6" font-weight="700" transform="rotate(-60 {hx0 + i * cell + 12:.1f} {hy0 - 5})">{html_lib.escape(short_top)}</text>'
         )
         for j in range(n):
             sim = float(cos_sim_matrix[i, j])
