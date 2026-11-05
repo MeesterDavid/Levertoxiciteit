@@ -4,7 +4,14 @@ __pycache__/
 *$py.class
 
 # slides
-/slides/
+/slides/node_modules
+/slides/.DS_Store
+/slides/dist
+/slides/*.local
+/slides/.vite-inspect
+/slides/.remote-assets
+/slides/components.d.ts
+
 
 # C extensions
 *.so

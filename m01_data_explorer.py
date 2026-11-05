@@ -789,7 +789,7 @@ def _(
         ]
     )
 
-    # Build 01_1_data_explorer.html with pure CSS radio tabs + inline interactive SVGs
+    # Build public/01_1_data_explorer.html with pure CSS radio tabs + inline interactive SVGs
     # Guaranteed to work 100% in VS Code HTML Preview (even when JavaScript is blocked!) and in every browser.
     all_grps = set(GROUP_COLORS.keys())
     net_states = [
@@ -1062,7 +1062,9 @@ def _(
 </body>
 </html>
 """
-    Path("01_1_data_explorer.html").write_text(standalone_html, encoding="utf-8")
+    _public_dir = Path("public")
+    _public_dir.mkdir(parents=True, exist_ok=True)
+    (_public_dir / "01_1_data_explorer.html").write_text(standalone_html, encoding="utf-8")
 
     tables_view = mo.vstack(
         [

@@ -38,17 +38,18 @@ Each milestone builds upon the exact data structures and tensor shapes of the pr
   │  Predicts from SMILES (per model and in consensus) whether a compound triggers MIE 167
   │  (LXR activation) or MIE 41 (BSEP inhibition) (Step A of the validation strategy).
   │
-  ├─► data/molecular_baseline_mie.pt    (768D Graphormer + 512D ToxTransformer embeddings & MIE probabilities)
-  └─► 00_molecular_baseline_mie.html    (Interactive dashboard: Graphormer vs. ToxTransformer MIE & PCA)
+  ├─► data/molecular_baseline_mie.pt         (768D Graphormer + 512D ToxTransformer embeddings & MIE probabilities)
+  └─► public/00_molecular_baseline_mie.html  (Interactive dashboard: Graphormer vs. ToxTransformer MIE & PCA)
         │
         ▼
 [Milestone 1.1: fetch_real_hepatocyte_data.py & m01_data_explorer.py]
   │  Fetches real healthy (GTEx/HPA) and pathological (NCBI GEO Steatosis & Cholestasis)
   │  expression profiles + MyGene.info structural features + STRING-db interactions.
   │
-  ├─► data/hepatocyte_baseline_data.json  (Human-readable + Marimo input + AOP annotations)
-  └─► data/hepatocyte_features.pt         (PyTorch dict with X_healthy, X_steatosis, X_cholestasis [18, 8],
-                                           in_degrees [18], out_degrees [18], dist_matrix_19_cls [19, 19])
+  ├─► data/hepatocyte_baseline_data.json     (Human-readable + Marimo input + AOP annotations)
+  ├─► data/hepatocyte_features.pt            (PyTorch dict with X_healthy, X_steatosis, X_cholestasis [18, 8],
+  │                                           in_degrees [18], out_degrees [18], dist_matrix_19_cls [19, 19])
+  └─► public/01_1_data_explorer.html         (Exported Marimo / standalone HTML explorer in `public/`)
         │
         ▼
 [Milestone 1.2: m01_graph_embedding.py (HepatocyteGraphormer)]
@@ -182,7 +183,8 @@ Create a valid Marimo notebook (`import marimo as mo`) that loads `data/hepatocy
    - **Visualization 1 (Biological AOP Network Graph):** 2D network where node size scales with the selected expression state (`state_selector`), node color corresponds to the 4 AOP groups, and edges are green (`+1` activation) or red dashed (`-1` repression) with the full **OECD AOP citation** and **STRING-db score** in the hover tooltip.
    - **Visualization 2 (Healthy vs. Pathological Expression & Feature Heatmap `[18, 8]`):** Interactive comparison of the 8 features across the 18 genes and a grouped bar/heatmap of Healthy vs. Steatosis vs. Cholestasis ($\log_2 \text{TPM}$).
    - **Visualization 3 (The `[19, 19]` Graphormer Shortest-Path Matrix):** Heatmap of `dist_matrix_19_cls` including `[CLS]` at index `0`.
-3. **Verification:**
+3. **HTML Export & Verification:**
+   - Export all Marimo HTML pages and standalone HTML dashboards to the `public/` folder in this repository (e.g., `public/01_1_data_explorer.html` or via `CUDA_VISIBLE_DEVICES=1 uv run marimo export html m01_data_explorer.py -o public/01_1_data_explorer.html`).
    - Verify that the script validates without errors using:
      ```bash
      CUDA_VISIBLE_DEVICES=1 uv run marimo check m01_data_explorer.py

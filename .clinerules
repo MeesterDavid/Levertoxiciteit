@@ -53,4 +53,5 @@ After execution on GPU 1, you must populate sections 4, 5, and 6 of this log fil
 
 ## 4. Visualization & Quality
 - NEVER use matplotlib. Exclusively use Plotly (`plotly.graph_objects` / `subplots`) and save dashboards as standalone HTML files.
+- ALWAYS export Marimo HTML pages and standalone HTML dashboards to the `public/` directory in this repository (e.g., `public/00_molecular_baseline_mie.html`, `public/01_1_data_explorer.html`, or via `marimo export html <notebook>.py -o public/<name>.html`).
 - Write complete, working code without placeholders.

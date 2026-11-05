@@ -22,7 +22,7 @@ Purpose of this program:
    - Class 2: MIE 41  — ABCB11 (BSEP) Inhibition -> AOP 27 Cholestasis (e.g., Bosentan, Troglitazone, Glibenclamide, Chlorpromazine)
 4. Saves all embeddings and predictions in `data/molecular_baseline_mie.pt` and
    `data/molecular_baseline_mie.json`, and generates the interactive HTML/SVG dashboard
-   `00_molecular_baseline_mie.html` (with an English user guide above each cell).
+   `public/00_molecular_baseline_mie.html` (with an English user guide above each cell).
 """
 
 import html as html_lib
@@ -1193,7 +1193,7 @@ def compute_loocv_predictions(
 
 
 # ==============================================================================
-# 4. SVG VISUALIZATION GENERATORS FOR `00_molecular_baseline_mie.html`
+# 4. SVG VISUALIZATION GENERATORS FOR `public/00_molecular_baseline_mie.html`
 # ==============================================================================
 ATOM_COLORS = {
     "C": "#94A3B8",
@@ -1649,12 +1649,16 @@ def generate_standalone_html(
     output_html_path: Path,
 ) -> None:
     """
-    Builds the standalone dashboard `00_molecular_baseline_mie.html` that works 100%
+    Builds the standalone dashboard `public/00_molecular_baseline_mie.html` that works 100%
     in VS Code HTML Preview (with pure CSS radio tabs and English user guides).
     """
     mol_svgs = [render_molecule_graph_svg(c) for c in compounds_out]
     prob_svg = render_mie_probabilities_svg(compounds_out)
     emb_svg = render_embedding_space_svg(compounds_out, graph_pca_coords, tox_pca_coords, cos_sim_matrix)
+    import generate_pipeline_diagrams
+    arch_graph_svg = generate_pipeline_diagrams.build_graphormer_svg()
+    arch_tox_svg = generate_pipeline_diagrams.build_toxtransformer_svg()
+    generate_pipeline_diagrams.main()
 
     radio_inputs = []
     radio_labels = []
@@ -1890,9 +1894,27 @@ def generate_standalone_html(
       </table>
     </div>
   </div>
+
+  <!-- CELL 5: SCHEMATIC PIPELINE & AI MODEL ARCHITECTURE DIAGRAMS -->
+  <div class="card">
+    <div class="guide-box">
+      <h3>📐 User Guide Cell 5: Schematic Pipeline &amp; Layer-by-Layer AI Model Architectures (Graphormer &amp; ToxTransformer)</h3>
+      <ul>
+        <li><b>How to read these schematic figures:</b> The pipeline flows from <b>left to right</b> (<code>1. Data &amp; Sources</code> &rarr; <code>2. Preprocessing</code> &rarr; <code>3. AI Model Architecture</code> &rarr; <code>4. Output &amp; Contract</code>). Within each column, the data sources, transformations, and neural network layers (with exact layer types and tensor dimensions) flow from <b>top to bottom</b>.</li>
+        <li><b>Standalone Paper Figures in <code>public/</code>:</b> <a href="pipeline_microsoft_graphormer.svg" style="color:#38BDF8;">pipeline_microsoft_graphormer.svg</a> | <a href="pipeline_toxtransformer.svg" style="color:#C084FC;">pipeline_toxtransformer.svg</a> | <a href="00_architecture_pipelines.html" style="color:#10B981;">00_architecture_pipelines.html</a></li>
+      </ul>
+    </div>
+    <div style="margin-bottom:24px;">
+      {arch_graph_svg}
+    </div>
+    <div>
+      {arch_tox_svg}
+    </div>
+  </div>
 </body>
 </html>
 """
+    output_html_path.parent.mkdir(parents=True, exist_ok=True)
     output_html_path.write_text(html_doc, encoding="utf-8")
 
 
@@ -2059,9 +2081,11 @@ def main() -> None:
     # 5. Save PyTorch tensors and JSON for Milestones 2 and 4
     data_dir = Path("data")
     data_dir.mkdir(exist_ok=True)
+    public_dir = Path("public")
+    public_dir.mkdir(exist_ok=True)
     pt_path = data_dir / "molecular_baseline_mie.pt"
     json_path = data_dir / "molecular_baseline_mie.json"
-    html_path = Path("00_molecular_baseline_mie.html")
+    html_path = public_dir / "00_molecular_baseline_mie.html"
 
     torch.save(
         {

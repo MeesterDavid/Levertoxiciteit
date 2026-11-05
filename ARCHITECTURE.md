@@ -65,13 +65,13 @@ To demonstrate the added value of multimodal and multiscale modeling, two comple
 
 See [`AGENTS.md`](AGENTS.md) for the strict chain contracts and PyTorch dictionary keys between milestones:
 - **Milestone 0 (Dual Molecular Structure & SMILES Baseline & MIE Predictor):**
-  - `m00_molecular_baseline_mie.py` (Loads both **Microsoft Graphormer** `clefourrier/pcqm4mv2_graphormer_base` and **ToxTransformer** `biobricks-ai/toxtransformer` on GPU 1, converts SMILES into 2D OGB atom/bond graphs and SELFIES sequences, predicts per model and in consensus whether a compound triggers **MIE 167 (LXR$\alpha$)** or **MIE 41 (BSEP)**, saves `data/molecular_baseline_mie.pt`, and generates `00_molecular_baseline_mie.html`).
+  - `m00_molecular_baseline_mie.py` (Loads both **Microsoft Graphormer** `clefourrier/pcqm4mv2_graphormer_base` and **ToxTransformer** `biobricks-ai/toxtransformer` on GPU 1, converts SMILES into 2D OGB atom/bond graphs and SELFIES sequences, predicts per model and in consensus whether a compound triggers **MIE 167 (LXR$\alpha$)** or **MIE 41 (BSEP)**, saves `data/molecular_baseline_mie.pt`, and generates `public/00_molecular_baseline_mie.html`).
 - **Milestone 1 (Biological Network Graph, Real Data & HepatocyteGraphormer):**
-  - *Step 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Fetches healthy GTEx/HPA and pathological GEO Steatosis/Cholestasis data + MyGene.info + STRING-db with formal AOP documentation, saves `data/hepatocyte_features.pt` and `data/hepatocyte_baseline_data.json`, and provides an interactive Marimo explorer + `01_1_data_explorer.html`).
-  - *Step 1.2:* `m01_graph_embedding.py` (Builds the `HepatocyteGraphormer` based on the real data, computes the empirically anchored attractors `z0`, `z_steatose`, `z_cholestase`, and generates `01_network_and_embedding.html`).
-- **Milestone 2:** `m02_perturbation_encoder.py` (Generates `02_perturbation_profiles.html`).
-- **Milestone 3:** `m03_neural_ode_trajectory.py` (Generates `03_trajectory_dynamics.html`).
-- **Milestone 4:** `m04_attractor_simulation.py` (Generates `04_attractor_landscape.html`).
+  - *Step 1.1:* `fetch_real_hepatocyte_data.py` & `m01_data_explorer.py` (Fetches healthy GTEx/HPA and pathological GEO Steatosis/Cholestasis data + MyGene.info + STRING-db with formal AOP documentation, saves `data/hepatocyte_features.pt` and `data/hepatocyte_baseline_data.json`, and provides an interactive Marimo explorer exported to `public/01_1_data_explorer.html`).
+  - *Step 1.2:* `m01_graph_embedding.py` (Builds the `HepatocyteGraphormer` based on the real data, computes the empirically anchored attractors `z0`, `z_steatose`, `z_cholestase`, and generates `public/01_network_and_embedding.html`).
+- **Milestone 2:** `m02_perturbation_encoder.py` (Generates `public/02_perturbation_profiles.html`).
+- **Milestone 3:** `m03_neural_ode_trajectory.py` (Generates `public/03_trajectory_dynamics.html`).
+- **Milestone 4:** `m04_attractor_simulation.py` (Generates `public/04_attractor_landscape.html`).
 
 ---
 
@@ -97,7 +97,7 @@ See [`AGENTS.md`](AGENTS.md) for the strict chain contracts and PyTorch dictiona
        * **Class 2 — `MIE_41_BSEP_Cholestase` (AOP 27):** Compounds that inhibit the bile salt export pump BSEP (*ABCB11*, MIE 41) (e.g., *Bosentan*, *Troglitazone*, *Cyclosporine A*, *Chlorpromazine*).
   4. **Output & Contract for Milestones 2 and 4:**
      - Saves `data/molecular_baseline_mie.pt` and `data/molecular_baseline_mie.json` with the 768D Graphormer embeddings, 512D ToxTransformer embeddings, 2D PCA projections for both models, and the MIE probability distributions (`mie_probabilities`, `toxtransformer_mie_probabilities`, `consensus_mie_probabilities`).
-     - Generates the standalone interactive dashboard `00_molecular_baseline_mie.html` (featuring 2D molecular graph + SELFIES token-saliency strip, model comparison Graphormer vs. ToxTransformer vs. Consensus, dual 2D PCA latent space, and summary table).
+     - Generates the standalone interactive dashboard `public/00_molecular_baseline_mie.html` (featuring 2D molecular graph + SELFIES token-saliency strip, model comparison Graphormer vs. ToxTransformer vs. Consensus, dual 2D PCA latent space, and summary table).
 
 ---
 
@@ -162,7 +162,7 @@ See [`AGENTS.md`](AGENTS.md) for the strict chain contracts and PyTorch dictiona
 #### Milestone 1, Step 1.2: Graphormer Encoder (`m01_graph_embedding.py`)
 * **Input:** Loads `data/hepatocyte_features.pt` from Step 1.1.
 * **Architecture (`HepatocyteGraphormer`):** Input projection (`8 -> 64`), Centrality embeddings, `[CLS]` token prepending, Spatial attention bias based on the `[19, 19]` Floyd-Warshall distance matrix, 2 Graphormer transformer layers, and a LayerNorm+Tanh readout to $z_0 \in \mathbb{R}^{[1, 64]}$.
-* **Output:** Generates standalone Plotly dashboard `01_network_and_embedding.html`.
+* **Output:** Generates standalone Plotly dashboard `public/01_network_and_embedding.html`.
 
 ---
 
