@@ -6,9 +6,9 @@ Kader: Promotieonderzoek Lectoraat Innovative Testing (Hogeschool Utrecht)
 
 ## 0. Versimpelde uitleg van AOP34 en AOP27
 
-  **AOP 34, leververvetting:** Wanneer bepaalde chemische stoffen een specifieke schakelaar in de levercel aanzetten, gaat de cel ongecontroleerd extra vetten aanmaken én vetten uit het bloed opzuigen. In het begin kan de cel dit extra vet nog veilig opslaan of verbranden, maar bij langdurige overbelasting raakt het opruimsysteem verstopt. De cel zwelt op, raakt beschadigd door giftige vetstapeling en sterft uiteindelijk af, wat leidt tot ernstige leverontsteking en littekenweefsel.
+  **AOP 34, Steatose, leververvetting:** Wanneer bepaalde chemische stoffen een specifieke schakelaar in de levercel aanzetten, gaat de cel ongecontroleerd extra vetten aanmaken én vetten uit het bloed opzuigen. In het begin kan de cel dit extra vet nog veilig opslaan of verbranden, maar bij langdurige overbelasting raakt het opruimsysteem verstopt. De cel zwelt op, raakt beschadigd door giftige vetstapeling en sterft uiteindelijk af, wat leidt tot ernstige leverontsteking en littekenweefsel.
 
-  **AOP 27, Galstuwing**: Als een chemische stof de afvoerpomp van de lever blokkeert, kunnen galzouten de cel niet meer verlaten en hopen ze zich gevaarlijk op. De cel probeert zich eerst te verdedigen door direct de aanmaak en opname van nieuwe galzouten stil te leggen. Als de chemische blokkade echter te zwaar is, vreten de opgestapelde bijtende galzouten de cel van binnenuit aan met zuurstofschade en ontstekingen, waardoor levercellen afsterven en de galstroom volledig vastloopt.
+  **AOP 27, Cholestase, Galstuwing**: Als een chemische stof de afvoerpomp van de lever blokkeert, kunnen galzouten de cel niet meer verlaten en hopen ze zich gevaarlijk op. De cel probeert zich eerst te verdedigen door direct de aanmaak en opname van nieuwe galzouten stil te leggen. Als de chemische blokkade echter te zwaar is, vreten de opgestapelde bijtende galzouten de cel van binnenuit aan met zuurstofschade en ontstekingen, waardoor levercellen afsterven en de galstroom volledig vastloopt.
 
 ## 1. Wetenschappelijke & Biologische Context
 
