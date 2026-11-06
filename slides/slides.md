@@ -534,10 +534,43 @@ Kortom: om een Adverse Outcome betrouwbaar te voorspellen, moeten we de adaptiev
 -->
 
 ---
-layout: center
-class: text-center
----
 
-# Slide 2 — Aanpak, CV & Motivatie
+<div class="slide-container">
+<!-- Header: only the central dogma, deliberately without eyebrow or pill -->
+<div class="header-bar">
+<h1 class="main-title dogma-title">z<sub>homeo</sub> or z<sub>adversity</sub></h1>
+</div>
+<!-- The solution, in one line -->
+<div class="sub-claim">
+<span class="sub-claim-tag">The solution</span>
+<span>one <strong>multimodal &amp; multiscale AI model</strong> that fuses protein, gene and chemical data into one representation — and turns it into <strong>probabilities</strong>, not a label.</span>
+</div>
+<!-- Central figure: 4 data sources -> 1 AI node -> 2 answers (solid vs dotted) -->
+<figure class="figure-card">
+<img :src="'/s2_multimodal_ai_graph.svg'" alt="Four real data sources (protein interactions, gene expression, gene interactions, chemical structure and dose) feed one multimodal and multiscale AI model; it returns the probability of a specific MIE (solid arrow) and, as the next step, the probability of adversity given context, exposure and dose (dotted arrow)." class="pipeline-figure" />
+</figure>
+<!-- Bottom claim banner -->
+<div class="claim-banner">
+<div class="claim-icon">✦</div>
+<div class="claim-text">
+<strong>Today</strong> a validated <em>P</em>(MIE | structure): 12/12 in-sample, 8/12 leave-one-out — the uncertainty is measurable. <strong>Next step:</strong> <em>P</em>(adversity | context, exposure, dose) through the Neural ODE (M1.2 → M4): from a MIE probability to the probability that the cell tips over into <em>z<sub>adversity</sub></em>.
+</div>
+</div>
+</div>
 
-*(Wordt in de volgende stap uitgewerkt)*
+<!--
+SPEAKER NOTES SLIDE 2 (± 90–100 seconds | ~230 words):
+
+[1. TITLE — the central dogma]
+"This is the central claim of the proposal. We do not simply predict 'toxic' or 'non-toxic'. We predict the fate of the liver cell itself: does it spring back to the homeostatic attractor z-homeo, or does it tip over into the pathological attractor z-adversity — and then on to z-steatosis or to z-cholestasis? That tipping point is the only thing that biologically matters, and it is exactly what a linear AOP cannot give us."
+
+[2. FOUR DATA SOURCES — left]
+"The solution is one multimodal and multiscale AI model, and it takes in four data sources. Protein-protein interactions from STRING-db: eighteen genes with a mean interaction score of 0.81. Gene expression from GTEx, the Human Protein Atlas, GEO and HepaRG: eighteen genes in three states — healthy, steatosis and cholestasis. Gene-gene interactions from OECD AOP 34 and 27 plus the Physiological Maps: twenty directed interactions, fourteen activating and six repressing, summarised in a 19-by-19 shortest-path matrix for the Graphormer. And chemical information: SMILES plus dose for twelve reference compounds in three MIE classes."
+
+[3. THE FUSION NODE — middle]
+"Everything converges in that single node: Graphormer with 47.7 million parameters plus ToxFormer with 25.4 million. That is where the modalities meet: the graph encoder on the genes, the chemical structure with its dose, and the dynamics on top."
+
+[4. TWO ANSWERS — right]
+"Then the two answers. The solid arrow is what we have today: the probability that a compound induces one specific MIE — LXR activation or BSEP inhibition. In-sample twelve out of twelve correct with a mean probability of 0.98. But under leave-one-out that drops to eight out of twelve, with a mean probability of 0.39. And that is not a weakness: that is the point. We can measure the uncertainty — which is exactly what probabilistic risk assessment asks for.
+The dotted arrow is the next step, and it is dotted on purpose: the probability of adversity given context, exposure and dose. For that we are now building the chain from milestone 1.2 to 4: the Graphormer encoder on the genes, the perturbation encoder, the Neural ODE over twenty-four hours, and finally the bifurcation that gives the point of departure."
+-->
