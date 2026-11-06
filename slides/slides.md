@@ -24,15 +24,14 @@ canvasWidth: 1120
 <div class="eyebrow">Onderzoeksvoorstel Pitch · Innovative Testing</div>
 <h1 class="main-title">Multimodal &amp; Multiscale AI in de Toxicologie</h1>
 </div>
-<div class="header-pill">Slide 1 / 2 · Context &amp; De Kwestie</div>
+<div class="header-pill">Slide 1 / 2 · NAMs &amp; Beyond Linear AOPs</div>
 </div>
 <!-- Main 2-Column Grid -->
 <div class="main-grid">
-<!-- LEFT COLUMN: DE CONTEXT -->
+<!-- LEFT COLUMN: NEW APPROACH METHODOLOGIES -->
 <div class="panel context-panel">
 <div class="panel-header">
-<span class="badge badge-blue">1. De Context</span>
-<span class="panel-subtitle">Dierproefvrije &amp; Probabilistische Risicobeoordeling</span>
+<span class="badge badge-blue">1. New Approach Methodologies</span>
 </div>
 <!-- NAM Image / Placeholder -->
 <div class="nam-visual-wrap">
@@ -64,46 +63,35 @@ class="nam-img"
 </div>
 </div>
 </div>
-<!-- RIGHT COLUMN: DE KWESTIE — TWEE DELEN: (A) lineair AOP 34 -> attractor, (B) emergente CSD -->
+<!-- RIGHT COLUMN: BEYOND LINEAR AOPS — TWEE DELEN: (A) lineair AOP 34 -> homeostatische attractor, (B) emergente CSD -->
 <div class="panel kwestie-panel">
 <div class="panel-header">
-<span class="badge badge-rose">2. De Kwestie</span>
-<span class="panel-subtitle">Van lineair AOP naar emergente weefseldynamiek</span>
+<span class="badge badge-rose">2. Beyond Linear AOPs</span>
+<span class="panel-subtitle">From qualitative linear chains to dynamic, quantitative systems</span>
 </div>
-<!-- DEEL A: AOP 34 (lineair) — één klik voegt de adaptieve homeostatische attractor toe -->
+<!-- DEEL A: AOP 34 — één klik vervangt het lineaire AOP door dezelfde keten mét adaptieve homeostatische buffer -->
 <div class="part">
 <div class="part-label">
 <span class="step-num step-a">A</span>
-<span class="part-title">Lineair: AOP 34</span>
-<span class="part-note">LXR (MIE 167) → TG-accumulatie (KE 291) → steatose</span>
-<span v-click.hide class="click-hint">klik ▸</span>
+<span class="part-title">AOP 34</span>
+<span class="part-note">LXR (MIE 167) → lipogenese → TG-accumulatie (KE 291) → steatose</span>
+<span v-click.hide="1" class="click-hint">klik ▸</span>
 </div>
 <div class="part-a-body">
-<div class="aop34-wrap">
+<div class="aop-fig-stack">
+<!-- Vóór de klik: het klassieke lineaire AOP 34 over de biologische organisatieniveaus -->
 <img
-:src="'/AOP34.png'"
-onerror="this.onerror=null;this.src='/aop_mini.svg';"
-alt="AOP 34: LXR-activatie leidt tot leververvetting (steatose)"
-class="aop34-img"
+:src="'/aop_linear_before.svg'"
+alt="Lineair AOP 34: LXR-activatie → lipogenese → TG-accumulatie → steatose"
+class="aop-fig-img"
 />
-</div>
-<!-- v-click: adaptieve laag bovenop AOP 34 (Gemini-concept, inhoudelijk met AOP 34 gecombineerd) -->
-<div v-click class="attractor-card">
-<div class="ac-title">Adaptieve homeostatische attractor <span class="ac-mono">z<sub>homeo</sub> = z<sub>0</sub></span></div>
-<div class="ac-lane">
-<span class="chip chip-input">p: LXR → DNL · CD36<span class="chip-sub">SREBF1 · FASN · ACACA · SCD</span></span>
-<span class="ac-arrow">▶</span>
-<span class="chip chip-buffer">TG-accumulatie · KE 291<span class="chip-sub">reversibele buffer</span></span>
-</div>
-<div class="ac-lane">
-<span class="ac-fb-tag">adaptieve klaring ⊣</span>
-<span class="chip chip-homeo">PPARα / CPT1A<span class="chip-sub">β-oxidatie</span></span>
-<span class="chip chip-homeo">MTTP / APOB<span class="chip-sub">VLDL-export</span></span>
-</div>
-<div class="ac-lane ac-lane-tip">
-<span class="ac-arrow ac-arrow-red">⟹</span>
-<span class="chip chip-path">Pathologische attractor<span class="chip-sub">p &gt; dynamische capaciteit → lipotoxiciteit → celdood</span></span>
-</div>
+<!-- v-click: dezelfde AOP 34, nu met adaptieve homeostatische buffer (IF) en tipping point (ELSE) -->
+<img
+v-click="1"
+:src="'/aop_homeostatic_after.svg'"
+alt="AOP 34 met adaptieve homeostatische buffer: IF load ≤ buffercapaciteit → terug naar homeostase; ELSE tipping point → steatose"
+class="aop-fig-img aop-fig-overlay"
+/>
 </div>
 </div>
 </div>
@@ -366,118 +354,34 @@ class="aop34-img"
   display: flex;
   align-items: stretch;
   gap: 0.4rem;
-  min-height: 178px;
+  min-height: 0;
 }
-.aop34-wrap {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 9px;
-  border: 1px solid #334155;
-  background: #f8fafc;
-}
-.aop34-img {
-  height: 178px;
-  width: auto;
-  display: block;
-}
-.attractor-card {
+/* Figuur-slot voor Deel A: het lineaire AOP staat in de flow, de homeostatische
+   variant ligt als absolute overlay exact bovenop (zelfde viewBox-verhouding). */
+.aop-fig-stack {
+  position: relative;
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.18rem;
-  background: #0b1120;
-  border: 1px dashed rgba(16, 185, 129, 0.55);
-  border-radius: 10px;
-  padding: 0.3rem 0.4rem;
+  border-radius: 9px;
+  border: 1px solid #334155;
+  background: #0b0f19;
+  overflow: hidden;
+  line-height: 0;
 }
-.ac-title {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.58rem;
-  font-weight: 800;
-  color: #6ee7b7;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  line-height: 1.15;
+.aop-fig-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 210px;
+  object-fit: contain;
 }
-.ac-mono {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.5rem;
-  text-transform: none;
-  color: #a7f3d0;
-  background: rgba(16, 185, 129, 0.14);
-  border-radius: 4px;
-  padding: 0 0.25rem;
+.aop-fig-overlay {
+  position: absolute;
+  inset: 0;
+  height: 100%;
 }
-.ac-lane {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.22rem;
-}
-.ac-lane-tip { gap: 0.3rem; }
-.ac-arrow {
-  font-size: 0.5rem;
-  font-weight: 900;
-  color: #38bdf8;
-}
-.ac-arrow-red {
-  font-size: 0.62rem;
-  color: #f43f5e;
-}
-.ac-fb-tag {
-  font-size: 0.46rem;
-  font-weight: 800;
-  color: #34d399;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-.chip {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 1px;
-  font-size: 0.55rem;
-  font-weight: 700;
-  line-height: 1.1;
-  padding: 0.12rem 0.34rem;
-  border-radius: 6px;
-  border: 1px solid;
-}
-.chip-sub {
-  font-size: 0.44rem;
-  font-weight: 600;
-  opacity: 0.82;
-}
-.chip-input {
-  background: #1e293b;
-  border-color: rgba(56, 189, 248, 0.6);
-  color: #e2e8f0;
-}
-.chip-input .chip-sub { color: #93c5fd; }
-.chip-buffer {
-  background: #0f172a;
-  border-style: dashed;
-  border-color: rgba(59, 130, 246, 0.65);
-  color: #e2e8f0;
-}
-.chip-buffer .chip-sub { color: #93c5fd; }
-.chip-homeo {
-  background: #064e3b;
-  border-color: rgba(16, 185, 129, 0.7);
-  color: #ecfdf5;
-}
-.chip-homeo .chip-sub { color: #a7f3d0; }
-.chip-path {
-  background: #450a0a;
-  border-color: rgba(239, 68, 68, 0.8);
-  color: #fee2e2;
-}
-.chip-path .chip-sub { color: #fca5a5; }
+/* Deel A gebruikt nu de SVG-figuren; de oude attractor-kaart (.attractor-card, .ac-*, .chip*)
+   is vervangen door public/aop_homeostatic_after.svg. */
 
 /* Bottom Claim Banner */
 .claim-banner {
@@ -594,10 +498,10 @@ class="aop34-img"
 <!--
 SPREEKTEKST SLIDE 1 (± 100–110 seconden | ~250 woorden):
 
-[1. DE CONTEXT — Links op de slide]
+[1. NEW APPROACH METHODOLOGIES — Links op de slide]
 "Goedemiddag. Binnen ons vakgebied werken we aan de transitie naar Probabilistic Chemical Risk Assessment met behulp van New Approach Methodologies — oftewel NAMs. We combineren daarin geavanceerde humane in vitro en in silico modellen om chemische veiligheidsbeoordeling volledig dierproefvrij én mechanistisch nauwkeurig te maken. Twee belangrijke pijlers hierin zijn Adverse Outcome Pathways — (q)AOP's — en Physiological Maps, waarmee we vastleggen en verklaren hoe een blootstelling leidt tot een Adverse Outcome."
 
-[2. DE KWESTIE — Rechts op de slide, in twee delen]
+[2. BEYOND LINEAR AOPS — Rechts op de slide, in twee delen]
 "Maar daar ligt een fundamentele wetenschappelijke kwestie, en die splits ik in twee delen.
 
 Deel A — lineair. AOP 34, LXR-activatie die tot steatose leidt, is sterk reductionistisch: MIE, key events, adverse outcome. [klik] Maar zo'n AOP is in de basis lineair, en dat is precies het probleem. In de cel is de triglyceride-accumulatie namelijk eerst een reversibele buffer, die actief wordt leeggehouden door beta-oxidatie — PPARalpha en CPT1A — en door VLDL-export via MTTP en APOB. Zolang de perturbatie, dus LXR-gedreven de-novo-lipogenese en CD36-gemedieerde instroom, binnen die dynamische klaringscapaciteit blijft, veert het systeem terug naar homeostase: een adaptieve homeostatische attractor. Pas als de perturbatie groter wordt dan die capaciteit, kantelt het systeem naar een pathologische attractor: lipotoxiciteit, celdood en steatose. Dat kantelpunt — die bifurcatie — kan een lineair AOP niet voorspellen, en dat moeten we kwantitatief modelleren.

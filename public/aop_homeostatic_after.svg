@@ -1,0 +1,233 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1490 490" width="100%" height="100%" style="background-color: #0b0f19; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <!-- Witte pijlpunten voor standaard flows -->
+    <marker id="arr-white" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f8fafc"/>
+    </marker>
+    <!-- Blauwe pijlpunten voor homeostatische buffering -->
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+    <!-- Oranje/Rode pijlpunt voor het tipping point pad (ELSE) -->
+    <marker id="arr-orange" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#fb923c"/>
+    </marker>
+
+    <!-- 3D schaduwen (identiek aan plaatje 1) -->
+    <filter id="shadow-yellow" x="-10%" y="-10%" width="125%" height="125%"><feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#854d0e"/></filter>
+    <filter id="shadow-green" x="-10%" y="-10%" width="125%" height="125%"><feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#14532d"/></filter>
+    <filter id="shadow-red" x="-10%" y="-10%" width="125%" height="125%"><feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#7f1d1d"/></filter>
+    <filter id="shadow-blue" x="-10%" y="-10%" width="125%" height="125%"><feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#0369a1"/></filter>
+  </defs>
+
+  <!-- ======================================================== -->
+  <!-- LINKERBOVENHOEK: Pijl wijzend naar RECHTS                -->
+  <!-- ======================================================== -->
+  <g transform="translate(15, 14)">
+    <polygon points="0,7 95,7 95,0 135,26 95,52 95,45 0,45" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
+    <text x="50" y="23" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#000">Biological</text>
+    <text x="50" y="36" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#000">Organization Level</text>
+  </g>
+
+  <!-- Scheidingslijn linker kolom -->
+  <line x1="160" y1="10" x2="160" y2="475" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- Linker AOP Indicator (LXR) pijl naar rechts -->
+  <g transform="translate(15, 205)">
+    <polygon points="0,15 85,15 85,0 135,32 85,64 85,49 0,49" fill="#65a30d" stroke="#365314" stroke-width="1.5"/>
+    <text x="50" y="27" font-size="11" font-weight="bold" text-anchor="middle" fill="#fff">AOP from</text>
+    <text x="50" y="43" font-size="12" font-weight="bold" text-anchor="middle" fill="#fff">LXR</text>
+  </g>
+
+  <!-- ======================================================== -->
+  <!-- HEADERS & MOLECULAIR NIVEAU                              -->
+  <!-- ======================================================== -->
+  <rect x="180" y="14" width="550" height="26" fill="#eab308" stroke="#000" stroke-width="1.5"/>
+  <text x="455" y="32" font-size="14" font-weight="bold" text-anchor="middle" fill="#000">Molecular</text>
+  <line x1="735" y1="27" x2="750" y2="27" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+
+  <rect x="180" y="45" width="95" height="22" fill="#fde047" stroke="#000" stroke-width="1.5"/>
+  <text x="227" y="60" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">MIE</text>
+  <line x1="278" y1="56" x2="305" y2="56" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+
+  <rect x="310" y="45" width="280" height="22" fill="#eab308" stroke="#000" stroke-width="1.5"/>
+  <text x="450" y="60" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Intermediate Effects</text>
+  <line x1="593" y1="56" x2="615" y2="56" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+
+  <rect x="620" y="45" width="110" height="22" fill="#ef4444" stroke="#000" stroke-width="1.5"/>
+  <text x="675" y="60" font-size="11" font-weight="bold" text-anchor="middle" fill="#fff">Key Event</text>
+
+  <!-- ======================================================== -->
+  <!-- KOLOM 3: Sub-cellular / Cellular (Homeostatic Attractor) -->
+  <!-- ======================================================== -->
+  <line x1="740" y1="10" x2="740" y2="475" stroke="#38bdf8" stroke-dasharray="4 4" stroke-width="1.5"/>
+
+  <rect x="750" y="14" width="215" height="26" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="857" y="32" font-size="13" font-weight="bold" text-anchor="middle" fill="#ffffff">Sub-cellular / Cellular</text>
+  <line x1="970" y1="27" x2="980" y2="27" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+
+  <rect x="750" y="45" width="215" height="22" rx="4" fill="#075985" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="857" y="60" font-size="11" font-weight="bold" text-anchor="middle" fill="#e0f2fe">Homeostatic Attractor</text>
+  <line x1="735" y1="56" x2="748" y2="56" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+  <line x1="970" y1="56" x2="980" y2="56" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+
+  <!-- ======================================================== -->
+  <!-- HOGERE NIVEAUS (Organelle -> Cellular -> Tissue)         -->
+  <!-- ======================================================== -->
+  <line x1="975" y1="10" x2="975" y2="475" stroke="#64748b" stroke-dasharray="4 4" stroke-width="1.5"/>
+  <line x1="1145" y1="10" x2="1145" y2="475" stroke="#64748b" stroke-dasharray="4 4" stroke-width="1.5"/>
+  <line x1="1315" y1="10" x2="1315" y2="475" stroke="#64748b" stroke-dasharray="4 4" stroke-width="1.5"/>
+
+  <rect x="985" y="14" width="150" height="53" fill="#ca8a04" stroke="#000" stroke-width="1.5"/>
+  <text x="1060" y="45" font-size="14" font-weight="bold" text-anchor="middle" fill="#000">Organelle</text>
+  <line x1="1140" y1="40" x2="1150" y2="40" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+
+  <rect x="1155" y="14" width="150" height="53" fill="#ca8a04" stroke="#000" stroke-width="1.5"/>
+  <text x="1230" y="45" font-size="14" font-weight="bold" text-anchor="middle" fill="#000">Cellular</text>
+  <line x1="1310" y1="40" x2="1320" y2="40" stroke="#f8fafc" stroke-width="1.5" marker-end="url(#arr-white)"/>
+
+  <rect x="1325" y="14" width="150" height="53" fill="#ca8a04" stroke="#000" stroke-width="1.5"/>
+  <text x="1400" y="45" font-size="14" font-weight="bold" text-anchor="middle" fill="#000">Tissue</text>
+
+  <!-- ======================================================== -->
+  <!-- MOLECULAIRE BLOKKEN                                      -->
+  <!-- ======================================================== -->
+  <g filter="url(#shadow-yellow)">
+    <rect x="180" y="195" width="95" height="110" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
+    <text x="227" y="245" font-size="14" font-weight="bold" text-anchor="middle" fill="#000">LXR</text>
+    <text x="227" y="265" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">activation</text>
+  </g>
+
+  <g filter="url(#shadow-green)">
+    <rect x="310" y="105" width="105" height="36" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="362" y="128" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#052e16">ChREBP</text>
+
+    <rect x="310" y="155" width="105" height="36" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="362" y="178" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#052e16">SREBP-1c</text>
+
+    <rect x="310" y="205" width="105" height="36" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="362" y="228" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#052e16">FAS</text>
+
+    <rect x="310" y="255" width="105" height="36" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="362" y="278" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#052e16">SCD1</text>
+
+    <rect x="310" y="345" width="105" height="60" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="362" y="372" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">CD36 up-</text>
+    <text x="362" y="388" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">regulation</text>
+  </g>
+
+  <g filter="url(#shadow-green)">
+    <rect x="475" y="170" width="115" height="65" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="532" y="200" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#052e16">De novo FA</text>
+    <text x="532" y="218" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#052e16">synthesis</text>
+
+    <rect x="475" y="340" width="115" height="65" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="532" y="362" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Increase of the</text>
+    <text x="532" y="377" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">FA influx from</text>
+    <text x="532" y="392" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">periph. tissues</text>
+  </g>
+
+  <g filter="url(#shadow-red)">
+    <rect x="620" y="160" width="115" height="180" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+    <text x="677" y="245" font-size="13" font-weight="bold" text-anchor="middle" fill="#ffffff">Liver TGs</text>
+    <text x="677" y="265" font-size="12" font-weight="bold" text-anchor="middle" fill="#ffffff">accumulation</text>
+  </g>
+
+  <!-- Witte voorwaartse flowpijlen -->
+  <path d="M 275 220 L 302 123" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <path d="M 275 235 L 302 173" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <path d="M 275 250 L 302 223" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <path d="M 275 265 L 302 273" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <path d="M 275 280 L 302 365" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+
+  <line x1="362" y1="191" x2="362" y2="202" stroke="#f8fafc" stroke-width="1.8" marker-end="url(#arr-white)"/>
+
+  <path d="M 415 123 L 468 185" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <path d="M 415 173 L 468 193" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <path d="M 415 223 L 468 203" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <path d="M 415 273 L 468 213" stroke="#f8fafc" stroke-width="1.8" fill="none" marker-end="url(#arr-white)"/>
+  <line x1="415" y1="375" x2="468" y2="375" stroke="#f8fafc" stroke-width="1.8" marker-end="url(#arr-white)"/>
+
+  <line x1="590" y1="202" x2="612" y2="225" stroke="#f8fafc" stroke-width="2" marker-end="url(#arr-white)"/>
+  <path d="M 590 375 L 677 375 L 677 348" stroke="#f8fafc" stroke-width="2" fill="none" marker-end="url(#arr-white)"/>
+
+  <!-- ======================================================== -->
+  <!-- HOMEOSTATISCHE BUFFERS & IF-ELSE LOGICA                  -->
+  <!-- ======================================================== -->
+  <!-- Buffer 1: Adaptive Beta-Oxidation -->
+  <g filter="url(#shadow-blue)">
+    <rect x="765" y="115" width="185" height="50" rx="6" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="857" y="136" font-size="11" font-weight="bold" text-anchor="middle" fill="#ffffff">Adaptive β-Oxidation</text>
+    <text x="857" y="152" font-size="10" text-anchor="middle" fill="#e0f2fe">(PPARA / CPT1A)</text>
+  </g>
+
+  <!-- Buffer 2: VLDL Secretion -->
+  <g filter="url(#shadow-blue)">
+    <rect x="765" y="325" width="185" height="50" rx="6" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="857" y="346" font-size="11" font-weight="bold" text-anchor="middle" fill="#ffffff">VLDL Secretion</text>
+    <text x="857" y="362" font-size="10" text-anchor="middle" fill="#e0f2fe">(MTTP / APOB)</text>
+  </g>
+
+  <!-- Fluxpijlen van Liver TGs naar de Buffers -->
+  <path d="M 735 200 L 758 155" stroke="#38bdf8" stroke-width="2.5" fill="none" marker-end="url(#arr-blue)"/>
+  <path d="M 735 295 L 758 335" stroke="#38bdf8" stroke-width="2.5" fill="none" marker-end="url(#arr-blue)"/>
+
+  <!-- ======================================================== -->
+  <!-- TAK 1: "IF" (Buffer Capacity Sufficient -> Return to z0) -->
+  <!-- ======================================================== -->
+  <text x="857" y="180" font-size="9" font-weight="bold" fill="#38bdf8" text-anchor="middle">Mitochondrial Clearance</text>
+  <text x="857" y="390" font-size="9" font-weight="bold" fill="#38bdf8" text-anchor="middle">Plasma VLDL Efflux</text>
+
+  <!-- IF Badge: Return to Homeostasis (AOP Prevented) -->
+  <g transform="translate(760, 202)">
+    <rect x="0" y="0" width="195" height="34" rx="6" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+    <text x="97" y="15" font-size="10" font-weight="bold" text-anchor="middle" fill="#a7f3d0">IF: Load ≤ Buffer Capacity</text>
+    <text x="97" y="28" font-size="9.5" text-anchor="middle" fill="#6ee7b7">➔ Return to Homeostasis (AOP Prevented)</text>
+  </g>
+  <path d="M 857 165 L 857 200" stroke="#34d399" stroke-width="1.8" stroke-dasharray="3 2" fill="none" marker-end="url(#arr-blue)"/>
+  <path d="M 857 325 L 857 238" stroke="#34d399" stroke-width="1.8" stroke-dasharray="3 2" fill="none" marker-end="url(#arr-blue)"/>
+
+  <!-- ======================================================== -->
+  <!-- TAK 2: "ELSE" (Buffer Overwhelmed -> Breakthrough to AO) -->
+  <!-- ======================================================== -->
+  <!-- Oranje/Rode bifurcatiepijl dwars door het Tipping Point -->
+  <line x1="735" y1="265" x2="980" y2="265" stroke="#fb923c" stroke-width="3" stroke-dasharray="6 3" marker-end="url(#arr-orange)"/>
+
+  <!-- Tipping Point Indicator Badge -->
+  <g transform="translate(765, 250)">
+    <rect x="0" y="0" width="185" height="30" rx="5" fill="#450a0a" stroke="#f87171" stroke-width="1.5"/>
+    <text x="92" y="14" font-size="10" font-weight="bold" text-anchor="middle" fill="#fca5a5">ELSE: Chronic / High Dose</text>
+    <text x="92" y="25" font-size="9" text-anchor="middle" fill="#fecaca">Tipping Point (Buffers Fail) ➔</text>
+  </g>
+
+  <!-- ======================================================== -->
+  <!-- VOLLE, ONGEWIJZIGDE SCHADEBLOKKEN (Organelle -> Tissue)  -->
+  <!-- ======================================================== -->
+  <!-- Organelle -->
+  <g filter="url(#shadow-green)">
+    <rect x="985" y="160" width="150" height="180" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="1060" y="195" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Cytoplasm displacement</text>
+    <text x="1060" y="235" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Nucleus distortion</text>
+    <text x="1060" y="275" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Mitochondrial disruption</text>
+    <text x="1060" y="315" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Endoplasmic reticulum stress</text>
+  </g>
+
+  <!-- Cellular -->
+  <g filter="url(#shadow-green)">
+    <rect x="1155" y="160" width="150" height="180" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="1230" y="245" font-size="13" font-weight="bold" text-anchor="middle" fill="#052e16">Fatty liver</text>
+    <text x="1230" y="265" font-size="13" font-weight="bold" text-anchor="middle" fill="#052e16">cells</text>
+  </g>
+
+  <!-- Tissue -->
+  <g filter="url(#shadow-green)">
+    <rect x="1325" y="160" width="150" height="180" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+    <text x="1400" y="238" font-size="12.5" font-weight="bold" text-anchor="middle" fill="#052e16">Steatosis</text>
+    <text x="1400" y="258" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">&gt; 5–10% by</text>
+    <text x="1400" y="275" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">liver weight</text>
+  </g>
+
+  <!-- Pijlen tussen de schadeniveaus (wit) -->
+  <line x1="1135" y1="250" x2="1150" y2="250" stroke="#f8fafc" stroke-width="2.5" marker-end="url(#arr-white)"/>
+  <line x1="1305" y1="250" x2="1320" y2="250" stroke="#f8fafc" stroke-width="2.5" marker-end="url(#arr-white)"/>
+</svg>
