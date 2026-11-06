@@ -1,0 +1,1834 @@
+{
+  "generated_by": "csd_sim_v2.py",
+  "mie_fingerprint": "d92c347254aec592",
+  "state_hash": "f8c784aa6b57396e",
+  "parameters": {
+    "N": 100,
+    "dx": 1.0,
+    "D": 2.5,
+    "a": 0.12,
+    "eps": 0.008,
+    "K": 0.15,
+    "sigma_mie": 4.0,
+    "dt": 0.01,
+    "duration_main": 30.0,
+    "t_obs": 150.0,
+    "t_nucleus": 80.0,
+    "t_video": 144.0,
+    "fps": 30
+  },
+  "bistability": {
+    "K": 0.15,
+    "k_crit_saddle_node": 0.1936,
+    "bistable": true,
+    "u_unstable": 0.3512,
+    "u_stable": 0.7688
+  },
+  "csd_note": "De kritikaliteit uit zich hier in (a) de groeiende piek-amplitude, (b) de langere nasleep onder de PoD, (c) de ignitietijd die naar de PoD toe groeit, en (d) de frontsnelheid die naar r_c toe naar nul gaat. De vervalsnelheid lambda van de snelle fase divergeert NIET en is alleen als diagnostiek gerapporteerd.",
+  "pod": {
+    "K": 0.15,
+    "duration": 30.0,
+    "t_end": 150.0,
+    "criterion": 0.5,
+    "pod": 0.05563671875,
+    "u_final_below": -1.5805330638615618e-06,
+    "u_final_above": 0.7990140743874957
+  },
+  "dose_ladder": [
+    {
+      "peak_mean_u": 0.002577,
+      "final_mean_u": -0.0,
+      "final_max_u": 0.0,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.067774,
+      "t_half": 10.2273,
+      "t_extinct": 17.9,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 35.9,
+      "lag1_autocorr": 0.982945,
+      "tail_variance": 1e-06,
+      "dose": 0.033382,
+      "dose_over_pod": 0.6,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.003325,
+      "final_mean_u": -0.0,
+      "final_max_u": 0.0,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.068983,
+      "t_half": 10.048136,
+      "t_extinct": 19.4,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 36.2,
+      "lag1_autocorr": 0.981578,
+      "tail_variance": 1e-06,
+      "dose": 0.038946,
+      "dose_over_pod": 0.7,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.004382,
+      "final_mean_u": -0.0,
+      "final_max_u": 1e-06,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.071849,
+      "t_half": 9.64725,
+      "t_extinct": 22.0,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 36.8,
+      "lag1_autocorr": 0.978527,
+      "tail_variance": 2e-06,
+      "dose": 0.044509,
+      "dose_over_pod": 0.8,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.006588,
+      "final_mean_u": -0.0,
+      "final_max_u": 1e-06,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.076253,
+      "t_half": 9.090119,
+      "t_extinct": 29.8,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 38.8,
+      "lag1_autocorr": 0.965748,
+      "tail_variance": 2e-06,
+      "dose": 0.050073,
+      "dose_over_pod": 0.9,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.009635,
+      "final_mean_u": -0.0,
+      "final_max_u": 1e-06,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.079656,
+      "t_half": 8.701733,
+      "t_extinct": 30.1,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 42.0,
+      "lag1_autocorr": 0.978147,
+      "tail_variance": 5e-06,
+      "dose": 0.052855,
+      "dose_over_pod": 0.95,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.018462,
+      "final_mean_u": -3e-06,
+      "final_max_u": 1.6e-05,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.076884,
+      "t_half": 9.015435,
+      "t_extinct": 43.2,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 59.1,
+      "lag1_autocorr": 0.983435,
+      "tail_variance": 3.2e-05,
+      "dose": 0.055637,
+      "dose_over_pod": 1.0,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.818592,
+      "final_mean_u": 0.781905,
+      "final_max_u": 0.854789,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 76.1,
+      "t_arrive_half": 69.2,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.058419,
+      "dose_over_pod": 1.05,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.818595,
+      "final_mean_u": 0.77702,
+      "final_max_u": 0.830861,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 70.6,
+      "t_arrive_half": 63.7,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.0612,
+      "dose_over_pod": 1.1,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.818602,
+      "final_mean_u": 0.772239,
+      "final_max_u": 0.802363,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 61.7,
+      "t_arrive_half": 54.9,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.072328,
+      "dose_over_pod": 1.3,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.818606,
+      "final_mean_u": 0.770596,
+      "final_max_u": 0.790043,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 56.1,
+      "t_arrive_half": 49.2,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.089019,
+      "dose_over_pod": 1.6,
+      "K": 0.15
+    }
+  ],
+  "duration_ladder": [
+    {
+      "peak_mean_u": 0.001284,
+      "final_mean_u": 0.0,
+      "final_max_u": 0.0,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.076814,
+      "t_half": 9.023675,
+      "t_extinct": 2.1,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 15.6,
+      "lag1_autocorr": 0.990569,
+      "tail_variance": 0.0,
+      "dose": 0.069546,
+      "duration": 2.0,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.003028,
+      "final_mean_u": 0.0,
+      "final_max_u": 0.0,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.077852,
+      "t_half": 8.903428,
+      "t_extinct": 5.1,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 18.3,
+      "lag1_autocorr": 0.987533,
+      "tail_variance": 0.0,
+      "dose": 0.069546,
+      "duration": 5.0,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.006045,
+      "final_mean_u": 0.0,
+      "final_max_u": 0.0,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.079143,
+      "t_half": 8.758136,
+      "t_extinct": 10.1,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 23.8,
+      "lag1_autocorr": 0.98453,
+      "tail_variance": 2e-06,
+      "dose": 0.069546,
+      "duration": 10.0,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.818593,
+      "final_mean_u": 0.775048,
+      "final_max_u": 0.819973,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 67.7,
+      "t_arrive_half": 60.7,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.069546,
+      "duration": 20.0,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.818601,
+      "final_mean_u": 0.772829,
+      "final_max_u": 0.806339,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 63.2,
+      "t_arrive_half": 56.4,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.069546,
+      "duration": 30.0,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.8186,
+      "final_mean_u": 0.772695,
+      "final_max_u": 0.805449,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 62.9,
+      "t_arrive_half": 56.0,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.069546,
+      "duration": 60.0,
+      "K": 0.15
+    },
+    {
+      "peak_mean_u": 0.820457,
+      "final_mean_u": 0.772494,
+      "final_max_u": 0.805449,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 62.8,
+      "t_arrive_half": 56.0,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "dose": 0.069546,
+      "duration": 120.0,
+      "K": 0.15
+    }
+  ],
+  "capacity_map": {
+    "dose_factors": [
+      0.5,
+      0.8,
+      0.95,
+      1.05,
+      1.2,
+      1.5,
+      2.0,
+      3.0
+    ],
+    "doses": [
+      0.027818359375,
+      0.044509375000000004,
+      0.0528548828125,
+      0.058418554687500006,
+      0.0667640625,
+      0.083455078125,
+      0.1112734375,
+      0.16691015625
+    ],
+    "K": [
+      0.09,
+      0.11,
+      0.13,
+      0.15,
+      0.17,
+      0.18,
+      0.185,
+      0.19,
+      0.1925
+    ],
+    "final_mean_u": [
+      [
+        0.0,
+        0.0,
+        0.883559,
+        0.882451,
+        0.88217,
+        0.882026,
+        0.881961,
+        0.881925
+      ],
+      [
+        0.0,
+        0.0,
+        -2e-06,
+        0.851212,
+        0.85017,
+        0.849683,
+        0.849466,
+        0.849343
+      ],
+      [
+        0.0,
+        -0.0,
+        -0.0,
+        0.817776,
+        0.814718,
+        0.813483,
+        0.812954,
+        0.812659
+      ],
+      [
+        -0.0,
+        -0.0,
+        -0.0,
+        0.781905,
+        0.773654,
+        0.770944,
+        0.769874,
+        0.769326
+      ],
+      [
+        -0.0,
+        -0.0,
+        -1e-06,
+        0.74418,
+        0.719925,
+        0.713955,
+        0.711988,
+        0.71137
+      ],
+      [
+        -0.0,
+        -0.0,
+        -1e-06,
+        0.725434,
+        0.67602,
+        0.664966,
+        0.660962,
+        0.659862
+      ],
+      [
+        -0.0,
+        -0.0,
+        -1e-06,
+        0.679212,
+        0.235956,
+        0.022848,
+        -0.065392,
+        -0.099912
+      ],
+      [
+        -0.0,
+        -0.0,
+        -1e-06,
+        0.634641,
+        0.00995,
+        -0.080889,
+        -0.100467,
+        -0.091572
+      ],
+      [
+        -0.0,
+        -0.0,
+        -1e-06,
+        8.3e-05,
+        -0.023316,
+        -0.089271,
+        -0.09828,
+        -0.081888
+      ]
+    ],
+    "cells": [
+      {
+        "K": 0.09,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": 0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.09,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": 0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.09,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": 0.883559,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.09,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.882451,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.09,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.88217,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.09,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": 0.882026,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.09,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": 0.881961,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.09,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": 0.881925,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.09,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2381,
+          "u_stable": 0.8819
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": 0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": 0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -2e-06,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.851212,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.85017,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": 0.849683,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": 0.849466,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.11,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": 0.849343,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.11,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.2709,
+          "u_stable": 0.8491
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": 0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.817776,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.814718,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": 0.813483,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": 0.812954,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.13,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": 0.812659,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.13,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3078,
+          "u_stable": 0.8122
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.781905,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.773654,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": 0.770944,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": 0.769874,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.15,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": 0.769326,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.15,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.3512,
+          "u_stable": 0.7688
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -1e-06,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.74418,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.719925,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": 0.713955,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": 0.711988,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.17,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": 0.71137,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.17,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4064,
+          "u_stable": 0.7136
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -1e-06,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.725434,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.67602,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": 0.664966,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": 0.660962,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.18,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": 0.659862,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.18,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4434,
+          "u_stable": 0.6766
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -1e-06,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.679212,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.235956,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": 0.022848,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": -0.065392,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.185,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": -0.099912,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.185,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.4673,
+          "u_stable": 0.6527
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -1e-06,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 0.634641,
+        "fate": "spread",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": 0.00995,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": -0.080889,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": -0.100467,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.19,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": -0.091572,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.19,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5,
+          "u_stable": 0.62
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.027818,
+        "dose_factor": 0.5,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.044509,
+        "dose_factor": 0.8,
+        "final_mean_u": -0.0,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.052855,
+        "dose_factor": 0.95,
+        "final_mean_u": -1e-06,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.058419,
+        "dose_factor": 1.05,
+        "final_mean_u": 8.3e-05,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.066764,
+        "dose_factor": 1.2,
+        "final_mean_u": -0.023316,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.083455,
+        "dose_factor": 1.5,
+        "final_mean_u": -0.089271,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.111273,
+        "dose_factor": 2.0,
+        "final_mean_u": -0.09828,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      },
+      {
+        "K": 0.1925,
+        "dose": 0.16691,
+        "dose_factor": 3.0,
+        "final_mean_u": -0.081888,
+        "fate": "recovery",
+        "bistability": {
+          "K": 0.1925,
+          "k_crit_saddle_node": 0.1936,
+          "bistable": true,
+          "u_unstable": 0.5268,
+          "u_stable": 0.5932
+        }
+      }
+    ],
+    "k_crit_saddle_node": 0.1936
+  },
+  "nucleus": [
+    {
+      "peak_mean_u": 0.000912,
+      "final_mean_u": 1e-06,
+      "final_max_u": 1.4e-05,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.07749,
+      "t_half": 8.94496,
+      "t_extinct": 1.1,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 14.8,
+      "lag1_autocorr": 0.990526,
+      "tail_variance": 0.0,
+      "radius": 1.5,
+      "c_front": 0.0,
+      "rf_growth": -1.5,
+      "mean_u_filled": 1e-06
+    },
+    {
+      "peak_mean_u": 0.001355,
+      "final_mean_u": 2e-06,
+      "final_max_u": 2.2e-05,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.077958,
+      "t_half": 8.891287,
+      "t_extinct": 1.5,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 15.2,
+      "lag1_autocorr": 0.989491,
+      "tail_variance": 0.0,
+      "radius": 2.0,
+      "c_front": 0.0,
+      "rf_growth": -2.0,
+      "mean_u_filled": 2e-06
+    },
+    {
+      "peak_mean_u": 0.002342,
+      "final_mean_u": 4e-06,
+      "final_max_u": 4.5e-05,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.078111,
+      "t_half": 8.873864,
+      "t_extinct": 2.6,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 16.1,
+      "lag1_autocorr": 0.987841,
+      "tail_variance": 0.0,
+      "radius": 2.5,
+      "c_front": 0.0,
+      "rf_growth": -2.5,
+      "mean_u_filled": 4e-06
+    },
+    {
+      "peak_mean_u": 0.003479,
+      "final_mean_u": 7e-06,
+      "final_max_u": 7.7e-05,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.078405,
+      "t_half": 8.84055,
+      "t_extinct": 3.7,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 17.1,
+      "lag1_autocorr": 0.986524,
+      "tail_variance": 1e-06,
+      "radius": 3.0,
+      "c_front": 0.0,
+      "rf_growth": -3.0,
+      "mean_u_filled": 7e-06
+    },
+    {
+      "peak_mean_u": 0.004854,
+      "final_mean_u": 1.3e-05,
+      "final_max_u": 0.000124,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.078552,
+      "t_half": 8.824061,
+      "t_extinct": 5.2,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 18.5,
+      "lag1_autocorr": 0.985365,
+      "tail_variance": 2e-06,
+      "radius": 3.5,
+      "c_front": 0.0,
+      "rf_growth": -3.5,
+      "mean_u_filled": 1.3e-05
+    },
+    {
+      "peak_mean_u": 0.007676,
+      "final_mean_u": 3.1e-05,
+      "final_max_u": 0.000252,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.079337,
+      "t_half": 8.736727,
+      "t_extinct": 8.3,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 21.7,
+      "lag1_autocorr": 0.983925,
+      "tail_variance": 5e-06,
+      "radius": 4.0,
+      "c_front": 0.0,
+      "rf_growth": -4.0,
+      "mean_u_filled": 3.1e-05
+    },
+    {
+      "peak_mean_u": 0.466291,
+      "final_mean_u": 0.466291,
+      "final_max_u": 0.880731,
+      "r_front_final": 40.607881,
+      "fate": "spread",
+      "lambda": -0.052593,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 4.5,
+      "c_front": 0.395048,
+      "rf_growth": 36.107881,
+      "mean_u_filled": 0.466291
+    },
+    {
+      "peak_mean_u": 0.589682,
+      "final_mean_u": 0.589682,
+      "final_max_u": 0.884248,
+      "r_front_final": 49.0,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 54.4,
+      "t_arrive_half": 47.5,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 5.0,
+      "c_front": 0.487982,
+      "rf_growth": 44.0,
+      "mean_u_filled": 0.589682
+    },
+    {
+      "peak_mean_u": 0.663837,
+      "final_mean_u": 0.663837,
+      "final_max_u": 0.907065,
+      "r_front_final": 51.86521,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 50.4,
+      "t_arrive_half": 43.5,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 5.5,
+      "c_front": 0.523786,
+      "rf_growth": 46.36521,
+      "mean_u_filled": 0.663837
+    },
+    {
+      "peak_mean_u": 0.701285,
+      "final_mean_u": 0.701285,
+      "final_max_u": 0.936923,
+      "r_front_final": 53.488316,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 48.0,
+      "t_arrive_half": 41.1,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 6.0,
+      "c_front": 0.541612,
+      "rf_growth": 47.488316,
+      "mean_u_filled": 0.701285
+    },
+    {
+      "peak_mean_u": 0.731618,
+      "final_mean_u": 0.731618,
+      "final_max_u": 0.935608,
+      "r_front_final": 55.036352,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 45.4,
+      "t_arrive_half": 38.5,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 6.5,
+      "c_front": 0.55757,
+      "rf_growth": 48.536352,
+      "mean_u_filled": 0.731618
+    },
+    {
+      "peak_mean_u": 0.741844,
+      "final_mean_u": 0.741844,
+      "final_max_u": 0.933532,
+      "r_front_final": 55.946403,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 44.4,
+      "t_arrive_half": 37.5,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 7.0,
+      "c_front": 0.562486,
+      "rf_growth": 48.946403,
+      "mean_u_filled": 0.741844
+    },
+    {
+      "peak_mean_u": 0.759227,
+      "final_mean_u": 0.759227,
+      "final_max_u": 0.930043,
+      "r_front_final": 57.45433,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 42.4,
+      "t_arrive_half": 35.5,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 7.5,
+      "c_front": 0.573293,
+      "rf_growth": 49.95433,
+      "mean_u_filled": 0.759227
+    },
+    {
+      "peak_mean_u": 0.7684,
+      "final_mean_u": 0.7684,
+      "final_max_u": 0.928163,
+      "r_front_final": 58.309519,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 41.2,
+      "t_arrive_half": 34.3,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 8.0,
+      "c_front": 0.578471,
+      "rf_growth": 50.309519,
+      "mean_u_filled": 0.7684
+    },
+    {
+      "peak_mean_u": 0.778361,
+      "final_mean_u": 0.778361,
+      "final_max_u": 0.926187,
+      "r_front_final": 59.363288,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 39.7,
+      "t_arrive_half": 32.9,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 8.5,
+      "c_front": 0.58517,
+      "rf_growth": 50.863288,
+      "mean_u_filled": 0.778361
+    },
+    {
+      "peak_mean_u": 0.786135,
+      "final_mean_u": 0.786135,
+      "final_max_u": 0.924544,
+      "r_front_final": 60.216277,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 38.4,
+      "t_arrive_half": 31.5,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null,
+      "radius": 9.0,
+      "c_front": 0.590425,
+      "rf_growth": 51.216277,
+      "mean_u_filled": 0.786135
+    }
+  ],
+  "critical_nucleus_radius": 4.25,
+  "videos": {
+    "dose_low": 0.047291,
+    "dose_high": 0.16691,
+    "state_hash": "f8c784aa6b57396e",
+    "mie_fingerprint": "d92c347254aec592",
+    "same_initial_state": true,
+    "differing_parameter": "dose (exposure concentration)",
+    "t_end": 144.0,
+    "n_frames": 240,
+    "fps": 30,
+    "dt": 0.01,
+    "t_per_frame": 0.6,
+    "low": {
+      "peak_mean_u": 0.005183,
+      "final_mean_u": -0.0,
+      "final_max_u": 0.0,
+      "r_front_final": 0.0,
+      "fate": "recovery",
+      "lambda": 0.073376,
+      "t_half": 9.446516,
+      "t_extinct": 24.4,
+      "t_ignite": null,
+      "t_arrive_half": null,
+      "t_transient": 37.5,
+      "lag1_autocorr": 0.975291,
+      "tail_variance": 2e-06
+    },
+    "high": {
+      "peak_mean_u": 0.818612,
+      "final_mean_u": 0.770042,
+      "final_max_u": 0.785244,
+      "r_front_final": 70.710678,
+      "fate": "spread",
+      "lambda": null,
+      "t_half": null,
+      "t_extinct": null,
+      "t_ignite": 47.2,
+      "t_arrive_half": 40.3,
+      "t_transient": null,
+      "lag1_autocorr": null,
+      "tail_variance": null
+    }
+  },
+  "runtime_s": 105.7
+}

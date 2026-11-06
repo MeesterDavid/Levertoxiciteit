@@ -31,13 +31,10 @@ canvasWidth: 1120
 <!-- LEFT COLUMN: NEW APPROACH METHODOLOGIES -->
 <div class="panel context-panel">
 <div class="panel-header">
-<span class="badge badge-blue">1. New Approach Methodologies</span>
+1. <span class="badge badge-blue">New Approach Methodologies</span>
 </div>
 <!-- NAM Image / Placeholder -->
 <div class="nam-visual-wrap">
-<!-- Zet je eigen beeld als /public/nam_overview.png; ontbreekt het, dan valt de slide terug op de SVG-placeholder.
-     Bewust een Vue-binding (:src) i.p.v. een statisch src-attribuut: Vite probeert een statisch src-pad
-     als build-asset te resolven en faalt hard als het bestand (nog) niet bestaat. -->
 <img
 :src="'/nam_overview.png'"
 onerror="this.onerror=null;this.src='/nam_overview_placeholder.svg';"
@@ -63,13 +60,13 @@ class="nam-img"
 </div>
 </div>
 </div>
-<!-- RIGHT COLUMN: BEYOND LINEAR AOPS — TWEE DELEN: (A) lineair AOP 34 -> homeostatische attractor, (B) emergente CSD -->
+<!-- RIGHT COLUMN: BEYOND LINEAR AOPS -->
 <div class="panel kwestie-panel">
 <div class="panel-header">
 <span class="badge badge-rose">2. Beyond Linear AOPs</span>
 <span class="panel-subtitle">From qualitative linear chains to dynamic, quantitative systems</span>
 </div>
-<!-- DEEL A: AOP 34 — één klik vervangt het lineaire AOP door dezelfde keten mét adaptieve homeostatische buffer -->
+<!-- DEEL A: AOP 34 -->
 <div class="part">
 <div class="part-label">
 <span class="step-num step-a">A</span>
@@ -79,54 +76,60 @@ class="nam-img"
 </div>
 <div class="part-a-body">
 <div class="aop-fig-stack">
-<!-- Vóór de klik: het klassieke lineaire AOP 34 over de biologische organisatieniveaus -->
 <img
 :src="'/aop_linear_before.svg'"
-alt="Lineair AOP 34: LXR-activatie → lipogenese → TG-accumulatie → steatose"
+alt="Lineair AOP 34"
 class="aop-fig-img"
 />
-<!-- v-click: dezelfde AOP 34, nu met adaptieve homeostatische buffer (IF) en tipping point (ELSE) -->
 <img
 v-click="1"
 :src="'/aop_homeostatic_after.svg'"
-alt="AOP 34 met adaptieve homeostatische buffer: IF load ≤ buffercapaciteit → terug naar homeostase; ELSE tipping point → steatose"
+alt="AOP 34 met adaptieve homeostatische buffer"
 class="aop-fig-img aop-fig-overlay"
 />
 </div>
 </div>
 </div>
-<!-- DEEL B: dezelfde MIE op hoger abstractieniveau — klikbare CSD-video's -->
+<!-- DEEL B: CSD EXPERIMENT + GROTE VIDEO + VEILIGE QR CODE -->
 <div class="part">
 <div class="part-label">
 <span class="step-num step-b">B</span>
-<span class="part-title">Niet-lineair: dezelfde MIE, hoger abstractieniveau</span>
-<span class="part-note">CSD = emergent weefselproces</span>
+<span class="part-title">Cortical Spreading Depression</span>
 </div>
 <div class="video-row">
+<!-- Brede Video Card voor csd_experiment.webm (2:1 aspect ratio) -->
 <figure class="video-card" onclick="var v=this.querySelector('video');this.classList.toggle('playing',v.paused);v.paused?v.play():v.pause();">
-<video :src="'/csd_wave.mp4#t=0.05'" class="csd-video" muted loop playsinline preload="metadata"></video>
+<video :src="'/csd_experiment.webm#t=0.05'" class="csd-video" muted loop playsinline preload="metadata"></video>
 <div class="play-badge">▶</div>
-<figcaption><strong>CSD-golf</strong><br/>reaction-diffusion over het weefsel</figcaption>
+<figcaption><strong>Breakthrough (left) vs. Propagation Failure (right)</strong><br/>Same MIE: tissue structure determines the fate</figcaption>
+
 </figure>
-<figure class="video-card" onclick="var v=this.querySelector('video');this.classList.toggle('playing',v.paused);v.paused?v.play():v.pause();">
-<video :src="'/csd_recovery.mp4#t=0.05'" class="csd-video" muted loop playsinline preload="metadata"></video>
-<div class="play-badge">▶</div>
-<figcaption><strong>Herstel</strong><br/>terug naar homeostase</figcaption>
-</figure>
+<!-- Toelichting Tekst -->
 <div class="video-note">
-<div class="vn-title">Zelfde MIE — andere schaal</div>
-<div class="vn-body">Ionkanaal-verstoring alleen voorspelt géén <em>Adverse Outcome</em>: de uitkomst ontstaat pas door <strong>ruimtelijk-temporele emergentie</strong> in het weefsel (MEA-data).</div>
-<div class="vn-foot">klik op een video om af te spelen</div>
+<div class="vn-title">Same MIE, different outcomes</div>
+<div class="vn-body">
+Both tissues initiate with an <strong>identical central potassium perturbation (MIE)</strong>. The outcome only arises through <strong>spatiotemporal emergence</strong>: the local density and buffering capacity of astrocytes (yellow cells) dictate whether the tissue recovers or the wave propagates across the cortex.
+</div>
+<div class="vn-foot">scan QR for live simulation</div>
+</div>
+<!-- QR Card met base64-veilige SVG -->
+<a href="https://github.com/MeesterDavid/Levertoxiciteit/blob/main/cortical_spreading_depression_simulator.html" target="_blank" class="qr-card">
+<img :src="'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 33 33\' fill=\'%230B1120\'><rect width=\'33\' height=\'33\' rx=\'2\'/><path fill=\'%23F8FAFC\' d=\'M3 3h7v7H3V3zm2 2v3h3V5H5zM3 23h7v7H3v-7zm2 2v3h3v-3H5zM23 3h7v7h-7V3zm2 2v3h3V5h-3z\'/><path fill=\'%2338BDF8\' d=\'M12 3h2v3h-2zm5 0h1v2h-1zm3 0h1v4h-1zm-6 4h3v1h-3zm-2 2h1v2h-1zm7 0h2v1h-2zm-5 2h2v2h-2zm4 0h1v1h-1zm3 0h2v3h-1v-2h-1zm-9 2h1v2h-1zm3 1h2v1h-2zm-5 2h3v1H7zm5 0h1v3h-1zm7 0h3v1h-3zm-9 2h2v1h-2zm5 0h2v2h-1v-1h-1zm-7 2h1v1H6zm4 0h1v3h-1zm4 0h3v1h-3zm-5 2h2v1H9zm6 0h2v2h-1v-1h-1zm3-7h1v2h-1zm2 1h1v3h-1zm-2 3h1v2h-1zm3 1h1v1h-1z\'/></svg>'" alt="QR Code" class="qr-img" />
+<div class="qr-caption">
+<span>Live Simulator</span>
+<span class="qr-sub">Scan of klik</span>
+</div>
+</a>
 </div>
 </div>
 </div>
 </div>
-</div>
-<!-- Bottom Claim Banner — full width onder beide kolommen -->
+<!-- Bottom Claim Banner -->
 <div class="claim-banner">
 <div class="claim-icon">✦</div>
 <div class="claim-text">
-<strong>De Claim:</strong> Een <em>Adverse Outcome</em> voorspel je niet lineair — je moet de <em>adaptieve attractor</em> én de <em>emergente weefseldynamiek</em> samen modelleren. Precies daarom is <strong>Multimodale &amp; Multiscale AI</strong> nodig om de schalen te verbinden.
+<em>Adverse Outcomes</em> are not linear and not always predictable from a purely reductionist approach. Some adverse outcomes depend on <em>emergent dynamics</em>. This is why we need <strong>Multimodal &amp; Multiscale AI
+</strong>.
 </div>
 </div>
 </div>
@@ -138,19 +141,6 @@ class="aop-fig-img aop-fig-overlay"
   color: #f8fafc;
   font-family: 'Inter', system-ui, sans-serif;
 }
-/* ===== PITCH-MODUS: Slidev's eigen bedieningsbalk niet over de slide =====
-   Slidev 53 pint de nav-balk permanent vast zodra persistNav waar is:
-     persistNav        = isScreenVertical || showEditor        (pages/play.vue)
-     isScreenVertical  = (vensterhoogte - vensterbreedte / (16/9)) > 120
-   In een gewoon browservenster (of op een 16:10-scherm in fullscreen) is dat
-   altijd waar -> de balk blijft over de slides hangen én vangt hover/clicks
-   linksonder weg. Hieronder zetten we die controls-laag volledig uit.
-   #slide-container heeft exact twee children: #slide-content.slidev-slide-content
-   (de slide) en de controls-slot (de balk) -> ::not() is genoeg.
-   Navigeren blijft: spatie / → / PageDown = volgende klik, ↓ of Shift+→ =
-   volgende slide, ← = terug. F = fullscreen, O = overview, G = goto.
-   Sprekersnotities: open /presenter in een tweede venster (localhost:3030/presenter).
-   Wil je de balk tóch terug? Zet de regel hieronder in commentaar. */
 #slide-container > div:not(.slidev-slide-content) {
   display: none !important;
 }
@@ -192,7 +182,7 @@ class="aop-fig-img aop-fig-overlay"
 }
 .main-grid {
   display: grid;
-  grid-template-columns: 33% 65.5%;
+  grid-template-columns: 31% 67.5%;
   gap: 1.5%;
   flex: 1;
   min-height: 0;
@@ -231,7 +221,7 @@ class="aop-fig-img aop-fig-overlay"
   border: 1px solid rgba(244, 63, 94, 0.35);
 }
 .panel-subtitle {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #cbd5e1;
   font-weight: 600;
 }
@@ -282,9 +272,6 @@ class="aop-fig-img aop-fig-overlay"
   color: #94a3b8;
   line-height: 1.25;
 }
-
-
-/* ===== De Kwestie in twee delen (A: AOP 34 + attractor, B: CSD-video's) ===== */
 .panel.kwestie-panel {
   justify-content: flex-start;
   gap: 0.42rem;
@@ -356,8 +343,6 @@ class="aop-fig-img aop-fig-overlay"
   gap: 0.4rem;
   min-height: 0;
 }
-/* Figuur-slot voor Deel A: het lineaire AOP staat in de flow, de homeostatische
-   variant ligt als absolute overlay exact bovenop (zelfde viewBox-verhouding). */
 .aop-fig-stack {
   position: relative;
   flex: 1;
@@ -372,7 +357,7 @@ class="aop-fig-img aop-fig-overlay"
   display: block;
   width: 100%;
   height: auto;
-  max-height: 210px;
+  max-height: 200px;
   object-fit: contain;
 }
 .aop-fig-overlay {
@@ -380,10 +365,131 @@ class="aop-fig-img aop-fig-overlay"
   inset: 0;
   height: 100%;
 }
-/* Deel A gebruikt nu de SVG-figuren; de oude attractor-kaart (.attractor-card, .ac-*, .chip*)
-   is vervangen door public/aop_homeostatic_after.svg. */
-
-/* Bottom Claim Banner */
+.video-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.video-card {
+  position: relative;
+  margin: 0;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  cursor: pointer;
+}
+.csd-video {
+  width: 270px;
+  height: 135px;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #020617;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+.video-card:hover .csd-video {
+  border-color: #fb7185;
+}
+.play-badge {
+  position: absolute;
+  top: 67px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #f8fafc;
+  background: rgba(2, 6, 23, 0.68);
+  border: 1px solid rgba(248, 250, 252, 0.6);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.video-card.playing .play-badge {
+  opacity: 0;
+}
+.video-card figcaption {
+  font-size: 0.52rem;
+  color: #cbd5e1;
+  text-align: center;
+  line-height: 1.15;
+}
+.video-card figcaption strong {
+  color: #fda4af;
+}
+.video-note {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  border-left: 2px solid rgba(244, 63, 94, 0.5);
+  padding-left: 0.45rem;
+}
+.vn-title {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: #fda4af;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.vn-body {
+  font-size: 0.52rem;
+  color: #cbd5e1;
+  line-height: 1.25;
+}
+.vn-body strong {
+  color: #f1f5f9;
+}
+.vn-foot {
+  font-size: 0.46rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin-top: 0.1rem;
+}
+.qr-card {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0b1120;
+  border: 1px solid #334155;
+  border-radius: 9px;
+  padding: 0.35rem 0.45rem;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+.qr-card:hover {
+  border-color: #38bdf8;
+  transform: translateY(-1px);
+}
+.qr-img {
+  width: 76px;
+  height: 76px;
+  display: block;
+}
+.qr-caption {
+  margin-top: 0.22rem;
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.qr-sub {
+  font-size: 0.44rem;
+  color: #38bdf8;
+  font-weight: 500;
+}
 .claim-banner {
   margin-top: 0.45rem;
   background: linear-gradient(90deg, rgba(56, 189, 248, 0.14) 0%, rgba(168, 85, 247, 0.16) 100%);
@@ -403,96 +509,6 @@ class="aop-fig-img aop-fig-overlay"
   color: #f1f5f9;
   line-height: 1.3;
 }
-
-/* ===== Deel B: klikbare CSD-video's ===== */
-.video-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.4rem;
-}
-.video-card {
-  position: relative;
-  margin: 0;
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.12rem;
-  cursor: pointer;
-}
-.csd-video {
-  width: 128px;
-  height: 128px;
-  display: block;
-  object-fit: cover;
-  border-radius: 9px;
-  border: 1px solid #334155;
-  background: #020617;
-  transition: border-color 0.2s ease;
-}
-.video-card:hover .csd-video {
-  border-color: #fb7185;
-}
-.play-badge {
-  position: absolute;
-  top: 64px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.6rem;
-  color: #f8fafc;
-  background: rgba(2, 6, 23, 0.62);
-  border: 1px solid rgba(248, 250, 252, 0.6);
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-.video-card.playing .play-badge {
-  opacity: 0;
-}
-.video-card figcaption {
-  width: 128px;
-  font-size: 0.52rem;
-  color: #cbd5e1;
-  text-align: center;
-  line-height: 1.2;
-}
-.video-card figcaption strong {
-  color: #fda4af;
-}
-.video-note {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.16rem;
-  border-left: 2px solid rgba(244, 63, 94, 0.5);
-  padding-left: 0.4rem;
-}
-.vn-title {
-  font-size: 0.58rem;
-  font-weight: 800;
-  color: #fda4af;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-.vn-body {
-  font-size: 0.54rem;
-  color: #cbd5e1;
-  line-height: 1.25;
-}
-.vn-body strong {
-  color: #f1f5f9;
-}
-.vn-foot {
-  font-size: 0.48rem;
-  color: #94a3b8;
-  font-style: italic;
-}
 </style>
 
 <!--
@@ -506,9 +522,10 @@ SPREEKTEKST SLIDE 1 (± 100–110 seconden | ~250 woorden):
 
 Deel A — lineair. AOP 34, LXR-activatie die tot steatose leidt, is sterk reductionistisch: MIE, key events, adverse outcome. [klik] Maar zo'n AOP is in de basis lineair, en dat is precies het probleem. In de cel is de triglyceride-accumulatie namelijk eerst een reversibele buffer, die actief wordt leeggehouden door beta-oxidatie — PPARalpha en CPT1A — en door VLDL-export via MTTP en APOB. Zolang de perturbatie, dus LXR-gedreven de-novo-lipogenese en CD36-gemedieerde instroom, binnen die dynamische klaringscapaciteit blijft, veert het systeem terug naar homeostase: een adaptieve homeostatische attractor. Pas als de perturbatie groter wordt dan die capaciteit, kantelt het systeem naar een pathologische attractor: lipotoxiciteit, celdood en steatose. Dat kantelpunt — die bifurcatie — kan een lineair AOP niet voorspellen, en dat moeten we kwantitatief modelleren.
 
-Deel B — niet-lineair. Soms vertelt de Molecular Initiating Event op zichzelf onvoldoende of de Adverse Outcome daadwerkelijk optreedt. Neem Cortical Spreading Depression: we kennen de MIE — ion channel disruption — maar of die uitmondt in een pathologische CSD-golf hangt af van tissue-level emergence: een ruimtelijk reaction-diffusion-proces over het weefsel, dat we bijvoorbeeld met Multi-Electrode Arrays meten. [klik op de video's] Twee simulaties: de golf die zich over het weefsel voortplant, en het herstel terug naar homeostase. Dezelfde MIE, maar de uitkomst ontstaat pas op een hoger abstractieniveau.
+Deel B — niet-lineair weefselgedrag. Soms vertelt de Molecular Initiating Event op zichzelf onvoldoende of de Adverse Outcome daadwerkelijk optreedt. Neem Cortical Spreading Depression: we kennen de MIE — ionkanaal-verstoring of kaliumophoping — maar de uitkomst ontstaat pas door ruimtelijk-temporele emergentie in het weefsel, meetbaar met bijvoorbeeld Multi-Electrode Arrays.
 
-In de context van Cortical Spreading Depression (CSD) veroorzaakt door verstoring van ionkanalen en kaliumophoping, vertalen $u$ en $a$ zich direct naar specifieke biofysische componenten van het neurale weefsel:1. Wat stelt $u$ voor?$u$ is de dimensieloze maat voor de lokale excitatietoestand: voornamelijk de extracellulaire kaliumconcentratie ($[\text{K}^+]_e$) en de gekoppelde membraandepolarisatie ($V_m$).Biologische betekenis:In rusttoestand houden neuronen $[\text{K}^+]_e$ strak gereguleerd op een laag basisniveau ($\approx 3\text{ tot }4\text{ mM}$), wat overeenkomt met $u \approx 0$.Autocatalytische dynamiek:Wanneer ionkanalen verstoord raken of cellen depolariseren, lekken grote hoeveelheden $\text{K}^+$ de nauwe extracellulaire ruimte in. Omdat de evenwichtspotentiaal voor kalium ($E_K$) hierdoor minder negatief wordt, depolariseren omliggende neuronen. Deze depolarisatie opent spanningsafhankelijke kanalen ($\text{Na}^+$ en persistente $\text{Ca}^{2+}$-stromen), wat leidt tot nóg meer depolarisatie en massale $\text{K}^+$-uitstoot.In de vergelijking weerspiegelt de term $u(1 - u)$ deze positieve terugkoppeling (de autocatalytische ontbranding) tot aan de verzadigde CSD-piek ($[\text{K}^+]_e \approx 50\text{–}80\text{ mM}$, wat overeenkomt met $u \approx 1$).2. Wat stelt $a$ voor?$a$ is de drempelwaarde (de tipping point of bifurcatiedrempel) waarbij de lokale opnamecapaciteit van astrocyten en pompen bezwijkt.Biologische betekenis:Onder normale omstandigheden werken twee fysiologische verdedigingsmechanismen om $[\text{K}^+]_e$ direct af te voeren:Astrocytaire buffering: Astrocyten nemen overtollig $\text{K}^+$ op via $\text{Kir}4.1$-kanalen en verspreiden dit via hun gap-junctionnetwerk (spatial potassium buffering).$\text{Na}^+/\text{K}^+$-ATPase pompen: Pompen actief kalium terug de cellen in tegen de gradiënt in.Het kantelpunt $a$:Zolang de kaliumstijging onder de drempelwaarde $a$ blijft ($[\text{K}^+]_e \lesssim 10\text{–}12\text{ mM}$), zijn deze pompen en gliale buffers snel genoeg om alle kalium weg te werken. Zodra de lokale verstoring echter groter is dan $a$, raakt de opnamecapaciteit van de pompen en astrocyten lokaal verzadigd.Vanaf dat moment overtreft de stroom van vrijkomend kalium de klaring, waardoor de term $(u - a)$ positief wordt en de ongecontroleerde, zelfvoorstuwing van de CSD-golf ontstaat.Samengevat in toxicologische termen:$u$: De directe toestandsparameter (de concentratie $[\text{K}^+]_e$ die stijgt als gevolg van een toxische interventie op ionkanalen of pomp-inhibitie).$a$: De resilience-grens van het weefsel; een toxische stof die bijvoorbeeld de $\text{Na}^+/\text{K}^+$-ATPase remt (zoals ouabaïne) of de astrocytaire koppeling verzwakt, verlaagt effectief de waarde van $a$. Hierdoor heeft het weefsel een veel kleinere prikkel nodig om direct in een CSD-golf te kantelen.
+[klik op de video csd_experiment]
+Hier zien we twee simulaties met exact dezelfde centrale startpuls. In kwetsbaar weefsel met weinig gliale buffers breekt de golf door en propageert over de cortex. In robuust weefsel met voldoende actieve astrocyten dooft de stimulus direct uit. U kunt met de QR-code rechts direct zelf interactief met deze parameters en weefselstructuur spelen in de simulator.
 
 Kortom: om een Adverse Outcome betrouwbaar te voorspellen, moeten we de adaptieve attractor én de emergente weefseldynamiek samen met de (q)AOP's en Physiological Maps meenemen. Mijn centrale claim in dit onderzoeksvoorstel is dat juist Multimodal en Multiscale AI bij uitstek geschikt is om deze enorme diversiteit aan data en biologische schalen wiskundig samen te brengen."
 -->
@@ -521,9 +538,3 @@ class: text-center
 # Slide 2 — Aanpak, CV & Motivatie
 
 *(Wordt in de volgende stap uitgewerkt)*
-
-<!--
-Placeholder voor Slide 2 (max. 90 seconden):
-- Hoe het voorstel dit oplost (Multimodal & Multiscale AI architectuur)
-- Jouw CV, achtergrond & persoonlijke motivatie
--->
