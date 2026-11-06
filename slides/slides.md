@@ -31,7 +31,8 @@ canvasWidth: 1120
 <!-- LEFT COLUMN: NEW APPROACH METHODOLOGIES -->
 <div class="panel context-panel">
 <div class="panel-header">
-1. <span class="badge badge-blue">New Approach Methodologies</span>
+1. 
+<span class="badge badge-blue">New Approach Methodologies</span>
 </div>
 <!-- NAM Image / Placeholder -->
 <div class="nam-visual-wrap">
@@ -90,7 +91,7 @@ class="aop-fig-img aop-fig-overlay"
 </div>
 </div>
 </div>
-<!-- DEEL B: CSD EXPERIMENT + GROTE VIDEO + VEILIGE QR CODE -->
+<!-- DEEL B: CSD EXPERIMENT + GROTE VIDEO + DIRECT SCANBARE QR CODE -->
 <div class="part">
 <div class="part-label">
 <span class="step-num step-b">B</span>
@@ -102,7 +103,6 @@ class="aop-fig-img aop-fig-overlay"
 <video :src="'/csd_experiment.webm#t=0.05'" class="csd-video" muted loop playsinline preload="metadata"></video>
 <div class="play-badge">▶</div>
 <figcaption><strong>Breakthrough (left) vs. Propagation Failure (right)</strong><br/>Same MIE: tissue structure determines the fate</figcaption>
-
 </figure>
 <!-- Toelichting Tekst -->
 <div class="video-note">
@@ -112,9 +112,9 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 </div>
 <div class="vn-foot">scan QR for live simulation</div>
 </div>
-<!-- QR Card met base64-veilige SVG -->
-<a href="https://github.com/MeesterDavid/Levertoxiciteit/blob/main/cortical_spreading_depression_simulator.html" target="_blank" class="qr-card">
-<img :src="'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 33 33\' fill=\'%230B1120\'><rect width=\'33\' height=\'33\' rx=\'2\'/><path fill=\'%23F8FAFC\' d=\'M3 3h7v7H3V3zm2 2v3h3V5H5zM3 23h7v7H3v-7zm2 2v3h3v-3H5zM23 3h7v7h-7V3zm2 2v3h3V5h-3z\'/><path fill=\'%2338BDF8\' d=\'M12 3h2v3h-2zm5 0h1v2h-1zm3 0h1v4h-1zm-6 4h3v1h-3zm-2 2h1v2h-1zm7 0h2v1h-2zm-5 2h2v2h-2zm4 0h1v1h-1zm3 0h2v3h-1v-2h-1zm-9 2h1v2h-1zm3 1h2v1h-2zm-5 2h3v1H7zm5 0h1v3h-1zm7 0h3v1h-3zm-9 2h2v1h-2zm5 0h2v2h-1v-1h-1zm-7 2h1v1H6zm4 0h1v3h-1zm4 0h3v1h-3zm-5 2h2v1H9zm6 0h2v2h-1v-1h-1zm3-7h1v2h-1zm2 1h1v3h-1zm-2 3h1v2h-1zm3 1h1v1h-1z\'/></svg>'" alt="QR Code" class="qr-img" />
+<!-- QR Card: echte, door zxing-cpp gedecodeerde QR (bron: slides/make-qr.mjs) -->
+<a href="https://raw.githack.com/MeesterDavid/Levertoxiciteit/main/cortical_spreading_depression_simulator.html" target="_blank" rel="noopener" class="qr-card">
+<img class="qr-img" :src="'/qr_csd_simulator.png'" alt="QR-code naar de live CSD-simulator" width="156" height="156" />
 <div class="qr-caption">
 <span>Live Simulator</span>
 <span class="qr-sub">Scan of klik</span>
@@ -128,8 +128,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 <div class="claim-banner">
 <div class="claim-icon">✦</div>
 <div class="claim-text">
-<em>Adverse Outcomes</em> are not linear and not always predictable from a purely reductionist approach. Some adverse outcomes depend on <em>emergent dynamics</em>. This is why we need <strong>Multimodal &amp; Multiscale AI
-</strong>.
+<em>Adverse Outcomes</em> are not linear and not always predictable from a purely reductionist approach. Some adverse outcomes depend on <em>emergent dynamics</em>. This is why we need <strong>Multimodal &amp; Multiscale AI</strong>.
 </div>
 </div>
 </div>
@@ -424,8 +423,9 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   color: #fda4af;
 }
 .video-note {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
+  max-width: 240px;
   display: flex;
   flex-direction: column;
   gap: 0.18rem;
@@ -455,6 +455,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 }
 .qr-card {
   flex: 0 0 auto;
+  margin-left: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -462,7 +463,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   background: #0b1120;
   border: 1px solid #334155;
   border-radius: 9px;
-  padding: 0.35rem 0.45rem;
+  padding: 0.4rem 0.5rem;
   text-decoration: none;
   transition: border-color 0.2s ease, transform 0.15s ease;
 }
@@ -471,9 +472,11 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   transform: translateY(-1px);
 }
 .qr-img {
-  width: 76px;
-  height: 76px;
+  width: 156px;
+  height: 156px;
   display: block;
+  border-radius: 4px;
+  background: #ffffff;
 }
 .qr-caption {
   margin-top: 0.22rem;
