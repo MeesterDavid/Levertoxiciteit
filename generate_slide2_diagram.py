@@ -10,7 +10,7 @@ shows the solution: ONE multimodal & multiscale AI node that fuses four data mod
 and produces two different answers:
 
   1. P(MIE | structure)                        -> solid arrow   (built and validated, M0 / M1.1)
-  2. P(adversity | context, exposure, dose)     -> dotted arrow  (next step, M1.2 -> M4)
+  2. P(z_adversity | context, exposure, dose)   -> dotted arrow  (next step, M1.2 -> M4)
 
 The figure is deliberately quiet: no editorial headings, no milestone badges and no legend, so
 that at projector distance only the four real data sources, the two model names and the two
@@ -100,9 +100,13 @@ def text(
 
 
 def sub(main: str, subscript: str, size: float = 7.6, dy: float = 2.9) -> str:
-    """Inline subscript that survives plain SVG rendering (no MathML/CSS needed)."""
+    """Inline subscript that survives plain SVG rendering (no MathML/CSS needed).
+
+    The subscript is italic, matching the deck: `homeo`, `adversity`, `steatosis` and
+    `cholestasis` are indices on the state variable z, not part of its name.
+    """
     return (
-        f'{main}<tspan dy="{dy}" font-size="{size}">{esc(subscript)}</tspan>'
+        f'{main}<tspan dy="{dy}" font-size="{size}" font-style="italic">{esc(subscript)}</tspan>'
         f'<tspan dy="{-dy}"></tspan>'
     )
 
@@ -390,15 +394,17 @@ def draw_output_mie(x: float, y: float, w: float, h: float, mol: dict) -> str:
 
 
 def draw_output_adversity(x: float, y: float, w: float, h: float) -> str:
-    """Answer 2 (dotted arrow): P(adversity | context, exposure, dose) - next step."""
+    """Answer 2 (dotted arrow): P(z_adversity | context, exposure, dose) - next step."""
     rows = [card(x, y, w, h, stroke=ROSE, fill="#1d1020", rx=11, width=1.6)]
-    rows.append(text(x + 14, y + 32, "P(adversity | context,", size=12.0, fill=ROSE, weight=800))
+    rows.append(text(x + 14, y + 32,
+                     "P(z" + sub("", "adversity", size=7.4, dy=2.8) + " | context,",
+                     size=12.0, fill=ROSE, weight=800))
     rows.append(text(x + 14, y + 47, "exposure, dose)", size=12.0, fill=ROSE, weight=800))
     rows.append(text(x + 14, y + 66, "Probability that the hepatocyte tips to z"
                      + sub("", "adversity", dy=2.4), size=8.6, fill=SOFT))
-    rows.append(text(x + 14, y + 78, "instead of returning to z" + sub("", "homeostasis", dy=2.4),
-                     size=8.6, fill=SOFT))
-    rows.append(text(x + 14, y + 90, "given context, exposure and dose", size=8.6, fill=SOFT))
+    rows.append(text(x + 14, y + 78, "instead of returning to z" + sub("", "homeo", dy=2.4)
+                     + ", given context,", size=8.6, fill=SOFT))
+    rows.append(text(x + 14, y + 90, "exposure and dose", size=8.6, fill=SOFT))
     chips = (
         ("z_homeo", "z" + sub("", "homeo"), EMERALD),
         ("z_steatosis", "z" + sub("", "steatosis"), AMBER),
@@ -427,7 +433,7 @@ def build_svg(mol: dict, hep: dict) -> str:
         f'role="img" aria-label="Four biological data sources feed one multimodal and multiscale '
         f'AI model, which returns two probabilities: the chance of a specific molecular initiating '
         f'event, and the chance that the hepatocyte tips to z-adversity instead of returning to '
-        f'z-homeostasis.">',
+        f'z-homeo.">',
         "<defs>"
         + marker("arr-in", SLATE)
         + marker("arr-solid", EMERALD)

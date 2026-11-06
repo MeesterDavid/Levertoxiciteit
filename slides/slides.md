@@ -31,8 +31,7 @@ canvasWidth: 1120
 <!-- LEFT COLUMN: NEW APPROACH METHODOLOGIES -->
 <div class="panel context-panel">
 <div class="panel-header">
-1. 
-<span class="badge badge-blue">New Approach Methodologies</span>
+<span class="badge badge-blue">1. New Approach Methodologies</span>
 </div>
 <!-- NAM Image / Placeholder -->
 <div class="nam-visual-wrap">
@@ -49,14 +48,14 @@ class="nam-img"
 <div class="kw-dot bg-cyan"></div>
 <div>
 <div class="kw-title">Probabilistic Chemical Risk Assessment</div>
-<div class="kw-desc">Van dierproeven naar humane <em>in vitro</em> &amp; <em>in silico</em> voorspelling</div>
+<div class="kw-desc">Accelerating the transition to human-relevant, animal-free biomedical innovation</div>
 </div>
 </div>
 <div class="kw-card">
 <div class="kw-dot bg-emerald"></div>
 <div>
-<div class="kw-title">Pijlers: (q)AOP's &amp; Physiological Maps</div>
-<div class="kw-desc">Mechanistisch vastleggen en verklaren van <em>Adverse Outcomes</em></div>
+<div class="kw-title">Pillars: (q)AOPs &amp; Disease Maps</div>
+<div class="kw-desc">Mechanistically mapping and explaining <em>Adverse Outcomes</em></div>
 </div>
 </div>
 </div>
@@ -64,16 +63,14 @@ class="nam-img"
 <!-- RIGHT COLUMN: BEYOND LINEAR AOPS -->
 <div class="panel kwestie-panel">
 <div class="panel-header">
-<span class="badge badge-rose">2. Beyond Linear AOPs</span>
-<span class="panel-subtitle">From qualitative linear chains to dynamic, quantitative systems</span>
+<span class="badge badge-rose">2. Expanding on Linear AOPs</span>
+<span class="panel-subtitle">From qualitative linear chains to dynamic, quantitative systems predicting <span class="math-badge"><em>P</em>(<em>z</em><sub>homeo</sub>, <em>z</em><sub>adversity</sub> | context, exposure, dose)</span></span>
 </div>
 <!-- DEEL A: AOP 34 -->
 <div class="part">
 <div class="part-label">
-<span class="step-num step-a">A</span>
 <span class="part-title">AOP 34</span>
-<span class="part-note">LXR (MIE 167) → lipogenese → TG-accumulatie (KE 291) → steatose</span>
-<span v-click.hide="1" class="click-hint">klik ▸</span>
+<span class="part-note">LXR (MIE 167) → lipogenese → TG-accumulation (KE 291) → steatose</span>
 </div>
 <div class="part-a-body">
 <div class="aop-fig-stack">
@@ -94,7 +91,6 @@ class="aop-fig-img aop-fig-overlay"
 <!-- DEEL B: CSD EXPERIMENT + GROTE VIDEO + DIRECT SCANBARE QR CODE -->
 <div class="part">
 <div class="part-label">
-<span class="step-num step-b">B</span>
 <span class="part-title">Cortical Spreading Depression</span>
 </div>
 <div class="video-row">
@@ -114,7 +110,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 </div>
 <!-- QR Card: echte, door zxing-cpp gedecodeerde QR (bron: slides/make-qr.mjs) -->
 <a href="https://raw.githack.com/MeesterDavid/Levertoxiciteit/main/cortical_spreading_depression_simulator.html" target="_blank" rel="noopener" class="qr-card">
-<img class="qr-img" :src="'/qr_csd_simulator.png'" alt="QR-code naar de live CSD-simulator" width="156" height="156" />
+<img class="qr-img" :src="'/qr_csd_simulator.png'" alt="QR-code naar de live CSD-simulator" width="140" height="140" />
 <div class="qr-caption">
 <span>Live Simulator</span>
 <span class="qr-sub">Scan of klik</span>
@@ -122,13 +118,6 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 </a>
 </div>
 </div>
-</div>
-</div>
-<!-- Bottom Claim Banner -->
-<div class="claim-banner">
-<div class="claim-icon">✦</div>
-<div class="claim-text">
-<em>Adverse Outcomes</em> are not linear and not always predictable from a purely reductionist approach. Some adverse outcomes depend on <em>emergent dynamics</em>. This is why we need <strong>Multimodal &amp; Multiscale AI</strong>.
 </div>
 </div>
 </div>
@@ -182,6 +171,10 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 .main-grid {
   display: grid;
   grid-template-columns: 31% 67.5%;
+  /* a definite row height is what lets the panels shrink; with the default `auto`
+     row a long panel header overflows the grid box and ends up painted behind the
+     claim banner (the banner stayed at y 584–630 while the cards ran to ~600) */
+  grid-template-rows: minmax(0, 1fr);
   gap: 1.5%;
   flex: 1;
   min-height: 0;
@@ -194,6 +187,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 0;
 }
 .panel-header {
   display: flex;
@@ -208,6 +202,8 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 .badge-blue {
   background: rgba(56, 189, 248, 0.15);
@@ -220,9 +216,30 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   border: 1px solid rgba(244, 63, 94, 0.35);
 }
 .panel-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: #cbd5e1;
   font-weight: 600;
+  line-height: 1.3;
+}
+/* Inline formula. KaTeX only runs on markdown text, never inside a raw HTML block,
+   so the formula is real HTML: italic variables + cursive subscripts, set in a math
+   font stack (no CDN, so the deck also works offline). No chip: the sentence around it
+   is body text, so the formula must not sit in a coloured rectangle of its own. */
+.math-badge {
+  display: inline;
+  font-family: 'Cambria Math', 'Latin Modern Math', Georgia, 'Times New Roman', serif;
+  font-size: 0.84rem;
+  color: #e2e8f0;
+}
+
+.math-badge em {
+  font-style: italic;
+}
+.math-badge sub {
+  font-size: 0.68em;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  color: #7dd3fc;
 }
 .nam-visual-wrap {
   flex: 1;
@@ -233,7 +250,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   margin: 0.25rem 0;
 }
 .nam-img {
-  max-height: 205px;
+  max-height: 215px;
   width: 100%;
   object-fit: contain;
   border-radius: 10px;
@@ -262,62 +279,41 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 .bg-cyan { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
 .bg-emerald { background: #10b981; box-shadow: 0 0 8px #10b981; }
 .kw-title {
-  font-size: 0.76rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: #f1f5f9;
 }
 .kw-desc {
-  font-size: 0.66rem;
+  font-size: 0.72rem;
   color: #94a3b8;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 .panel.kwestie-panel {
   justify-content: flex-start;
-  gap: 0.42rem;
+  gap: 0.3rem;
 }
 .part {
   display: flex;
   flex-direction: column;
-  gap: 0.28rem;
+  gap: 0.2rem;
   min-height: 0;
 }
 .part-label {
   display: flex;
-  align-items: center;
-  gap: 0.38rem;
+  align-items: baseline;
+  gap: 0.5rem;
   flex-wrap: wrap;
-  line-height: 1.15;
-}
-.step-num {
-  font-size: 0.56rem;
-  font-weight: 900;
-  width: 15px;
-  height: 15px;
-  border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.step-a {
-  background: rgba(56, 189, 248, 0.18);
-  color: #7dd3fc;
-  border: 1px solid rgba(56, 189, 248, 0.45);
-}
-.step-b {
-  background: rgba(244, 63, 94, 0.18);
-  color: #fda4af;
-  border: 1px solid rgba(244, 63, 94, 0.45);
+  line-height: 1.2;
 }
 .part-title {
-  font-size: 0.66rem;
+  font-size: 0.82rem;
   font-weight: 800;
   color: #f1f5f9;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 .part-note {
-  font-size: 0.56rem;
+  font-size: 0.7rem;
   color: #94a3b8;
   font-weight: 600;
 }
@@ -346,6 +342,11 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   position: relative;
   flex: 1;
   min-width: 0;
+  /* aop_linear_before.svg and aop_homeostatic_after.svg share the same 1490 x 490 canvas
+     (public/generate_aop34_svg.py regenerates the "after" one); a fixed aspect ratio plus
+     absolutely positioned layers keeps the click-overlay pixel aligned, so the "after" state
+     only *adds* the homeostatic buffer. */
+  aspect-ratio: 1490 / 490;
   border-radius: 9px;
   border: 1px solid #334155;
   background: #0b0f19;
@@ -353,16 +354,15 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   line-height: 0;
 }
 .aop-fig-img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 200px;
+  height: 100%;
   object-fit: contain;
 }
 .aop-fig-overlay {
-  position: absolute;
-  inset: 0;
-  height: 100%;
+  z-index: 1;
 }
 .video-row {
   display: flex;
@@ -380,8 +380,8 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   cursor: pointer;
 }
 .csd-video {
-  width: 270px;
-  height: 135px;
+  width: 288px;
+  height: 144px;
   display: block;
   object-fit: cover;
   border-radius: 8px;
@@ -394,7 +394,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 }
 .play-badge {
   position: absolute;
-  top: 67px;
+  top: 72px;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 32px;
@@ -414,10 +414,10 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   opacity: 0;
 }
 .video-card figcaption {
-  font-size: 0.52rem;
+  font-size: 0.6rem;
   color: #cbd5e1;
   text-align: center;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 .video-card figcaption strong {
   color: #fda4af;
@@ -433,22 +433,22 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   padding-left: 0.45rem;
 }
 .vn-title {
-  font-size: 0.58rem;
+  font-size: 0.68rem;
   font-weight: 800;
   color: #fda4af;
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 .vn-body {
-  font-size: 0.52rem;
+  font-size: 0.62rem;
   color: #cbd5e1;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 .vn-body strong {
   color: #f1f5f9;
 }
 .vn-foot {
-  font-size: 0.46rem;
+  font-size: 0.54rem;
   color: #94a3b8;
   font-style: italic;
   margin-top: 0.1rem;
@@ -463,7 +463,7 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   background: #0b1120;
   border: 1px solid #334155;
   border-radius: 9px;
-  padding: 0.4rem 0.5rem;
+  padding: 0.28rem 0.5rem;
   text-decoration: none;
   transition: border-color 0.2s ease, transform 0.15s ease;
 }
@@ -472,8 +472,8 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   transform: translateY(-1px);
 }
 .qr-img {
-  width: 156px;
-  height: 156px;
+  width: 140px;
+  height: 140px;
   display: block;
   border-radius: 4px;
   background: #ffffff;
@@ -489,28 +489,9 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
   line-height: 1.1;
 }
 .qr-sub {
-  font-size: 0.44rem;
+  font-size: 0.5rem;
   color: #38bdf8;
   font-weight: 500;
-}
-.claim-banner {
-  margin-top: 0.45rem;
-  background: linear-gradient(90deg, rgba(56, 189, 248, 0.14) 0%, rgba(168, 85, 247, 0.16) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.4);
-  border-radius: 9px;
-  padding: 0.42rem 0.7rem;
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-}
-.claim-icon {
-  font-size: 1rem;
-  color: #c084fc;
-}
-.claim-text {
-  font-size: 0.7rem;
-  color: #f1f5f9;
-  line-height: 1.3;
 }
 </style>
 
@@ -538,39 +519,32 @@ Kortom: om een Adverse Outcome betrouwbaar te voorspellen, moeten we de adaptiev
 <div class="slide-container">
 <!-- Header: only the central dogma, deliberately without eyebrow or pill -->
 <div class="header-bar">
-<h1 class="main-title dogma-title">z<sub>homeo</sub> or z<sub>adversity</sub></h1>
+<h1 class="main-title dogma-title">Homeostasis or Adversity?</h1>
 </div>
-<!-- The solution, in one line -->
+<!-- Demo case, in one line -->
 <div class="sub-claim">
-<span class="sub-claim-tag">The solution</span>
-<span>one <strong>multimodal &amp; multiscale AI model</strong> that fuses protein, gene and chemical data into one representation — and turns it into <strong>probabilities</strong>, not a label.</span>
+<span class="sub-claim-tag">A demo case</span>
+<span>a <strong>multimodal &amp; multiscale model</strong> that fuses protein, gene, and chemical data into one representation — and turns it into <strong>probabilities</strong>, not a label.</span>
 </div>
 <!-- Central figure: 4 data sources -> 1 AI node -> 2 answers (solid vs dotted) -->
 <figure class="figure-card">
-<img :src="'/s2_multimodal_ai_graph.svg'" alt="Four real data sources (protein interactions, gene expression, gene interactions, chemical structure and dose) feed one multimodal and multiscale AI model; it returns the probability of a specific MIE (solid arrow) and, as the next step, the probability of adversity given context, exposure and dose (dotted arrow)." class="pipeline-figure" />
+<img :src="'/s2_multimodal_ai_graph.svg'" alt="Four real data sources (protein interactions, gene expression, gene interactions, chemical structure and dose) feed one multimodal and multiscale AI model; it returns the probability of a specific MIE (solid arrow) and, as the next step, the probability of z-adversity given context, exposure and dose (dotted arrow)." class="pipeline-figure" />
 </figure>
-<!-- Bottom claim banner -->
-<div class="claim-banner">
-<div class="claim-icon">✦</div>
-<div class="claim-text">
-<strong>Today</strong> a validated <em>P</em>(MIE | structure): 12/12 in-sample, 8/12 leave-one-out — the uncertainty is measurable. <strong>Next step:</strong> <em>P</em>(adversity | context, exposure, dose) through the Neural ODE (M1.2 → M4): from a MIE probability to the probability that the cell tips over into <em>z<sub>adversity</sub></em>.
-</div>
-</div>
 </div>
 
 <!--
 SPEAKER NOTES SLIDE 2 (± 90–100 seconds | ~230 words):
 
-[1. TITLE — the central dogma]
-"This is the central claim of the proposal. We do not simply predict 'toxic' or 'non-toxic'. We predict the fate of the liver cell itself: does it spring back to the homeostatic attractor z-homeo, or does it tip over into the pathological attractor z-adversity — and then on to z-steatosis or to z-cholestasis? That tipping point is the only thing that biologically matters, and it is exactly what a linear AOP cannot give us."
+[1. TITLE — homeostasis or adversity?]
+"Homeostasis or adversity? That is the question this proposal answers. We do not simply predict 'toxic' or 'non-toxic'. We predict the fate of the liver cell itself: does it spring back to the homeostatic attractor z-homeo, or does it tip over into the pathological attractor z-adversity — and then on to z-steatosis or to z-cholestasis? That tipping point is the only thing that biologically matters, and it is exactly what a linear AOP cannot give us."
 
 [2. FOUR DATA SOURCES — left]
-"The solution is one multimodal and multiscale AI model, and it takes in four data sources. Protein-protein interactions from STRING-db: eighteen genes with a mean interaction score of 0.81. Gene expression from GTEx, the Human Protein Atlas, GEO and HepaRG: eighteen genes in three states — healthy, steatosis and cholestasis. Gene-gene interactions from OECD AOP 34 and 27 plus the Physiological Maps: twenty directed interactions, fourteen activating and six repressing, summarised in a 19-by-19 shortest-path matrix for the Graphormer. And chemical information: SMILES plus dose for twelve reference compounds in three MIE classes."
+"This is the demo case: one multimodal and multiscale model, and it takes in four data sources. Protein-protein interactions from STRING-db: eighteen genes with a mean interaction score of 0.81. Gene expression from GTEx, the Human Protein Atlas, GEO and HepaRG: eighteen genes in three states — healthy, steatosis and cholestasis. Gene-gene interactions from OECD AOP 34 and 27 plus the Physiological Maps: twenty directed interactions, fourteen activating and six repressing, summarised in a 19-by-19 shortest-path matrix for the Graphormer. And chemical information: SMILES plus dose for twelve reference compounds in three MIE classes."
 
 [3. THE FUSION NODE — middle]
 "Everything converges in that single node: Graphormer with 47.7 million parameters plus ToxFormer with 25.4 million. That is where the modalities meet: the graph encoder on the genes, the chemical structure with its dose, and the dynamics on top."
 
 [4. TWO ANSWERS — right]
 "Then the two answers. The solid arrow is what we have today: the probability that a compound induces one specific MIE — LXR activation or BSEP inhibition. In-sample twelve out of twelve correct with a mean probability of 0.98. But under leave-one-out that drops to eight out of twelve, with a mean probability of 0.39. And that is not a weakness: that is the point. We can measure the uncertainty — which is exactly what probabilistic risk assessment asks for.
-The dotted arrow is the next step, and it is dotted on purpose: the probability of adversity given context, exposure and dose. For that we are now building the chain from milestone 1.2 to 4: the Graphormer encoder on the genes, the perturbation encoder, the Neural ODE over twenty-four hours, and finally the bifurcation that gives the point of departure."
+The dotted arrow is the next step, and it is dotted on purpose: the probability of z-adversity given context, exposure and dose. For that we are now building the chain from milestone 1.2 to 4: the Graphormer encoder on the genes, the perturbation encoder, the Neural ODE over twenty-four hours, and finally the bifurcation that gives the point of departure."
 -->

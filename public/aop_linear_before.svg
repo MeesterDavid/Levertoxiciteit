@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 490" width="100%" height="100%" style="background-color: #0b0f19; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1490 490" width="100%" height="100%" style="background-color: #0b0f19; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
   <defs>
     <!-- Witte pijlpunten voor reguliere flows op donkere achtergrond -->
     <marker id="arr-white" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -147,10 +147,11 @@
     <!-- Organelle -->
     <g filter="url(#shadow-green)">
       <rect x="760" y="160" width="150" height="180" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
-      <text x="835" y="195" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Cytoplasm displacement</text>
-      <text x="835" y="235" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Nucleus distortion</text>
-      <text x="835" y="275" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Mitochondrial disruption</text>
-      <text x="835" y="315" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Endoplasmic reticulum stress</text>
+      <text x="835" y="195" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Cytoplasm displacement</text>
+      <text x="835" y="235" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Nucleus distortion</text>
+      <text x="835" y="275" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Mitochondrial disruption</text>
+      <text x="835" y="311" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Endoplasmic</text>
+      <text x="835" y="331" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">reticulum stress</text>
     </g>
 
     <!-- Cellular -->

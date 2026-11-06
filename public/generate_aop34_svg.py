@@ -193,7 +193,7 @@ def generate_homeostatic_svg():
   <g transform="translate(760, 202)">
     <rect x="0" y="0" width="195" height="34" rx="6" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
     <text x="97" y="15" font-size="10" font-weight="bold" text-anchor="middle" fill="#a7f3d0">IF: Load ≤ Buffer Capacity</text>
-    <text x="97" y="28" font-size="9.5" text-anchor="middle" fill="#6ee7b7">➔ Return to Homeostasis (AOP Prevented)</text>
+    <text x="97" y="28" font-size="9" text-anchor="middle" fill="#6ee7b7">➔ Return to Homeostasis (AOP Prevented)</text>
   </g>
   <path d="M 857 165 L 857 200" stroke="#34d399" stroke-width="1.8" stroke-dasharray="3 2" fill="none" marker-end="url(#arr-blue)"/>
   <path d="M 857 325 L 857 238" stroke="#34d399" stroke-width="1.8" stroke-dasharray="3 2" fill="none" marker-end="url(#arr-blue)"/>
@@ -217,10 +217,11 @@ def generate_homeostatic_svg():
   <!-- Organelle -->
   <g filter="url(#shadow-green)">
     <rect x="{org_x}" y="160" width="150" height="180" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
-    <text x="{org_x + 75}" y="195" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Cytoplasm displacement</text>
-    <text x="{org_x + 75}" y="235" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Nucleus distortion</text>
-    <text x="{org_x + 75}" y="275" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Mitochondrial disruption</text>
-    <text x="{org_x + 75}" y="315" font-size="11" font-weight="bold" text-anchor="middle" fill="#052e16">Endoplasmic reticulum stress</text>
+    <text x="{org_x + 75}" y="195" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Cytoplasm displacement</text>
+    <text x="{org_x + 75}" y="235" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Nucleus distortion</text>
+    <text x="{org_x + 75}" y="275" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Mitochondrial disruption</text>
+    <text x="{org_x + 75}" y="311" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">Endoplasmic</text>
+    <text x="{org_x + 75}" y="331" font-size="10.5" font-weight="bold" text-anchor="middle" fill="#052e16">reticulum stress</text>
   </g>
 
   <!-- Cellular -->
