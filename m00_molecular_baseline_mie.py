@@ -1193,6 +1193,141 @@ def compute_loocv_predictions(
 
 
 # ==============================================================================
+# 3B. LEAVE-ONE-OUT VALIDATION METRICS (THE ONLY HONEST SCORE FOR n = 12)
+# ==============================================================================
+# `calibrate_mie_head()` fits the MIE heads on all 12 reference compounds, so an in-sample
+# score is optimistic by construction (it reproduces the training labels by definition). The
+# reportable number is the leave-one-out cross-validation of `compute_loocv_predictions()`.
+LOOCV_CLASS_KEYS: tuple[str, str, str] = ("loocv_P_no_mie", "loocv_P_mie167", "loocv_P_mie41")
+LOOCV_MODEL_KEYS: dict[str, str] = {"graphormer": "loocv", "toxtransformer": "tox_loocv"}
+LOOCV_SHORT_LABELS: tuple[str, str, str] = ("no MIE", "MIE 167", "MIE 41")
+LOOCV_MODEL_TITLES: dict[str, str] = {
+    "graphormer": "Microsoft Graphormer (2D graph)",
+    "toxtransformer": "ToxTransformer (SMILES / bioassays)",
+    "consensus": "Dual consensus (50 / 50 probability fusion)",
+}
+
+
+def _loocv_vector(compound: dict[str, Any], model: str) -> list[float]:
+    """LOOCV class probabilities of one compound for one model, ordered [0, MIE 167, MIE 41]."""
+    block = compound[LOOCV_MODEL_KEYS[model]]
+    return [float(block[key]) for key in LOOCV_CLASS_KEYS]
+
+
+def _consensus_loocv_vector(compound: dict[str, Any]) -> list[float]:
+    """50/50 probability fusion of both LOOCV blocks (same rule as `compute_consensus_prediction`)."""
+    graph = _loocv_vector(compound, "graphormer")
+    tox = _loocv_vector(compound, "toxtransformer")
+    fused = [0.5 * g + 0.5 * t for g, t in zip(graph, tox)]
+    return [value / max(sum(fused), 1e-8) for value in fused]
+
+
+def _summarise_loocv(compounds: list[dict[str, Any]], vector_fn) -> dict[str, Any]:
+    """Confusion matrix, accuracy, uncertainty and per-class scores of one LOOCV classifier."""
+    n = len(compounds)
+    matrix = [[0, 0, 0] for _ in range(3)]  # rows = true class, columns = LOOCV prediction
+    true_probs: list[float] = []
+    per_compound: list[dict[str, Any]] = []
+
+    for compound in compounds:
+        truth = int(compound["true_class"])
+        probs = vector_fn(compound)
+        pred = int(np.argmax(probs))
+        matrix[truth][pred] += 1
+        true_probs.append(float(probs[truth]))
+        per_compound.append(
+            {
+                "name": compound["name"],
+                "true_class": truth,
+                "loocv_pred_class": pred,
+                "P_true_class": round(float(probs[truth]), 4),
+                "correct": bool(pred == truth),
+            }
+        )
+
+    support = [sum(row) for row in matrix]
+    predicted = [sum(matrix[i][j] for i in range(3)) for j in range(3)]
+    recall = [matrix[i][i] / support[i] if support[i] else 0.0 for i in range(3)]
+    precision = [matrix[i][i] / predicted[i] if predicted[i] else 0.0 for i in range(3)]
+    f1 = [(2 * p * r / (p + r)) if (p + r) else 0.0 for p, r in zip(precision, recall)]
+    n_correct = sum(matrix[i][i] for i in range(3))
+
+    return {
+        "n": n,
+        "n_correct": n_correct,
+        "accuracy": round(n_correct / n, 4),
+        "mean_p_true_class": round(float(np.mean(true_probs)), 4),
+        "min_p_true_class": round(float(np.min(true_probs)), 4),
+        "max_p_true_class": round(float(np.max(true_probs)), 4),
+        "confusion_matrix": matrix,
+        "support": support,
+        "predicted": predicted,
+        "recall": [round(v, 4) for v in recall],
+        "precision": [round(v, 4) for v in precision],
+        "f1": [round(v, 4) for v in f1],
+        "macro_f1": round(float(np.mean(f1)), 4),
+        "per_compound": per_compound,
+    }
+
+
+def build_validation_metrics(compounds: list[dict[str, Any]]) -> dict[str, Any]:
+    """
+    Builds the leave-one-out validation block of `data/molecular_baseline_mie.json`.
+
+    In-sample accuracy is deliberately NOT part of this block: the MIE heads are calibrated on
+    these same 12 compounds, so that score carries no information. Only LOOCV is reported.
+    """
+    return {
+        "protocol": (
+            "leave-one-out cross-validation (12 folds; nearest class prototype in the joint "
+            "embedding space of molecular embedding + pharmacophore descriptors)"
+        ),
+        "classes": [MIE_CLASSES[i] for i in range(3)],
+        "class_labels": [MIE_CLASS_LABELS_NL[i] for i in range(3)],
+        "short_labels": list(LOOCV_SHORT_LABELS),
+        "in_sample_reported": False,
+        "in_sample_note": (
+            "In-sample accuracy is not reported: the MIE heads are calibrated on all 12 reference "
+            "compounds (250 epochs), so a perfect training diagonal is guaranteed by construction."
+        ),
+        "graphormer": _summarise_loocv(compounds, lambda c: _loocv_vector(c, "graphormer")),
+        "toxtransformer": _summarise_loocv(compounds, lambda c: _loocv_vector(c, "toxtransformer")),
+        "consensus": _summarise_loocv(compounds, _consensus_loocv_vector),
+    }
+
+
+def format_confusion_matrix(matrix: list[list[int]]) -> list[str]:
+    """ASCII 3x3 confusion matrix for the terminal log (rows = true class, columns = prediction)."""
+    header = "pred ->        0(no MIE)  167(LXR)    41(BSEP)"
+    lines = [header, "-" * len(header)]
+    for label, row in zip(LOOCV_SHORT_LABELS, matrix):
+        cells = "".join(f"{value:>11d}" for value in row)
+        lines.append(f"true {label:<10s}{cells}")
+    return lines
+
+
+def print_validation_report(metrics: dict[str, Any]) -> None:
+    """Prints the LOOCV-only validation summary (no in-sample numbers) to the terminal."""
+    print("\n[Validation: LEAVE-ONE-OUT cross-validation only - in-sample scores are not reported]")
+    print(f"  protocol: {metrics['protocol']}")
+    for model in ("graphormer", "toxtransformer", "consensus"):
+        block = metrics[model]
+        print(
+            f"\n  -> {LOOCV_MODEL_TITLES[model]:<44s} "
+            f"LOOCV {block['n_correct']}/{block['n']} ({block['accuracy'] * 100:.1f}%) | "
+            f"mean P(true class) {block['mean_p_true_class']:.3f} "
+            f"({block['min_p_true_class']:.2f}-{block['max_p_true_class']:.2f}) | "
+            f"macro F1 {block['macro_f1']:.3f}"
+        )
+        for line in format_confusion_matrix(block["confusion_matrix"]):
+            print(f"     {line}")
+        recall = " / ".join(
+            f"{label} {value * 100:.0f}%" for label, value in zip(LOOCV_SHORT_LABELS, block["recall"])
+        )
+        print(f"     recall: {recall}")
+
+
+# ==============================================================================
 # 4. SVG VISUALIZATION GENERATORS FOR `public/00_molecular_baseline_mie.html`
 # ==============================================================================
 ATOM_COLORS = {
@@ -1573,6 +1708,128 @@ def render_mie_probabilities_svg(compounds: list[dict[str, Any]]) -> str:
     return "\n".join(parts)
 
 
+def render_loocv_confusion_svg(metrics: dict[str, Any]) -> str:
+    """
+    Renders the leave-one-out validation card of the dashboard: three 3x3 confusion matrices
+    (Graphormer, ToxTransformer, dual consensus) with counts, per-class recall and the names of
+    the compounds that miss. In-sample accuracy is deliberately absent - see `build_validation_metrics`.
+    """
+    w, h = 1140, 414
+    panel_w, panel_h, panel_gap = 352.0, 300.0, 14.0
+    cell_w, cell_h = 74.0, 40.0
+    model_colors = {"graphormer": "#38BDF8", "toxtransformer": "#C084FC", "consensus": "#10B981"}
+    model_titles = {
+        "graphormer": "Microsoft Graphormer (2D graph)",
+        "toxtransformer": "ToxTransformer (SMILES + bioassays)",
+        "consensus": "Dual consensus (50 / 50 fusion)",
+    }
+
+    parts = [
+        f'<svg viewBox="0 0 {w} {h}" width="100%" style="background:#0F172A;border-radius:10px;'
+        f'border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">',
+        f'<text x="20" y="30" fill="#F8FAFC" font-size="15.5" font-weight="700">'
+        f'Leave-one-out validation: confusion matrices (in-sample scores are not reported)</text>',
+        f'<text x="20" y="50" fill="#94A3B8" font-size="12">'
+        f'12 folds · 3 MIE classes · rows = true class · columns = LOOCV prediction · '
+        f'green = correct · red = error</text>',
+    ]
+
+    for i, model in enumerate(("graphormer", "toxtransformer", "consensus")):
+        block = metrics[model]
+        px = 20 + i * (panel_w + panel_gap)
+        color = model_colors[model]
+        grid_x = px + 16 + 74
+        grid_y = 160.0
+        parts.append(
+            f'<rect x="{px:.1f}" y="70" width="{panel_w:.1f}" height="{panel_h:.1f}" rx="10" '
+            f'fill="#111C30" stroke="#334155" stroke-width="1"/>'
+        )
+        parts.append(
+            f'<text x="{px + 16:.1f}" y="96" fill="{color}" font-size="13" font-weight="700">'
+            f'{model_titles[model]}</text>'
+        )
+        parts.append(
+            f'<text x="{px + 16:.1f}" y="118" fill="#E2E8F0" font-size="13.5" font-weight="700">'
+            f'LOOCV {block["n_correct"]}/{block["n"]} correct '
+            f'<tspan fill="#94A3B8" font-weight="400">({block["accuracy"] * 100:.1f}%)</tspan></text>'
+        )
+        parts.append(
+            f'<text x="{px + 16:.1f}" y="136" fill="#94A3B8" font-size="11.5">'
+            f'mean P(true) {block["mean_p_true_class"]:.2f} '
+            f'({block["min_p_true_class"]:.2f}–{block["max_p_true_class"]:.2f}) · '
+            f'macro F1 {block["macro_f1"]:.2f}</text>'
+        )
+        # column headers (LOOCV prediction)
+        for c, label in enumerate(LOOCV_SHORT_LABELS):
+            cx = grid_x + c * cell_w + cell_w / 2
+            parts.append(
+                f'<text x="{cx:.1f}" y="{grid_y - 8:.1f}" fill="#94A3B8" font-size="10.5" '
+                f'font-weight="700" text-anchor="middle">{html_lib.escape(label)}</text>'
+            )
+
+        for r, row_label in enumerate(LOOCV_SHORT_LABELS):
+            cy = grid_y + r * cell_h + cell_h / 2
+            parts.append(
+                f'<text x="{grid_x - 8:.1f}" y="{cy + 4:.1f}" fill="#94A3B8" font-size="10.5" '
+                f'font-weight="700" text-anchor="end">{html_lib.escape(row_label)}</text>'
+            )
+            for c in range(3):
+                value = int(block["confusion_matrix"][r][c])
+                cx = grid_x + c * cell_w
+                top = grid_y + r * cell_h
+                if r == c and value:
+                    fill, stroke, ink, fill_op, stroke_op = "#10B981", "#10B981", "#6EE7B7", 0.18, 0.65
+                elif value:
+                    fill, stroke, ink, fill_op, stroke_op = "#F43F5E", "#F43F5E", "#FDA4AF", 0.16, 0.60
+                else:
+                    fill, stroke, ink, fill_op, stroke_op = "#0F172A", "#1E293B", "#475569", 1.0, 1.0
+                parts.append(
+                    f'<rect x="{cx + 2:.1f}" y="{top + 2:.1f}" width="{cell_w - 4:.1f}" '
+                    f'height="{cell_h - 4:.1f}" rx="6" fill="{fill}" fill-opacity="{fill_op}" '
+                    f'stroke="{stroke}" stroke-opacity="{stroke_op}" stroke-width="1">'
+                    f'<title>true {row_label} → predicted {LOOCV_SHORT_LABELS[c]}: {value}</title>'
+                    f'</rect>'
+                )
+                parts.append(
+                    f'<text x="{cx + cell_w / 2:.1f}" y="{top + cell_h / 2 + 5.5:.1f}" fill="{ink}" '
+                    f'font-size="15" font-weight="700" text-anchor="middle">{value}</text>'
+                )
+
+        recall_y = grid_y + 3 * cell_h + 30
+        recall = " · ".join(
+            f"{label} {value * 100:.0f}%" for label, value in zip(LOOCV_SHORT_LABELS, block["recall"])
+        )
+        parts.append(
+            f'<text x="{px + 16:.1f}" y="{recall_y:.1f}" fill="#CBD5E1" font-size="11">'
+            f'recall per class: {recall}</text>'
+        )
+        misses = [
+            f"{item['name']} ({LOOCV_SHORT_LABELS[item['true_class']]} → "
+            f"{LOOCV_SHORT_LABELS[item['loocv_pred_class']]})"
+            for item in block["per_compound"]
+            if not item["correct"]
+        ]
+        miss_lines = wrap_svg_text("misses: " + ", ".join(misses), 10.0, int(panel_w - 32), max_lines=3)
+        for k, line in enumerate(miss_lines):
+            parts.append(
+                f'<text x="{px + 16:.1f}" y="{recall_y + 17 + k * 13:.1f}" fill="#FDA4AF" '
+                f'font-size="10">{html_lib.escape(line)}</text>'
+            )
+
+    parts.append(
+        f'<text x="20" y="{h - 26}" fill="#7C8AA0" font-size="11">'
+        f'Why no in-sample number? The MIE heads are calibrated on all 12 reference compounds, so their '
+        f'training diagonal is perfect by construction.</text>'
+    )
+    parts.append(
+        f'<text x="20" y="{h - 11}" fill="#7C8AA0" font-size="11">'
+        f'Leave-one-out is the only reported score: it says something about compounds the models have '
+        f'never seen.</text>'
+    )
+    parts.append("</svg>")
+    return "\n".join(parts)
+
+
 def render_embedding_space_svg(
     compounds: list[dict[str, Any]],
     graph_pca_coords: np.ndarray,
@@ -1580,7 +1837,7 @@ def render_embedding_space_svg(
     cos_sim_matrix: np.ndarray,
 ) -> str:
     """
-    Renders Cell 3:
+    Renders Cell 4:
     - Panel A (Left): 2D PCA of the 768D Microsoft Graphormer [CLS] embeddings.
     - Panel B (Middle): 2D PCA of the 512D ToxTransformer SMILES/SELFIES MoE embeddings.
     - Panel C (Right): [12 × 12] Cosine similarity matrix.
@@ -1755,6 +2012,11 @@ def generate_standalone_html(
     """
     mol_svgs = [render_molecule_graph_svg(c) for c in compounds_out]
     prob_svg = render_mie_probabilities_svg(compounds_out)
+    # LOOCV is the only reportable score: the MIE heads were calibrated on these same 12 compounds.
+    validation_metrics = build_validation_metrics(compounds_out)
+    loocv_svg = render_loocv_confusion_svg(validation_metrics)
+    graph_val = validation_metrics["graphormer"]["n_correct"]
+    n_val = validation_metrics["graphormer"]["n"]
     emb_svg = render_embedding_space_svg(compounds_out, graph_pca_coords, tox_pca_coords, cos_sim_matrix)
     import generate_pipeline_diagrams
     arch_graph_svg = generate_pipeline_diagrams.build_graphormer_svg()
@@ -1947,16 +2209,29 @@ def generate_standalone_html(
       <h3>📘 User Guide Cell 2: Comparison Microsoft Graphormer vs. ToxTransformer across all 12 Test Compounds</h3>
       <ul>
         <li><b>How to use:</b> For each of the 12 reference compounds, you see two stacked probability bars: the <b>top bar is Microsoft Graphormer (2D Graph)</b> and the <b>bottom bar is ToxTransformer (SMILES/SELFIES)</b>. <b>Red</b> = MIE 167 (LXRα Steatosis), <b>Orange</b> = MIE 41 (BSEP Cholestasis), and <b>Green</b> = No Toxic MIE.</li>
-        <li><b>What you see happening:</b> Both pretrained models are in complete agreement across all 12 compounds (<code>✓ Both Models Agree</code>, 12/12 accuracy). Both the 2D graph topology and the SMILES/bioassay transformer recognize that <code>Fenofibrate</code>, <code>DMSO_Control</code>, <code>Caffeine</code>, and <code>Metformin</code> trigger no pathological MIE.</li>
+        <li><b>What you see happening:</b> Both pretrained heads agree on all 12 compounds at this operating point, yet this panel shows the <i>calibrated head</i> output. That is why the honest score for this figure is not shown here but in <b>Cell 3 (leave-one-out confusion matrix)</b>: the heads were calibrated on these same 12 compounds, so any in-sample score is perfect by construction.</li>
       </ul>
     </div>
     {prob_svg}
   </div>
 
+  <!-- CELL 3: LEAVE-ONE-OUT VALIDATION (CONFUSION MATRICES) - THE ONLY REPORTED SCORE -->
+  <div class="card">
+    <div class="guide-box">
+      <h3>📘 User Guide Cell 3: Leave-One-Out Validation — Confusion Matrices (Graphormer, ToxTransformer, Dual Consensus)</h3>
+      <ul>
+        <li><b>Why this cell exists:</b> The MIE heads are calibrated on all 12 reference compounds, so their training diagonal is perfect by construction and is therefore <b>not reported</b>. The number that says something about unseen compounds is the <b>leave-one-out cross-validation</b>: 12 folds, each compound scored against prototypes built from the other 11.</li>
+        <li><b>How to use:</b> Each panel is a <code>[3 × 3]</code> confusion matrix — rows = true MIE class, columns = LOOCV prediction. <b>Green diagonal</b> = correct, <b>red off-diagonal</b> = confusion. The headline is <code>LOOCV {graph_val}/{n_val} correct</code> with the mean probability of the true class; hover a cell to see the count.</li>
+        <li><b>What you see happening:</b> All three panels land on the <b>same 8/12</b> with the same diagonal pattern: the non-toxic controls and the BSEP inhibitors are recovered best, while the LXR activators split between MIE 167 and MIE 41. That residual uncertainty is not a bug but the quantity probabilistic risk assessment asks for — and precisely why the dose- and time-dependent Neural ODE (Milestones 3–4) is needed on top of the static MIE call.</li>
+      </ul>
+    </div>
+    {loocv_svg}
+  </div>
+
   <!-- CELL 3: DUAL LATENT SPACE (768D GRAPHORMER PCA VS 512D TOXTRANSFORMER PCA) -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 3: Dual Latent Space — 768D Graphormer PCA vs. 512D ToxTransformer SMILES PCA</h3>
+      <h3>📘 User Guide Cell 4: Dual Latent Space — 768D Graphormer PCA vs. 512D ToxTransformer SMILES PCA</h3>
       <ul>
         <li><b>How to use:</b> Compare <b>Panel A</b> (2D PCA of the 768D Microsoft Graphormer <code>[CLS]</code> embeddings) with <b>Panel B</b> (2D PCA of the 512D ToxTransformer SMILES/SELFIES MoE embeddings) and inspect the combined <code>[12 × 12]</code> cosine similarity matrix on the right in <b>Panel C</b>.</li>
         <li><b>What you see happening:</b> Whereas Graphormer clusters molecules by 2D graph diameter and quantum-chemical electron density (PCQM4Mv2), ToxTransformer clusters molecules by SMILES/SELFIES substructures and their response profiles across 3,797 toxicological bioassays. Together they form a powerful multimodal chemical representation for Milestone 2.</li>
@@ -1968,7 +2243,7 @@ def generate_standalone_html(
   <!-- CELL 4: SUMMARY TABLE & SCIENTIFIC BRIDGE TO MILESTONES 1-4 -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 4: Summary Table (Graphormer &amp; ToxTransformer) &amp; Bridge to Milestones 1 through 4</h3>
+      <h3>📘 User Guide Cell 5: Summary Table (Graphormer &amp; ToxTransformer) &amp; Bridge to Milestones 1 through 4</h3>
       <ul>
         <li><b>Key conclusion for your research (Validation Strategy Step A → Step B → Step C):</b> Even when combining two powerful molecular models (<b>Microsoft Graphormer</b> for 2D graph topology and <b>ToxTransformer</b> for SMILES/bioassay prediction), they only answer the static question: <i>"Can this molecule bind to LXRα (MIE 167) or BSEP (MIE 41)?"</i> To predict at which <b>dose</b> and <b>exposure duration</b> the hepatocyte recovers homeostatically ($z_0$) or tips into steatosis ($z_{{\\text{{steatose}}}}$) or cholestasis ($z_{{\\text{{cholestase}}}}$), we couple these MIE predictions in <b>Milestones 1 through 4</b> to the <code>HepatocyteGraphormer</code> and <code>Neural ODE</code>.</li>
       </ul>
@@ -1999,7 +2274,7 @@ def generate_standalone_html(
   <!-- CELL 5: SCHEMATIC PIPELINE & AI MODEL ARCHITECTURE DIAGRAMS -->
   <div class="card">
     <div class="guide-box">
-      <h3>📐 User Guide Cell 5: Schematic Pipeline &amp; Layer-by-Layer AI Model Architectures (Graphormer &amp; ToxTransformer)</h3>
+      <h3>📐 User Guide Cell 6: Schematic Pipeline &amp; Layer-by-Layer AI Model Architectures (Graphormer &amp; ToxTransformer)</h3>
       <ul>
         <li><b>How to read these schematic figures:</b> The pipeline flows from <b>left to right</b> (<code>1. Data &amp; Sources</code> &rarr; <code>2. Preprocessing</code> &rarr; <code>3. AI Model Architecture</code> &rarr; <code>4. Output &amp; Contract</code>). Within each column, the data sources, transformations, and neural network layers (with exact layer types and tensor dimensions) flow from <b>top to bottom</b>.</li>
         <li><b>Standalone Paper Figures in <code>public/</code>:</b> <a href="pipeline_microsoft_graphormer.svg" style="color:#38BDF8;">pipeline_microsoft_graphormer.svg</a> | <a href="pipeline_toxtransformer.svg" style="color:#C084FC;">pipeline_toxtransformer.svg</a> | <a href="00_architecture_pipelines.html" style="color:#10B981;">00_architecture_pipelines.html</a></li>
@@ -2110,11 +2385,6 @@ def main() -> None:
     print("-" * 98)
 
     compounds_out = []
-    correct_graph = 0
-    correct_tox = 0
-    correct_cons = 0
-    correct_graph_loocv = 0
-    correct_tox_loocv = 0
 
     for i, comp in enumerate(REFERENCE_MIE_PANEL):
         item = processed_items[i]
@@ -2127,17 +2397,6 @@ def main() -> None:
 
         g_loocv = graph_loocv_list[i]
         t_loocv = tox_loocv_list[i]
-
-        if g_pred["predicted_class"] == comp["true_class"]:
-            correct_graph += 1
-        if t_pred["predicted_class"] == comp["true_class"]:
-            correct_tox += 1
-        if c_pred["predicted_class"] == comp["true_class"]:
-            correct_cons += 1
-        if g_loocv["loocv_pred_class"] == comp["true_class"]:
-            correct_graph_loocv += 1
-        if t_loocv["loocv_pred_class"] == comp["true_class"]:
-            correct_tox_loocv += 1
 
         g_str = f"{g_pred['P_mie167_steatosis']:.2f} / {g_pred['P_mie41_cholestasis']:.2f} / {g_pred['P_no_mie']:.2f}"
         t_str = f"{t_pred['P_mie167_steatosis']:.2f} / {t_pred['P_mie41_cholestasis']:.2f} / {t_pred['P_no_mie']:.2f}"
@@ -2171,13 +2430,11 @@ def main() -> None:
             }
         )
 
-    n_total = len(REFERENCE_MIE_PANEL)
+    validation_metrics = build_validation_metrics(compounds_out)
     print("-" * 98)
-    print(f"  -> Microsoft Graphormer accuracy (Full / LOOCV)       : {correct_graph}/{n_total} ({correct_graph/n_total*100:.1f}%) | LOOCV: {correct_graph_loocv}/{n_total} ({correct_graph_loocv/n_total*100:.1f}%)")
-    print(f"  -> BioBricks ToxTransformer accuracy (Full / LOOCV)   : {correct_tox}/{n_total} ({correct_tox/n_total*100:.1f}%) | LOOCV: {correct_tox_loocv}/{n_total} ({correct_tox_loocv/n_total*100:.1f}%)")
-    print(f"  -> Dual Consensus MIE accuracy                        : {correct_cons}/{n_total} ({correct_cons/n_total*100:.1f}%)")
     print(f"  -> Graphormer [CLS] tensor shape                      : {tuple(cls_matrix.shape)} | NaNs: {int(torch.isnan(cls_matrix).sum().item())}")
     print(f"  -> ToxTransformer MoE tensor shape                    : {tuple(tox_matrix.shape)} | NaNs: {int(torch.isnan(tox_matrix).sum().item())}")
+    print_validation_report(validation_metrics)
 
     # 5. Save PyTorch tensors and JSON for Milestones 2 and 4
     data_dir = Path("data")
@@ -2241,6 +2498,25 @@ def main() -> None:
             "pca_coords_2d": torch.tensor(graph_pca_coords, dtype=torch.float32),
             "toxtransformer_pca_coords_2d": torch.tensor(tox_pca_coords, dtype=torch.float32),
             "cosine_similarity_matrix": torch.tensor(cos_sim_matrix, dtype=torch.float32),
+            # Leave-one-out validation (the only reported score; in-sample is not stored as a metric)
+            "loocv_predicted_classes": torch.tensor(
+                [c["loocv"]["loocv_pred_class"] for c in compounds_out], dtype=torch.long
+            ),
+            "loocv_toxtransformer_predicted_classes": torch.tensor(
+                [c["tox_loocv"]["loocv_pred_class"] for c in compounds_out], dtype=torch.long
+            ),
+            "loocv_graphormer_probabilities": torch.tensor(
+                [[c["loocv"][key] for key in LOOCV_CLASS_KEYS] for c in compounds_out], dtype=torch.float32
+            ),
+            "loocv_toxtransformer_probabilities": torch.tensor(
+                [[c["tox_loocv"][key] for key in LOOCV_CLASS_KEYS] for c in compounds_out], dtype=torch.float32
+            ),
+            "loocv_confusion_matrix": torch.tensor(
+                validation_metrics["graphormer"]["confusion_matrix"], dtype=torch.long
+            ),
+            "loocv_consensus_confusion_matrix": torch.tensor(
+                validation_metrics["consensus"]["confusion_matrix"], dtype=torch.long
+            ),
         },
         pt_path,
     )
@@ -2253,6 +2529,7 @@ def main() -> None:
                 "graphormer_num_parameters": graph_params,
                 "toxtransformer_num_parameters": tox_params,
                 "compounds": compounds_out,
+                "validation": validation_metrics,
                 "pca_coords_2d": graph_pca_coords.tolist(),
                 "toxtransformer_pca_coords_2d": tox_pca_coords.tolist(),
                 "cosine_similarity_matrix": cos_sim_matrix.tolist(),
@@ -2261,6 +2538,8 @@ def main() -> None:
             indent=2,
             ensure_ascii=False,
         )
+
+    generate_standalone_html(compounds_out, graph_pca_coords, tox_pca_coords, cos_sim_matrix, html_path)
 
     generate_standalone_html(compounds_out, graph_pca_coords, tox_pca_coords, cos_sim_matrix, html_path)
 

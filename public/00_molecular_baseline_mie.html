@@ -2917,7 +2917,7 @@ ToxTransformer Token Saliency: 0.949</title><rect x="515.0" y="440.0" width="33.
       <h3>📘 User Guide Cell 2: Comparison Microsoft Graphormer vs. ToxTransformer across all 12 Test Compounds</h3>
       <ul>
         <li><b>How to use:</b> For each of the 12 reference compounds, you see two stacked probability bars: the <b>top bar is Microsoft Graphormer (2D Graph)</b> and the <b>bottom bar is ToxTransformer (SMILES/SELFIES)</b>. <b>Red</b> = MIE 167 (LXRα Steatosis), <b>Orange</b> = MIE 41 (BSEP Cholestasis), and <b>Green</b> = No Toxic MIE.</li>
-        <li><b>What you see happening:</b> Both pretrained models are in complete agreement across all 12 compounds (<code>✓ Both Models Agree</code>, 12/12 accuracy). Both the 2D graph topology and the SMILES/bioassay transformer recognize that <code>Fenofibrate</code>, <code>DMSO_Control</code>, <code>Caffeine</code>, and <code>Metformin</code> trigger no pathological MIE.</li>
+        <li><b>What you see happening:</b> Both pretrained heads agree on all 12 compounds at this operating point, yet this panel shows the <i>calibrated head</i> output. That is why the honest score for this figure is not shown here but in <b>Cell 3 (leave-one-out confusion matrix)</b>: the heads were calibrated on these same 12 compounds, so any in-sample score is perfect by construction.</li>
       </ul>
     </div>
     <svg viewBox="0 0 1140 560" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">
@@ -2976,10 +2976,124 @@ ToxTransformer Token Saliency: 0.949</title><rect x="515.0" y="440.0" width="33.
 </svg>
   </div>
 
+  <!-- CELL 3: LEAVE-ONE-OUT VALIDATION (CONFUSION MATRICES) - THE ONLY REPORTED SCORE -->
+  <div class="card">
+    <div class="guide-box">
+      <h3>📘 User Guide Cell 3: Leave-One-Out Validation — Confusion Matrices (Graphormer, ToxTransformer, Dual Consensus)</h3>
+      <ul>
+        <li><b>Why this cell exists:</b> The MIE heads are calibrated on all 12 reference compounds, so their training diagonal is perfect by construction and is therefore <b>not reported</b>. The number that says something about unseen compounds is the <b>leave-one-out cross-validation</b>: 12 folds, each compound scored against prototypes built from the other 11.</li>
+        <li><b>How to use:</b> Each panel is a <code>[3 × 3]</code> confusion matrix — rows = true MIE class, columns = LOOCV prediction. <b>Green diagonal</b> = correct, <b>red off-diagonal</b> = confusion. The headline is <code>LOOCV 8/12 correct</code> with the mean probability of the true class; hover a cell to see the count.</li>
+        <li><b>What you see happening:</b> All three panels land on the <b>same 8/12</b> with the same diagonal pattern: the non-toxic controls and the BSEP inhibitors are recovered best, while the LXR activators split between MIE 167 and MIE 41. That residual uncertainty is not a bug but the quantity probabilistic risk assessment asks for — and precisely why the dose- and time-dependent Neural ODE (Milestones 3–4) is needed on top of the static MIE call.</li>
+      </ul>
+    </div>
+    <svg viewBox="0 0 1140 414" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">
+<text x="20" y="30" fill="#F8FAFC" font-size="15.5" font-weight="700">Leave-one-out validation: confusion matrices (in-sample scores are not reported)</text>
+<text x="20" y="50" fill="#94A3B8" font-size="12">12 folds · 3 MIE classes · rows = true class · columns = LOOCV prediction · green = correct · red = error</text>
+<rect x="20.0" y="70" width="352.0" height="300.0" rx="10" fill="#111C30" stroke="#334155" stroke-width="1"/>
+<text x="36.0" y="96" fill="#38BDF8" font-size="13" font-weight="700">Microsoft Graphormer (2D graph)</text>
+<text x="36.0" y="118" fill="#E2E8F0" font-size="13.5" font-weight="700">LOOCV 8/12 correct <tspan fill="#94A3B8" font-weight="400">(66.7%)</tspan></text>
+<text x="36.0" y="136" fill="#94A3B8" font-size="11.5">mean P(true) 0.39 (0.18–0.51) · macro F1 0.68</text>
+<text x="147.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">no MIE</text>
+<text x="221.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">MIE 167</text>
+<text x="295.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">MIE 41</text>
+<text x="102.0" y="184.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">no MIE</text>
+<rect x="112.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true no MIE → predicted no MIE: 3</title></rect>
+<text x="147.0" y="185.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">3</text>
+<rect x="186.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true no MIE → predicted MIE 167: 0</title></rect>
+<text x="221.0" y="185.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="260.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true no MIE → predicted MIE 41: 1</title></rect>
+<text x="295.0" y="185.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">1</text>
+<text x="102.0" y="224.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">MIE 167</text>
+<rect x="112.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true MIE 167 → predicted no MIE: 0</title></rect>
+<text x="147.0" y="225.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="186.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true MIE 167 → predicted MIE 167: 2</title></rect>
+<text x="221.0" y="225.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">2</text>
+<rect x="260.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true MIE 167 → predicted MIE 41: 2</title></rect>
+<text x="295.0" y="225.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">2</text>
+<text x="102.0" y="264.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">MIE 41</text>
+<rect x="112.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true MIE 41 → predicted no MIE: 0</title></rect>
+<text x="147.0" y="265.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="186.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true MIE 41 → predicted MIE 167: 1</title></rect>
+<text x="221.0" y="265.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">1</text>
+<rect x="260.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true MIE 41 → predicted MIE 41: 3</title></rect>
+<text x="295.0" y="265.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">3</text>
+<text x="36.0" y="310.0" fill="#CBD5E1" font-size="11">recall per class: no MIE 75% · MIE 167 50% · MIE 41 75%</text>
+<text x="36.0" y="327.0" fill="#FDA4AF" font-size="10">misses: Amiodarone (MIE 167 → MIE 41), Tamoxifen (MIE 167</text>
+<text x="36.0" y="340.0" fill="#FDA4AF" font-size="10">→ MIE 41), Chlorpromazine (MIE 41 → MIE 167), Fenofibrate</text>
+<text x="36.0" y="353.0" fill="#FDA4AF" font-size="10">(no MIE → MIE 41)</text>
+<rect x="386.0" y="70" width="352.0" height="300.0" rx="10" fill="#111C30" stroke="#334155" stroke-width="1"/>
+<text x="402.0" y="96" fill="#C084FC" font-size="13" font-weight="700">ToxTransformer (SMILES + bioassays)</text>
+<text x="402.0" y="118" fill="#E2E8F0" font-size="13.5" font-weight="700">LOOCV 8/12 correct <tspan fill="#94A3B8" font-weight="400">(66.7%)</tspan></text>
+<text x="402.0" y="136" fill="#94A3B8" font-size="11.5">mean P(true) 0.55 (0.01–0.94) · macro F1 0.68</text>
+<text x="513.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">no MIE</text>
+<text x="587.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">MIE 167</text>
+<text x="661.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">MIE 41</text>
+<text x="468.0" y="184.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">no MIE</text>
+<rect x="478.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true no MIE → predicted no MIE: 3</title></rect>
+<text x="513.0" y="185.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">3</text>
+<rect x="552.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true no MIE → predicted MIE 167: 0</title></rect>
+<text x="587.0" y="185.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="626.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true no MIE → predicted MIE 41: 1</title></rect>
+<text x="661.0" y="185.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">1</text>
+<text x="468.0" y="224.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">MIE 167</text>
+<rect x="478.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true MIE 167 → predicted no MIE: 0</title></rect>
+<text x="513.0" y="225.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="552.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true MIE 167 → predicted MIE 167: 2</title></rect>
+<text x="587.0" y="225.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">2</text>
+<rect x="626.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true MIE 167 → predicted MIE 41: 2</title></rect>
+<text x="661.0" y="225.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">2</text>
+<text x="468.0" y="264.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">MIE 41</text>
+<rect x="478.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true MIE 41 → predicted no MIE: 0</title></rect>
+<text x="513.0" y="265.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="552.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true MIE 41 → predicted MIE 167: 1</title></rect>
+<text x="587.0" y="265.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">1</text>
+<rect x="626.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true MIE 41 → predicted MIE 41: 3</title></rect>
+<text x="661.0" y="265.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">3</text>
+<text x="402.0" y="310.0" fill="#CBD5E1" font-size="11">recall per class: no MIE 75% · MIE 167 50% · MIE 41 75%</text>
+<text x="402.0" y="327.0" fill="#FDA4AF" font-size="10">misses: Amiodarone (MIE 167 → MIE 41), Tamoxifen (MIE 167</text>
+<text x="402.0" y="340.0" fill="#FDA4AF" font-size="10">→ MIE 41), Chlorpromazine (MIE 41 → MIE 167), Fenofibrate</text>
+<text x="402.0" y="353.0" fill="#FDA4AF" font-size="10">(no MIE → MIE 41)</text>
+<rect x="752.0" y="70" width="352.0" height="300.0" rx="10" fill="#111C30" stroke="#334155" stroke-width="1"/>
+<text x="768.0" y="96" fill="#10B981" font-size="13" font-weight="700">Dual consensus (50 / 50 fusion)</text>
+<text x="768.0" y="118" fill="#E2E8F0" font-size="13.5" font-weight="700">LOOCV 8/12 correct <tspan fill="#94A3B8" font-weight="400">(66.7%)</tspan></text>
+<text x="768.0" y="136" fill="#94A3B8" font-size="11.5">mean P(true) 0.47 (0.10–0.72) · macro F1 0.68</text>
+<text x="879.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">no MIE</text>
+<text x="953.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">MIE 167</text>
+<text x="1027.0" y="152.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="middle">MIE 41</text>
+<text x="834.0" y="184.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">no MIE</text>
+<rect x="844.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true no MIE → predicted no MIE: 3</title></rect>
+<text x="879.0" y="185.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">3</text>
+<rect x="918.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true no MIE → predicted MIE 167: 0</title></rect>
+<text x="953.0" y="185.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="992.0" y="162.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true no MIE → predicted MIE 41: 1</title></rect>
+<text x="1027.0" y="185.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">1</text>
+<text x="834.0" y="224.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">MIE 167</text>
+<rect x="844.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true MIE 167 → predicted no MIE: 0</title></rect>
+<text x="879.0" y="225.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="918.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true MIE 167 → predicted MIE 167: 2</title></rect>
+<text x="953.0" y="225.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">2</text>
+<rect x="992.0" y="202.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true MIE 167 → predicted MIE 41: 2</title></rect>
+<text x="1027.0" y="225.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">2</text>
+<text x="834.0" y="264.0" fill="#94A3B8" font-size="10.5" font-weight="700" text-anchor="end">MIE 41</text>
+<rect x="844.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#0F172A" fill-opacity="1.0" stroke="#1E293B" stroke-opacity="1.0" stroke-width="1"><title>true MIE 41 → predicted no MIE: 0</title></rect>
+<text x="879.0" y="265.5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">0</text>
+<rect x="918.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#F43F5E" fill-opacity="0.16" stroke="#F43F5E" stroke-opacity="0.6" stroke-width="1"><title>true MIE 41 → predicted MIE 167: 1</title></rect>
+<text x="953.0" y="265.5" fill="#FDA4AF" font-size="15" font-weight="700" text-anchor="middle">1</text>
+<rect x="992.0" y="242.0" width="70.0" height="36.0" rx="6" fill="#10B981" fill-opacity="0.18" stroke="#10B981" stroke-opacity="0.65" stroke-width="1"><title>true MIE 41 → predicted MIE 41: 3</title></rect>
+<text x="1027.0" y="265.5" fill="#6EE7B7" font-size="15" font-weight="700" text-anchor="middle">3</text>
+<text x="768.0" y="310.0" fill="#CBD5E1" font-size="11">recall per class: no MIE 75% · MIE 167 50% · MIE 41 75%</text>
+<text x="768.0" y="327.0" fill="#FDA4AF" font-size="10">misses: Amiodarone (MIE 167 → MIE 41), Tamoxifen (MIE 167</text>
+<text x="768.0" y="340.0" fill="#FDA4AF" font-size="10">→ MIE 41), Chlorpromazine (MIE 41 → MIE 167), Fenofibrate</text>
+<text x="768.0" y="353.0" fill="#FDA4AF" font-size="10">(no MIE → MIE 41)</text>
+<text x="20" y="388" fill="#7C8AA0" font-size="11">Why no in-sample number? The MIE heads are calibrated on all 12 reference compounds, so their training diagonal is perfect by construction.</text>
+<text x="20" y="403" fill="#7C8AA0" font-size="11">Leave-one-out is the only reported score: it says something about compounds the models have never seen.</text>
+</svg>
+  </div>
+
   <!-- CELL 3: DUAL LATENT SPACE (768D GRAPHORMER PCA VS 512D TOXTRANSFORMER PCA) -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 3: Dual Latent Space — 768D Graphormer PCA vs. 512D ToxTransformer SMILES PCA</h3>
+      <h3>📘 User Guide Cell 4: Dual Latent Space — 768D Graphormer PCA vs. 512D ToxTransformer SMILES PCA</h3>
       <ul>
         <li><b>How to use:</b> Compare <b>Panel A</b> (2D PCA of the 768D Microsoft Graphormer <code>[CLS]</code> embeddings) with <b>Panel B</b> (2D PCA of the 512D ToxTransformer SMILES/SELFIES MoE embeddings) and inspect the combined <code>[12 × 12]</code> cosine similarity matrix on the right in <b>Panel C</b>.</li>
         <li><b>What you see happening:</b> Whereas Graphormer clusters molecules by 2D graph diameter and quantum-chemical electron density (PCQM4Mv2), ToxTransformer clusters molecules by SMILES/SELFIES substructures and their response profiles across 3,797 toxicological bioassays. Together they form a powerful multimodal chemical representation for Milestone 2.</li>
@@ -3145,7 +3259,7 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 0.629</title><rect x="795.
 <g><title>Amiodarone vs GW3965
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.717</title><rect x="821.5" y="139.0" width="25.0" height="25.0" rx="3" fill="rgb(96,122,221)"/><text x="833.8" y="155.5" text-anchor="middle" fill="#E2E8F0" font-size="8.8" font-weight="600">0.72</text></g>
 <g><title>Amiodarone vs Amiodarone
-Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="848.0" y="139.0" width="25.0" height="25.0" rx="3" fill="rgb(239,199,160)"/><text x="860.2" y="155.5" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
+Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="848.0" y="139.0" width="25.0" height="25.0" rx="3" fill="rgb(240,200,160)"/><text x="860.2" y="155.5" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
 <g><title>Amiodarone vs Tamoxifen
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.693</title><rect x="874.5" y="139.0" width="25.0" height="25.0" rx="3" fill="rgb(86,115,223)"/><text x="886.8" y="155.5" text-anchor="middle" fill="#E2E8F0" font-size="8.8" font-weight="600">0.69</text></g>
 <g><title>Amiodarone vs Bosentan
@@ -3172,7 +3286,7 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 0.653</title><rect x="821.
 <g><title>Tamoxifen vs Amiodarone
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.693</title><rect x="848.0" y="165.5" width="25.0" height="25.0" rx="3" fill="rgb(86,115,223)"/><text x="860.2" y="182.0" text-anchor="middle" fill="#E2E8F0" font-size="8.8" font-weight="600">0.69</text></g>
 <g><title>Tamoxifen vs Tamoxifen
-Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="874.5" y="165.5" width="25.0" height="25.0" rx="3" fill="rgb(240,200,160)"/><text x="886.8" y="182.0" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
+Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="874.5" y="165.5" width="25.0" height="25.0" rx="3" fill="rgb(239,199,160)"/><text x="886.8" y="182.0" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
 <g><title>Tamoxifen vs Bosentan
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.709</title><rect x="901.0" y="165.5" width="25.0" height="25.0" rx="3" fill="rgb(92,120,222)"/><text x="913.2" y="182.0" text-anchor="middle" fill="#E2E8F0" font-size="8.8" font-weight="600">0.71</text></g>
 <g><title>Tamoxifen vs Troglitazone
@@ -3226,7 +3340,7 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 0.720</title><rect x="874.
 <g><title>Troglitazone vs Bosentan
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.842</title><rect x="901.0" y="218.5" width="25.0" height="25.0" rx="3" fill="rgb(153,156,194)"/><text x="913.2" y="235.0" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">0.84</text></g>
 <g><title>Troglitazone vs Troglitazone
-Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="927.5" y="218.5" width="25.0" height="25.0" rx="3" fill="rgb(239,199,160)"/><text x="939.8" y="235.0" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
+Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="927.5" y="218.5" width="25.0" height="25.0" rx="3" fill="rgb(240,200,160)"/><text x="939.8" y="235.0" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
 <g><title>Troglitazone vs Glibenclamide
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.738</title><rect x="954.0" y="218.5" width="25.0" height="25.0" rx="3" fill="rgb(104,127,216)"/><text x="966.2" y="235.0" text-anchor="middle" fill="#E2E8F0" font-size="8.8" font-weight="600">0.74</text></g>
 <g><title>Troglitazone vs Chlorpromazine
@@ -3361,7 +3475,7 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 0.552</title><rect x="1007
 <g><title>Caffeine vs DMSO_Control
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.608</title><rect x="1033.5" y="351.0" width="25.0" height="25.0" rx="3" fill="rgb(56,92,205)"/><text x="1045.8" y="367.5" text-anchor="middle" fill="#E2E8F0" font-size="8.8" font-weight="600">0.61</text></g>
 <g><title>Caffeine vs Caffeine
-Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="1060.0" y="351.0" width="25.0" height="25.0" rx="3" fill="rgb(240,200,160)"/><text x="1072.2" y="367.5" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
+Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="1060.0" y="351.0" width="25.0" height="25.0" rx="3" fill="rgb(239,199,160)"/><text x="1072.2" y="367.5" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">1.00</text></g>
 <g><title>Caffeine vs Metformin
 Dual Cosine Similarity (Graphormer + ToxTransformer): 0.841</title><rect x="1086.5" y="351.0" width="25.0" height="25.0" rx="3" fill="rgb(152,156,194)"/><text x="1098.8" y="367.5" text-anchor="middle" fill="#0F172A" font-size="8.8" font-weight="600">0.84</text></g>
 <text x="790.0" y="394.5" text-anchor="end" fill="#10B981" font-size="9.5" font-weight="700">Metformin</text><text x="1098.5" y="81.0" text-anchor="start" fill="#10B981" font-size="8.6" font-weight="700" transform="rotate(-60 1098.5 81.0)">Metformi</text>
@@ -3395,7 +3509,7 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="1086
   <!-- CELL 4: SUMMARY TABLE & SCIENTIFIC BRIDGE TO MILESTONES 1-4 -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 4: Summary Table (Graphormer &amp; ToxTransformer) &amp; Bridge to Milestones 1 through 4</h3>
+      <h3>📘 User Guide Cell 5: Summary Table (Graphormer &amp; ToxTransformer) &amp; Bridge to Milestones 1 through 4</h3>
       <ul>
         <li><b>Key conclusion for your research (Validation Strategy Step A → Step B → Step C):</b> Even when combining two powerful molecular models (<b>Microsoft Graphormer</b> for 2D graph topology and <b>ToxTransformer</b> for SMILES/bioassay prediction), they only answer the static question: <i>"Can this molecule bind to LXRα (MIE 167) or BSEP (MIE 41)?"</i> To predict at which <b>dose</b> and <b>exposure duration</b> the hepatocyte recovers homeostatically ($z_0$) or tips into steatosis ($z_{\text{steatose}}$) or cholestasis ($z_{\text{cholestase}}$), we couple these MIE predictions in <b>Milestones 1 through 4</b> to the <code>HepatocyteGraphormer</code> and <code>Neural ODE</code>.</li>
       </ul>
@@ -3426,7 +3540,7 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="1086
   <!-- CELL 5: SCHEMATIC PIPELINE & AI MODEL ARCHITECTURE DIAGRAMS -->
   <div class="card">
     <div class="guide-box">
-      <h3>📐 User Guide Cell 5: Schematic Pipeline &amp; Layer-by-Layer AI Model Architectures (Graphormer &amp; ToxTransformer)</h3>
+      <h3>📐 User Guide Cell 6: Schematic Pipeline &amp; Layer-by-Layer AI Model Architectures (Graphormer &amp; ToxTransformer)</h3>
       <ul>
         <li><b>How to read these schematic figures:</b> The pipeline flows from <b>left to right</b> (<code>1. Data &amp; Sources</code> &rarr; <code>2. Preprocessing</code> &rarr; <code>3. AI Model Architecture</code> &rarr; <code>4. Output &amp; Contract</code>). Within each column, the data sources, transformations, and neural network layers (with exact layer types and tensor dimensions) flow from <b>top to bottom</b>.</li>
         <li><b>Standalone Paper Figures in <code>public/</code>:</b> <a href="pipeline_microsoft_graphormer.svg" style="color:#38BDF8;">pipeline_microsoft_graphormer.svg</a> | <a href="pipeline_toxtransformer.svg" style="color:#C084FC;">pipeline_toxtransformer.svg</a> | <a href="00_architecture_pipelines.html" style="color:#10B981;">00_architecture_pipelines.html</a></li>

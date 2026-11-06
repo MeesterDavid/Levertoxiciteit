@@ -161,39 +161,62 @@ def curve(
 
 
 # ------------------------------------------------------------------- data ----
-CLASS_PROB_KEYS = {0: "P_no_mie", 1: "P_mie167_steatosis", 2: "P_mie41_cholestasis"}
 LOOCV_PROB_KEYS = {0: "loocv_P_no_mie", 1: "loocv_P_mie167", 2: "loocv_P_mie41"}
+LOOCV_MODEL_BLOCKS = {"graphormer": "loocv", "toxtransformer": "tox_loocv"}
+
+
+def _loocv_confusion(compounds: list[dict], block_key: str) -> tuple[list[list[int]], list[float]]:
+    """Fallback path: rebuild one LOOCV confusion matrix straight from the per-compound cache."""
+    matrix = [[0, 0, 0] for _ in range(3)]
+    true_probs: list[float] = []
+    for compound in compounds:
+        truth = int(compound["true_class"])
+        block = compound[block_key]
+        vector = [float(block[LOOCV_PROB_KEYS[class_idx]]) for class_idx in range(3)]
+        pred = max(range(3), key=lambda class_idx: vector[class_idx])
+        matrix[truth][pred] += 1
+        true_probs.append(vector[truth])
+    return matrix, true_probs
 
 
 def load_molecular_metrics() -> dict:
-    """In-sample and leave-one-out probabilities of the *true* MIE class (Milestone 0)."""
+    """
+    Leave-one-out metrics of Milestone 0.
+
+    In-sample accuracy is deliberately absent: the MIE heads of both models were calibrated on the
+    same 12 reference compounds, so an in-sample diagonal is perfect by construction (and therefore
+    uninformative). The figure reports the LOOCV accuracy, the uncertainty of the true class and the
+    3x3 confusion matrix - all read from `validation` in the milestone JSON.
+    """
     mol = json.loads(MOLECULAR_JSON.read_text(encoding="utf-8"))
     compounds = mol["compounds"]
+    validation = mol.get("validation") or {}
 
-    in_prob: list[float] = []
-    in_hit: list[bool] = []
-    loo_prob: list[float] = []
-    loo_hit: list[bool] = []
-    for compound in compounds:
-        true_class = int(compound["true_class"])
-        pred = compound["prediction"]
-        loocv = compound["loocv"]
-        in_prob.append(float(pred[CLASS_PROB_KEYS[true_class]]))
-        in_hit.append(int(pred["predicted_class"]) == true_class)
-        loo_prob.append(float(loocv[LOOCV_PROB_KEYS[true_class]]))
-        loo_hit.append(int(loocv["loocv_pred_class"]) == true_class)
+    graph = validation.get("graphormer")
+    if graph:
+        matrix = [[int(value) for value in row] for row in graph["confusion_matrix"]]
+        n_correct = int(graph["n_correct"])
+        mean_p = float(graph["mean_p_true_class"])
+        min_p = float(graph["min_p_true_class"])
+        max_p = float(graph["max_p_true_class"])
+    else:  # older cache without the `validation` block
+        matrix, true_probs = _loocv_confusion(compounds, LOOCV_MODEL_BLOCKS["graphormer"])
+        n_correct = sum(matrix[i][i] for i in range(3))
+        mean_p = sum(true_probs) / len(true_probs)
+        min_p, max_p = min(true_probs), max(true_probs)
 
+    consensus = validation.get("consensus") or {}
     n_params = int(mol["graphormer_num_parameters"]) + int(mol["toxtransformer_num_parameters"])
     return {
         "n_compounds": len(compounds),
         "n_classes": len({int(c["true_class"]) for c in compounds}),
-        "in_acc": sum(in_hit),
-        "in_mean": sum(in_prob) / len(in_prob),
-        "in_min": min(in_prob),
-        "loo_acc": sum(loo_hit),
-        "loo_mean": sum(loo_prob) / len(loo_prob),
-        "loo_min": min(loo_prob),
-        "loo_max": max(loo_prob),
+        "loo_acc": n_correct,
+        "loo_mean": mean_p,
+        "loo_min": min_p,
+        "loo_max": max_p,
+        "loo_matrix": matrix,
+        "cons_acc": int(consensus["n_correct"]) if consensus else n_correct,
+        "cons_mean": float(consensus["mean_p_true_class"]) if consensus else mean_p,
         "graphormer_params": int(mol["graphormer_num_parameters"]),
         "toxtransformer_params": int(mol["toxtransformer_num_parameters"]),
         "total_params": n_params,
@@ -366,38 +389,77 @@ def tag(
     return svg, width
 
 
+CONFUSION_SHORT_LABELS: tuple[str, str, str] = ("no MIE", "167", "41")
+
+
+def draw_confusion_matrix(
+    x: float,
+    y: float,
+    matrix: list[list[int]],
+    cell_w: float = 30.0,
+    cell_h: float = 17.0,
+) -> str:
+    """Compact 3x3 LOOCV confusion matrix (rows = true MIE class, columns = prediction)."""
+    rows: list[str] = []
+    for c, label in enumerate(CONFUSION_SHORT_LABELS):
+        rows.append(text(x + c * cell_w + cell_w / 2, y - 5, label,
+                         size=7.2, fill=DIM, weight=700, anchor="middle"))
+    for r, row_label in enumerate(CONFUSION_SHORT_LABELS):
+        top = y + r * cell_h
+        rows.append(text(x - 5, top + cell_h / 2 + 2.5, row_label,
+                         size=7.2, fill=DIM, weight=700, anchor="end"))
+        for c in range(3):
+            value = int(matrix[r][c])
+            if r == c and value:  # diagonal = confirmed MIE call
+                fill, stroke, ink, fill_op, stroke_op = EMERALD, EMERALD, "#6ee7b7", 0.22, 0.75
+            elif value:  # off-diagonal = the four confusions
+                fill, stroke, ink, fill_op, stroke_op = ROSE, ROSE, "#fda4af", 0.20, 0.70
+            else:
+                fill, stroke, ink, fill_op, stroke_op = PANEL_BG, BORDER, "#475569", 1.0, 1.0
+            rows.append(
+                f'<rect x="{x + c * cell_w + 1:.1f}" y="{top + 1:.1f}" width="{cell_w - 2:.1f}" '
+                f'height="{cell_h - 2:.1f}" rx="3" fill="{fill}" fill-opacity="{fill_op}" '
+                f'stroke="{stroke}" stroke-opacity="{stroke_op}" stroke-width="0.9"/>'
+            )
+            rows.append(text(x + c * cell_w + cell_w / 2, top + cell_h / 2 + 3.4, str(value),
+                             size=9.6, fill=ink, weight=700, anchor="middle"))
+    return "".join(rows)
+
+
 def draw_output_mie(x: float, y: float, w: float, h: float, mol: dict) -> str:
-    """Answer 1 (solid arrow): P(MIE | structure) - built and validated today."""
+    """Answer 1 (solid arrow): P(MIE | structure) - LOOCV only, with its confusion matrix."""
     rows = [card(x, y, w, h, stroke=EMERALD, fill="#0c1f22", rx=11, width=1.6)]
     rows.append(text(x + 14, y + 34, "P(MIE | structure)", size=13.0, fill=EMERALD, weight=800))
     rows.append(text(x + 14, y + 50, "Chance that a compound induces a specific MIE",
-                     size=8.7, fill=SOFT))
-    chip_svg, chip_w = tag(x + 14, y + 58, "MIE 167 · LXRα", AMBER)
+                     size=8.6, fill=SOFT))
+    chip_svg, chip_w = tag(x + 14, y + 59, "MIE 167 · LXRα", AMBER)
     rows.append(chip_svg)
-    chip2_svg, _ = tag(x + 14 + chip_w + 6, y + 58, "MIE 41 · BSEP", ROSE)
+    chip2_svg, _ = tag(x + 14 + chip_w + 6, y + 59, "MIE 41 · BSEP", ROSE)
     rows.append(chip2_svg)
-    rows.append(f'<line x1="{x + 14:.1f}" y1="{y + 84:.1f}" x2="{x + w - 14:.1f}" y2="{y + 84:.1f}" '
+    rows.append(f'<line x1="{x + 14:.1f}" y1="{y + 86:.1f}" x2="{x + w - 14:.1f}" y2="{y + 86:.1f}" '
                 f'stroke="{EMERALD}" stroke-opacity="0.3" stroke-width="1"/>')
-    rows.append(text(x + 14, y + 102,
-                     f"in-sample {mol['in_acc']}/{mol['n_compounds']} correct · "
-                     f"mean P {mol['in_mean']:.2f}",
-                     size=9.4, fill=EMERALD, weight=600))
-    rows.append(text(x + 14, y + 118,
-                     f"leave-one-out {mol['loo_acc']}/{mol['n_compounds']} · "
-                     f"mean P {mol['loo_mean']:.2f} ({mol['loo_min']:.2f}–{mol['loo_max']:.2f})",
-                     size=9.4, fill=AMBER, weight=600))
-    rows.append(text(x + 14, y + 134, "uncertainty is measurable → probabilistic",
-                     size=8.2, fill=DIM, style="italic"))
-    rows.append(text(x + 14, y + 150, f"{mol['n_classes']} MIE classes · "
-                     f"{mol['n_compounds']} reference compounds", size=8.2, fill=DIM))
+    # left column: the only honest score (leave-one-out, never in-sample)
+    rows.append(text(x + 14, y + 104, "leave-one-out", size=8.4, fill=DIM, weight=700))
+    rows.append(text(x + 14, y + 120, f"{mol['loo_acc']}/{mol['n_compounds']}",
+                     size=15.5, fill=AMBER, weight=800))
+    rows.append(text(x + 54, y + 120, "correct", size=8.6, fill=AMBER, weight=600))
+    rows.append(text(x + 14, y + 135, f"mean P {mol['loo_mean']:.2f}",
+                     size=9.8, fill=AMBER, weight=700))
+    rows.append(text(x + 14, y + 147, f"range {mol['loo_min']:.2f}–{mol['loo_max']:.2f}",
+                     size=8.2, fill=AMBER, weight=600))
+    rows.append(text(x + 14, y + 162, "uncertainty is", size=7.8, fill=MUTED, style="italic"))
+    rows.append(text(x + 14, y + 172, "measurable →", size=7.8, fill=MUTED, style="italic"))
+    # right column: 3x3 confusion matrix of that same LOOCV run
+    rows.append(draw_confusion_matrix(x + 140, y + 104, mol["loo_matrix"]))
+    rows.append(text(x + 140, y + 169, "rows = true · cols = LOOCV", size=7.2, fill=DIM))
     return "".join(rows)
 
 
 def draw_output_adversity(x: float, y: float, w: float, h: float) -> str:
-    """Answer 2 (dotted arrow): P(z_adversity | context, exposure, dose) - next step."""
+    """Answer 2 (dotted arrow): P(z_homeo, z_adversity | context, exposure, dose) - next step."""
     rows = [card(x, y, w, h, stroke=ROSE, fill="#1d1020", rx=11, width=1.6)]
     rows.append(text(x + 14, y + 32,
-                     "P(z" + sub("", "adversity", size=7.4, dy=2.8) + " | context,",
+                     "P(z" + sub("", "homeo", size=7.4, dy=2.8) + " z" + sub("", "adversity", size=7.4, dy=2.8) +" | context,",
                      size=12.0, fill=ROSE, weight=800))
     rows.append(text(x + 14, y + 47, "exposure, dose)", size=12.0, fill=ROSE, weight=800))
     rows.append(text(x + 14, y + 66, "Probability that the hepatocyte tips to z"
@@ -422,8 +484,8 @@ def draw_output_adversity(x: float, y: float, w: float, h: float) -> str:
 IN_X, IN_W, IN_H, IN_STEP, IN_TOP = 18.0, 286.0, 76.0, 86.0, 26.0
 HUB_X, HUB_W, HUB_Y, HUB_H = 372.0, 296.0, 128.0, 130.0
 OUT_X, OUT_W = 744.0, 278.0
-OUT1_Y, OUT1_H = 26.0, 166.0
-OUT2_Y, OUT2_H = 202.0, 130.0
+OUT1_Y, OUT1_H = 26.0, 196.0
+OUT2_Y, OUT2_H = 230.0, 130.0
 
 
 def build_svg(mol: dict, hep: dict) -> str:
@@ -475,6 +537,22 @@ def build_svg(mol: dict, hep: dict) -> str:
     parts.append(curve(HUB_X + HUB_W, HUB_Y + 90, OUT_X - 4, OUT2_Y + OUT2_H / 2 - 2, VIOLET,
                        "arr-dot", dash="7 6", width=2.3))
 
+    # Badge: Future work / In development
+    mid_x = (HUB_X + HUB_W + OUT_X - 4) / 2
+    mid_y = (HUB_Y + 90 + OUT2_Y + OUT2_H / 2 - 2) / 2
+    badge_text = "future work"
+    badge_w = len(badge_text) * 6.5 + 16
+    badge_h = 20
+
+    parts.append(
+        f'<g transform="translate({mid_x:.1f}, {mid_y:.1f})">'
+        f'<rect x="{-badge_w / 2:.1f}" y="{-badge_h / 2:.1f}" width="{badge_w:.1f}" height="{badge_h:.1f}" '
+        f'rx="10" fill="#0B1120" stroke="{VIOLET}" stroke-width="1.2" stroke-dasharray="3 3"/>'
+        f'<text x="0" y="3.5" text-anchor="middle" fill="#C084FC" font-size="10" font-weight="700" '
+        f'letter-spacing="0.04em">{badge_text}</text>'
+        f'</g>'
+    )
+
     parts.append(draw_output_mie(OUT_X, OUT1_Y, OUT_W, OUT1_H, mol))
     parts.append(draw_output_adversity(OUT_X, OUT2_Y, OUT_W, OUT2_H))
 
@@ -503,10 +581,14 @@ def main() -> None:
     print("== Slide 2 - multimodal & multiscale AI graph ==")
     print(f"   figure           : {OUT_SVG.relative_to(ROOT)} ({len(svg):,} bytes)")
     print("   topology         : 4 data sources -> 1 model node -> 2 answers (solid / dotted)")
-    print(f"   MIE in-sample    : {mol['in_acc']}/{mol['n_compounds']} correct, "
-          f"mean P {mol['in_mean']:.3f}")
-    print(f"   MIE leave-one-out: {mol['loo_acc']}/{mol['n_compounds']}, mean P {mol['loo_mean']:.3f} "
-          f"({mol['loo_min']:.3f}-{mol['loo_max']:.3f})")
+    print(f"   MIE leave-one-out: {mol['loo_acc']}/{mol['n_compounds']} correct, "
+          f"mean P {mol['loo_mean']:.3f} ({mol['loo_min']:.3f}-{mol['loo_max']:.3f}) [graphormer]")
+    print(f"   dual consensus   : {mol['cons_acc']}/{mol['n_compounds']} correct, "
+          f"mean P {mol['cons_mean']:.3f}  (in-sample numbers are not reported)")
+    print("   confusion matrix : rows = true class, columns = LOOCV prediction "
+          "[no MIE, MIE 167, MIE 41]")
+    for label, row in zip(CONFUSION_SHORT_LABELS, mol["loo_matrix"]):
+        print(f"                      true {label:<7s} {row}")
     print(f"   parameters       : {mol['graphormer_params']:,} + {mol['toxtransformer_params']:,} "
           f"= {mol['total_params']:,}")
     print(f"   hepatocyte       : {hep['n_genes']} genes x {hep['n_features']} features x "

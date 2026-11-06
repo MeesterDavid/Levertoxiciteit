@@ -9,6 +9,11 @@ time). Every field that the renderers consume is already persisted in
 wrapping, label rotation) can be re-rendered from that cache. The science - embeddings,
 MIE probabilities, LOOCV, PCA coordinates - is reused byte-for-byte from the cache.
 
+The leave-one-out validation block (accuracy, 3x3 confusion matrices, per-class
+recall/precision/F1) is recomputed from the cached per-compound ``loocv`` and
+``tox_loocv`` entries and written back into the JSON as ``validation``, so the
+dashboard and the slide figure can report LOOCV without a GPU rerun.
+
 This script also refreshes ``public/00_architecture_pipelines.html`` and the two
 pipeline SVGs, because ``generate_standalone_html`` calls
 ``generate_pipeline_diagrams.main()``.
@@ -46,6 +51,13 @@ def main() -> None:
     graph_pca = np.asarray(payload["pca_coords_2d"], dtype=float)
     tox_pca = np.asarray(payload["toxtransformer_pca_coords_2d"], dtype=float)
     cos_sim = np.asarray(payload["cosine_similarity_matrix"], dtype=float)
+
+    # LOOCV metrics only need the cached per-compound blocks (`loocv`, `tox_loocv`, `true_class`),
+    # so the validation block can be refreshed without reloading the checkpoints on GPU 1.
+    validation = m00.build_validation_metrics(compounds)
+    payload["validation"] = validation
+    json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    m00.print_validation_report(validation)
 
     print(f"[cache] {len(compounds)} compounds | PC shapes {graph_pca.shape}, {tox_pca.shape} | cos {cos_sim.shape}")
     m00.generate_standalone_html(compounds, graph_pca, tox_pca, cos_sim, html_path)
