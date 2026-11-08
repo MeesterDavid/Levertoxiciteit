@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSD Tipping Point Simulator</title>
+  <title>Biophysical CSD Simulator — Nucleation & Astrocyte Clearance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
@@ -18,7 +18,6 @@
     canvas {
       image-rendering: pixelated;
     }
-    /* Custom Range Sliders */
     input[type=range] {
       -webkit-appearance: none;
       background: #1E293B;
@@ -41,136 +40,130 @@
     input[type=range]::-webkit-slider-thumb:hover {
       transform: scale(1.15);
     }
-    .custom-yellow-thumb::-webkit-slider-thumb {
-      background: #EAB308 !important;
-      box-shadow: 0 0 10px rgba(234, 179, 8, 0.6) !important;
+    .thumb-cyan::-webkit-slider-thumb {
+      background: #06B6D4 !important;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.6) !important;
     }
-    .custom-purple-thumb::-webkit-slider-thumb {
-      background: #C084FC !important;
-      box-shadow: 0 0 10px rgba(192, 132, 252, 0.6) !important;
+    .thumb-amber::-webkit-slider-thumb {
+      background: #F59E0B !important;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.6) !important;
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col p-3 md:p-6 select-none">
 
-  <!-- Header Section -->
+  <!-- Header -->
   <header class="max-w-7xl mx-auto w-full mb-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
     <div>
       <div class="flex items-center gap-2.5">
-        <span class="inline-block w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_12px_#FACC15]"></span>
+        <span class="inline-block w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_12px_#22D3EE]"></span>
         <h1 class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          Cortical Spreading Depression <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded border border-slate-700">Torus Grid (CSD)</span>
+          Cortical Spreading Depression <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded border border-slate-700">Biophysical [K+]e Model</span>
         </h1>
       </div>
       <p class="text-xs md:text-sm text-slate-400 mt-1 max-w-3xl">
-        Explore the physiological tipping point. Start both simulations with <strong>identical stimuli (MIE)</strong> and tune the density of distributed yellow inhibitor cells to identify the critical boundary between <span class="text-purple-400 font-semibold">propagation</span> and <span class="text-amber-400 font-semibold">quench</span>.
+        Kinetics: <strong>Nernstian ion shifts, Michaelis-Menten glia buffering & interstitial volume shrinkage</strong>. Test whether a local stimulus overcomes the <strong>Critical Nucleation Radius</strong> or gets quenched by the continuous astroglial syncytium.
       </p>
     </div>
 
-    <!-- Quick Status & Recording Indicator -->
+    <!-- Live Status / Timer -->
     <div class="flex items-center gap-3">
       <div id="recordingBadge" class="hidden items-center gap-2 px-3 py-1.5 rounded-full bg-red-950/80 border border-red-500/50 text-red-400 text-xs font-mono animate-pulse">
-        <span class="w-2 h-2 rounded-full bg-red-500"></span> Recording... (<span id="recordTimer">0.0s</span>)
+        <span class="w-2 h-2 rounded-full bg-red-500"></span> Recording (<span id="recordTimer">0.0s</span>)
       </div>
       <div class="text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg flex items-center gap-3">
-        <span>Time: <strong id="simTimeLabel" class="text-white">0.0s</strong></span>
-        <span>Step: <strong id="simStepLabel" class="text-white">0</strong></span>
+        <span>Tissue Time: <strong id="simTimeLabel" class="text-white">0.0s</strong></span>
+        <span>Iter: <strong id="simStepLabel" class="text-white">0</strong></span>
       </div>
     </div>
   </header>
 
-  <!-- Main Content Layout -->
+  <!-- Main Grid Layout -->
   <main class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
     
     <!-- Simulation Panes: 8 Columns -->
     <div class="lg:col-span-8 flex flex-col gap-4">
-      
-      <!-- Side by side canvases container -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
-        <!-- Left Simulation: Condition A -->
+        <!-- Condition A: Vulnerable Tissue -->
         <div class="bg-slate-900/90 rounded-2xl p-4 border border-slate-800/80 shadow-xl flex flex-col gap-3 relative overflow-hidden group">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_8px_#C084FC]"></span>
-              <h2 class="font-semibold text-sm text-slate-200">Condition A: <span id="labelA" class="text-purple-400">Vulnerable Tissue</span></h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_#F43F5E]"></span>
+              <h2 class="font-semibold text-sm text-slate-200">Condition A: <span class="text-rose-400 font-bold">Impaired Astrocytic Buffer</span></h2>
             </div>
-            <span id="stateBadgeA" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Rest / Quenched</span>
+            <span id="stateBadgeA" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Homeostasis</span>
           </div>
 
           <!-- Canvas Frame -->
-          <div class="relative aspect-square w-full rounded-xl overflow-hidden bg-[#070101] border border-slate-800 shadow-inner flex items-center justify-center cursor-crosshair">
+          <div class="relative aspect-square w-full rounded-xl overflow-hidden bg-[#050811] border border-slate-800 shadow-inner flex items-center justify-center cursor-crosshair">
             <canvas id="canvasA" width="480" height="480" class="w-full h-full block"></canvas>
             <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-400 font-mono pointer-events-none">
-              Click to trigger MIE here
+              Click to inject K+ bolus (MIE)
             </div>
           </div>
 
-          <!-- Slider Density Left (Default 1.5%) -->
+          <!-- Astrocytic Clearance Capacity Slider A -->
           <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 flex flex-col gap-1.5">
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-300 flex items-center gap-1.5 font-medium">
-                <span class="w-2 h-2 rounded-full bg-yellow-400"></span> Inhibitor Density (Yellow)
-              </span>
-              <span id="densityValA" class="font-mono text-yellow-400 font-bold">1.5%</span>
+              <span class="text-slate-300 font-medium">Astrocyte Pump Max Vmax</span>
+              <span id="vmaxValA" class="font-mono text-cyan-400 font-bold">1.2 mM/s</span>
             </div>
-            <input id="sliderDensityA" type="range" min="0" max="35" step="0.5" value="1.5" class="custom-yellow-thumb w-full" />
+            <input id="sliderVmaxA" type="range" min="0.4" max="3.5" step="0.1" value="1.2" class="thumb-cyan w-full" />
             <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>0% (No brake)</span>
-              <span>Critical threshold ~12-14%</span>
-              <span>35% (Dense)</span>
+              <span>0.4 (Ischemic / Depleted)</span>
+              <span>Threshold ~1.6</span>
+              <span>3.5 (Resilient)</span>
             </div>
           </div>
 
           <div class="flex justify-between text-xs text-slate-400 font-mono px-1">
-            <span>Active (Purple): <strong id="activeCellsA" class="text-purple-300">0%</strong></span>
-            <span>Inhibition (Yellow): <strong id="inhibCellsA" class="text-yellow-300">1.5%</strong></span>
+            <span>Peak [K+]e: <strong id="peakKA" class="text-rose-400">3.5 mM</strong></span>
+            <span>Depolarized Area: <strong id="depolAreaA" class="text-slate-300">0.0%</strong></span>
           </div>
         </div>
 
-        <!-- Right Simulation: Condition B -->
+        <!-- Condition B: Resilient Tissue -->
         <div class="bg-slate-900/90 rounded-2xl p-4 border border-slate-800/80 shadow-xl flex flex-col gap-3 relative overflow-hidden group">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_#EAB308]"></span>
-              <h2 class="font-semibold text-sm text-slate-200">Condition B: <span id="labelB" class="text-amber-400">Resilient Tissue</span></h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10B981]"></span>
+              <h2 class="font-semibold text-sm text-slate-200">Condition B: <span class="text-emerald-400 font-bold">Intact Astrocytic Buffer</span></h2>
             </div>
-            <span id="stateBadgeB" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Rest / Quenched</span>
+            <span id="stateBadgeB" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Homeostasis</span>
           </div>
 
           <!-- Canvas Frame -->
-          <div class="relative aspect-square w-full rounded-xl overflow-hidden bg-[#070101] border border-slate-800 shadow-inner flex items-center justify-center cursor-crosshair">
+          <div class="relative aspect-square w-full rounded-xl overflow-hidden bg-[#050811] border border-slate-800 shadow-inner flex items-center justify-center cursor-crosshair">
             <canvas id="canvasB" width="480" height="480" class="w-full h-full block"></canvas>
             <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-400 font-mono pointer-events-none">
-              Click to trigger MIE here
+              Click to inject K+ bolus (MIE)
             </div>
           </div>
 
-          <!-- Slider Density Right (Default 15.5%) -->
+          <!-- Astrocytic Clearance Capacity Slider B -->
           <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 flex flex-col gap-1.5">
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-300 flex items-center gap-1.5 font-medium">
-                <span class="w-2 h-2 rounded-full bg-yellow-400"></span> Inhibitor Density (Yellow)
-              </span>
-              <span id="densityValB" class="font-mono text-yellow-400 font-bold">15.5%</span>
+              <span class="text-slate-300 font-medium">Astrocyte Pump Max Vmax</span>
+              <span id="vmaxValB" class="font-mono text-cyan-400 font-bold">2.4 mM/s</span>
             </div>
-            <input id="sliderDensityB" type="range" min="0" max="35" step="0.5" value="15.5" class="custom-yellow-thumb w-full" />
+            <input id="sliderVmaxB" type="range" min="0.4" max="3.5" step="0.1" value="2.4" class="thumb-cyan w-full" />
             <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>0% (No brake)</span>
-              <span>Critical threshold ~12-14%</span>
-              <span>35% (Dense)</span>
+              <span>0.4 (Ischemic / Depleted)</span>
+              <span>Threshold ~1.6</span>
+              <span>3.5 (Resilient)</span>
             </div>
           </div>
 
           <div class="flex justify-between text-xs text-slate-400 font-mono px-1">
-            <span>Active (Purple): <strong id="activeCellsB" class="text-purple-300">0%</strong></span>
-            <span>Inhibition (Yellow): <strong id="inhibCellsB" class="text-yellow-300">15.5%</strong></span>
+            <span>Peak [K+]e: <strong id="peakKB" class="text-emerald-400">3.5 mM</strong></span>
+            <span>Depolarized Area: <strong id="depolAreaB" class="text-slate-300">0.0%</strong></span>
           </div>
         </div>
 
       </div>
 
-      <!-- Synchronized Master Actions -->
+      <!-- Action Control Bar -->
       <div class="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 flex flex-wrap items-center justify-between gap-3 shadow-lg">
         <div class="flex flex-wrap items-center gap-2.5">
           <button id="btnPlayPause" class="px-4 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs md:text-sm flex items-center gap-2 shadow-lg shadow-sky-500/20 active:scale-95 transition-all">
@@ -179,113 +172,105 @@
             <span id="btnPlayText">Pause</span>
           </button>
 
-          <button id="btnTriggerMIE" class="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs md:text-sm flex items-center gap-2 shadow-lg shadow-purple-600/25 active:scale-95 transition-all">
+          <button id="btnTriggerMIE" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs md:text-sm flex items-center gap-2 shadow-lg shadow-rose-600/25 active:scale-95 transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 8v8m-4-4h8"/></svg>
-            <span>Trigger Identical MIE (Pulse)</span>
+            <span>Inject Synchronized K+ Bolus</span>
           </button>
 
           <button id="btnReset" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs md:text-sm flex items-center gap-1.5 active:scale-95 transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            <span>Reset</span>
+            <span>Reset to Homeostasis</span>
           </button>
         </div>
 
-        <!-- Recording Button -->
         <button id="btnRecord" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs md:text-sm flex items-center gap-2 shadow-lg shadow-emerald-600/20 active:scale-95 transition-all ml-auto">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
-          <span id="recordBtnLabel">OK - Record Video & Download</span>
+          <span id="recordBtnLabel">Record WebM Video</span>
         </button>
       </div>
 
     </div>
 
-    <!-- Parameter Tuning & Legend: 4 Columns -->
+    <!-- Theoretical Controls & Parameter Tuning: 4 Columns -->
     <div class="lg:col-span-4 flex flex-col gap-4">
       
-      <!-- Visual Legend Card -->
+      <!-- Calibration & Color Legend -->
       <div class="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 shadow-xl flex flex-col gap-3">
         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-2">
-          Legend & Cellular States
+          Physiological [K+]e Scale (Heatmap)
         </h3>
-        <div class="space-y-2.5 text-xs">
+        <div class="space-y-2 text-xs">
           <div class="flex items-center gap-3">
-            <span class="w-4 h-4 rounded-full bg-[#180303] border border-red-900/70 shadow-inner flex-shrink-0"></span>
+            <span class="w-5 h-4 rounded bg-[#0A1628] border border-blue-900/80 flex-shrink-0"></span>
             <div>
-              <p class="font-medium text-slate-200">Deep Dark Red</p>
-              <p class="text-slate-400 text-[11px]">Resting state of the cortex (neutral pyramidal cells).</p>
+              <p class="font-medium text-slate-200">Dark Blue: 3.5 – 5.0 mM</p>
+              <p class="text-slate-400 text-[11px]">Normal cortical baseline (astrocytes maintain homeostasis).</p>
             </div>
           </div>
-
           <div class="flex items-center gap-3">
-            <span class="w-4 h-4 rounded-full bg-yellow-400 shadow-[0_0_10px_#FACC15] flex-shrink-0"></span>
+            <span class="w-5 h-4 rounded bg-[#059669] flex-shrink-0"></span>
             <div>
-              <p class="font-medium text-yellow-300">Bright Yellow (Inhibitor)</p>
-              <p class="text-slate-400 text-[11px]">Fixed astrocytic buffers or cells in refractory repolarization.</p>
+              <p class="font-medium text-emerald-400">Green / Yellow: 6.0 – 11.5 mM</p>
+              <p class="text-slate-400 text-[11px]">Metabolic elevation. Pump clearing at maximum capacity.</p>
             </div>
           </div>
-
           <div class="flex items-center gap-3">
-            <span class="w-4 h-4 rounded-full bg-purple-500 shadow-[0_0_10px_#C084FC] flex-shrink-0"></span>
+            <span class="w-5 h-4 rounded bg-[#DC2626] shadow-[0_0_8px_#EF4444] flex-shrink-0"></span>
             <div>
-              <p class="font-medium text-purple-300">Bright Purple (Activator)</p>
-              <p class="text-slate-400 text-[11px]">Propagating depolarization front (massive K+ efflux).</p>
+              <p class="font-medium text-rose-400">Red / White: > 12.0 – 55.0 mM</p>
+              <p class="text-slate-400 text-[11px]"><strong>Tipping point reached:</strong> complete cellular depolarization & CSD wave.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Parameters Panel (Defaults aligned with Screenshots) -->
+      <!-- Critical Nucleation Parameters -->
       <div class="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 shadow-xl flex flex-col gap-4">
         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-2 flex items-center justify-between">
-          <span>Reaction-Diffusion Parameters</span>
-          <button id="btnResetParams" class="text-[10px] text-sky-400 hover:underline lowercase font-mono">default</button>
+          <span>Critical Nucleation Parameters</span>
+          <button id="btnResetParams" class="text-[10px] text-sky-400 hover:underline lowercase font-mono">reset</button>
         </h3>
 
-        <!-- D: 0.70 -->
+        <!-- Stimulus Radius (Nucleation Volume) -->
         <div class="flex flex-col gap-1.5">
           <div class="flex justify-between items-center text-xs">
-            <span class="text-slate-300 font-medium">K+ Diffusion Rate (D)</span>
-            <span id="valD" class="font-mono text-sky-400">0.70</span>
+            <span class="text-slate-300 font-medium">Stimulus Radius (r)</span>
+            <span id="valRadius" class="font-mono text-amber-400 font-bold">3.2 grid units</span>
           </div>
-          <input id="sliderD" type="range" min="0.10" max="2.00" step="0.05" value="0.70" class="w-full" />
-          <p class="text-[10px] text-slate-500">Determines how rapidly potassium leaks across the torus.</p>
+          <input id="sliderRadius" type="range" min="1.0" max="7.0" step="0.2" value="3.2" class="thumb-amber w-full" />
+          <p class="text-[10px] text-slate-500">
+            <strong>Nucleation Test:</strong> If r &lt; 2.2, diffusion drains K+ faster into neighbors than regenerative channels can supply &rarr; <em>Wave quenches</em>.
+          </p>
         </div>
 
-        <!-- a: 0.015 -->
+        <!-- Effective Interstitial Diffusion (D) -->
         <div class="flex flex-col gap-1.5">
           <div class="flex justify-between items-center text-xs">
-            <span class="text-slate-300 font-medium">Ignition Threshold (a)</span>
-            <span id="valA" class="font-mono text-purple-400">0.015</span>
+            <span class="text-slate-300 font-medium">K+ Diffusion Coefficient (D)</span>
+            <span id="valD" class="font-mono text-sky-400 font-bold">0.85 mm²/s</span>
           </div>
-          <input id="sliderA" type="range" min="0.005" max="0.100" step="0.005" value="0.015" class="custom-purple-thumb w-full" />
-          <p class="text-[10px] text-slate-500">Depolarization level required to initiate positive feedback.</p>
+          <input id="sliderD" type="range" min="0.2" max="2.0" step="0.05" value="0.85" class="w-full" />
+          <p class="text-[10px] text-slate-500">Extracellulaire diffusiesnelheid door de gezwollen interstitiële ruimte.</p>
         </div>
 
-        <!-- Buffer: 0.14 -->
+        <!-- Interstitial Volume Fraction Alpha -->
         <div class="flex flex-col gap-1.5">
           <div class="flex justify-between items-center text-xs">
-            <span class="text-slate-300 font-medium">Buffering Strength (Yellow Cells)</span>
-            <span id="valClearance" class="font-mono text-yellow-400">0.14</span>
+            <span class="text-slate-300 font-medium">Interstitial Volume Fraction (&alpha;)</span>
+            <span id="valAlpha" class="font-mono text-indigo-400 font-bold">0.20 &rarr; 0.08</span>
           </div>
-          <input id="sliderClearance" type="range" min="0.02" max="0.40" step="0.01" value="0.14" class="custom-yellow-thumb w-full" />
-          <p class="text-[10px] text-slate-500">Potassium clearance efficiency of individual buffer sites.</p>
-        </div>
-
-        <!-- Radius: 3.5 -->
-        <div class="flex flex-col gap-1.5">
-          <div class="flex justify-between items-center text-xs">
-            <span class="text-slate-300 font-medium">MIE Stimulus Radius</span>
-            <span id="valRadius" class="font-mono text-slate-200">3.5 cells</span>
-          </div>
-          <input id="sliderRadius" type="range" min="1.5" max="7.0" step="0.5" value="3.5" class="w-full" />
+          <p class="text-[10px] text-slate-500">Bij depolarisatie zwellen cellen op (cytotoxisch oedeem via AQP4), waardoor de extracellulaire ruimte met 60% krimpt.</p>
         </div>
       </div>
 
-      <!-- Torus Explanation -->
-      <div class="bg-slate-900/50 rounded-2xl p-4 border border-slate-800/60 text-xs text-slate-400 leading-relaxed">
-        <h4 class="font-semibold text-slate-300 mb-1">Why a Torus Grid?</h4>
+      <!-- Theory Box -->
+      <div class="bg-slate-900/50 rounded-2xl p-4 border border-slate-800/60 text-xs text-slate-400 leading-relaxed space-y-2">
+        <h4 class="font-semibold text-slate-200">Waarom dit theoretisch klopt:</h4>
         <p>
-          Periodic boundaries ensure the traveling wave wraps around rather than escaping the computational tissue. If the activator overcomes local inhibitory barriers, recurrent circulations develop naturally.
+          1. <strong>Geen toevallige lekken:</strong> De astrocytische buffer is gemodelleerd als een continu syncytium met Michaelis-Menten verzadiging ($K_m = 5.5\text{ mM}$).
+        </p>
+        <p>
+          2. <strong>Nucleatiedrempel:</strong> Eén enkele cel kan nooit CSD triggeren omdat $D \nabla^2 [K^+]_e$ het kalium onmiddellijk over de buren verdunt. Pas wanneer een samenhangend volume de drempel overschrijdt, ontstaat de regeneratieve golf.
         </p>
       </div>
 
@@ -296,15 +281,24 @@
   <canvas id="combineCanvas" width="960" height="480" class="hidden"></canvas>
 
   <script>
-    const N = 48; // Discrete cortical units (48x48 = 2304 cells)
-    let D = 0.70;
-    let a_thr = 0.015;
-    let cell_clearance = 0.14;
-    let mie_radius = 3.5;
-    const DT = 0.02;
-    const EPS = 0.010;
-    const GAMMA = 0.5;
-    const SUBSTEPS_PER_FRAME = 6;
+    // Grid Setup: 60x60 grid units
+    const N = 60;
+    const K_REST = 3.5;       // Physiological extracellular K+ in mM
+    const K_THRESHOLD = 11.5;  // Depolarization tipping point threshold in mM
+    const K_MAX_REACTION = 52.0; // Saturated K+ during complete depolarization in mM
+    const KM_PUMP = 5.5;      // Michaelis-Menten affinity constant in mM
+    const DT = 0.025;         // Time step in seconds
+    const SUBSTEPS = 6;       // Integration steps per frame
+
+    let D = 0.85;             // Effective diffusion constant
+    let stimRadius = 3.2;     // Radius of initial bolus in grid cells
+
+    // Tissue State Arrays: [K+]e (concentration), h (recovery / pump activation)
+    const kA = new Float64Array(N * N);
+    const hA = new Float64Array(N * N);
+    const kB = new Float64Array(N * N);
+    const hB = new Float64Array(N * N);
+    const laplacianBuf = new Float64Array(N * N);
 
     const canvasA = document.getElementById('canvasA');
     const ctxA = canvasA.getContext('2d');
@@ -312,15 +306,6 @@
     const ctxB = canvasB.getContext('2d');
     const combineCanvas = document.getElementById('combineCanvas');
     const combineCtx = combineCanvas.getContext('2d');
-
-    // Correctly allocated flat arrays for N x N
-    let uA = new Float64Array(N * N);
-    let vA = new Float64Array(N * N);
-    let inhA = new Uint8Array(N * N);
-
-    let uB = new Float64Array(N * N);
-    let vB = new Float64Array(N * N);
-    let inhB = new Uint8Array(N * N);
 
     let isRunning = true;
     let simStep = 0;
@@ -333,57 +318,35 @@
     let recordingStartTime = 0;
     let recordIntervalTimer = null;
 
-    const COLOR_DARK_RED = { r: 24, g: 3, b: 3 };
-    const COLOR_PURPLE   = { r: 192, g: 38, b: 228 };
-    const COLOR_YELLOW   = { r: 250, g: 204, b: 21 };
-
-    function createTissueMask(densityPct, seed = 42) {
-      const mask = new Uint8Array(N * N);
-      let s = seed;
-      const rnd = () => {
-        s = (s * 9301 + 49297) % 233280;
-        return s / 233280;
-      };
-      const threshold = densityPct / 100.0;
-      for (let i = 0; i < N * N; i++) {
-        mask[i] = rnd() < threshold ? 1 : 0;
-      }
-      return mask;
-    }
-
-    function initSimulations() {
-      const densA = parseFloat(document.getElementById('sliderDensityA').value);
-      const densB = parseFloat(document.getElementById('sliderDensityB').value);
-
-      inhA = createTissueMask(densA, 101);
-      inhB = createTissueMask(densB, 101);
-
-      uA.fill(0.0); vA.fill(0.0);
-      uB.fill(0.0); vB.fill(0.0);
-
+    function resetTissue() {
+      kA.fill(K_REST);
+      hA.fill(0.0);
+      kB.fill(K_REST);
+      hB.fill(0.0);
       simStep = 0;
       simTime = 0.0;
-      updateMetricsUI();
+      updateUI();
     }
 
-    function injectIdenticalMIE(cx = N / 2, cy = N / 2, r = mie_radius) {
+    function injectBolus(targetK, cx = N / 2, cy = N / 2, r = stimRadius, peakVal = 42.0) {
       const r2 = r * r;
       for (let y = 0; y < N; y++) {
         for (let x = 0; x < N; x++) {
           const dx = x - cx;
           const dy = y - cy;
-          if (dx * dx + dy * dy <= r2) {
+          const dist2 = dx * dx + dy * dy;
+          if (dist2 <= r2) {
             const idx = y * N + x;
-            uA[idx] = 0.95;
-            uB[idx] = 0.95;
+            // Smooth Gaussian-like nucleation profile
+            const factor = Math.exp(-dist2 / (0.5 * r2));
+            targetK[idx] = Math.max(targetK[idx], K_REST + (peakVal - K_REST) * factor);
           }
         }
       }
     }
 
-    const lapBuf = new Float64Array(N * N);
-
-    function laplacianTorus(arr, out) {
+    // 5-point Laplacian on Torus (Periodic boundary conditions)
+    function computeLaplacian(arr, out) {
       for (let y = 0; y < N; y++) {
         const yUp = ((y - 1 + N) % N) * N;
         const yDown = ((y + 1) % N) * N;
@@ -397,130 +360,147 @@
       }
     }
 
-    function integrateStep(u, v, inh) {
-      laplacianTorus(u, lapBuf);
+    // Reaction-Diffusion step modeling Nernstian K+ efflux and Michaelis-Menten glia clearance
+    function stepPDE(kArr, hArr, vmaxPump) {
+      computeLaplacian(kArr, laplacianBuf);
 
       for (let i = 0; i < N * N; i++) {
-        const uVal = u[i];
-        const vVal = v[i];
-        const isBufferCell = inh[i];
+        const kVal = kArr[i];
+        const hVal = hArr[i];
 
-        const activeClearance = isBufferCell ? cell_clearance : 0.01;
-        const reaction = uVal * (1.0 - uVal) * (uVal - a_thr);
-        const du = D * lapBuf[i] + reaction - vVal - activeClearance * uVal;
-        const dv = EPS * (1.2 * uVal - GAMMA * vVal);
+        // 1. Interstitial volume fraction alpha(k): shrink by 60% during edema
+        const alpha = (kVal > K_THRESHOLD) ? 0.08 : 0.20;
 
-        let nextU = uVal + du * DT;
-        let nextV = vVal + dv * DT;
+        // 2. Regenerative neuronal K+ release: sigmoidal ignition when [K+]e > K_THRESHOLD
+        // Represents opening of voltage-gated channels due to lost resting potential
+        const sig = 1.0 / (1.0 + Math.exp(-(kVal - K_THRESHOLD) / 1.6));
+        const jRelease = (1.0 - hVal) * 9.5 * sig * (K_MAX_REACTION - kVal) / (K_MAX_REACTION - K_REST);
 
-        if (nextU < 0.0) nextU = 0.0;
-        else if (nextU > 1.2) nextU = 1.2;
+        // 3. Michaelis-Menten Astrocytic + Na/K ATPase pump clearance
+        const deltaK = Math.max(0.0, kVal - K_REST);
+        const jPump = vmaxPump * (deltaK / (deltaK + KM_PUMP));
 
-        if (nextV < 0.0) nextV = 0.0;
-        else if (nextV > 1.2) nextV = 1.2;
+        // 4. Net flux divided by extracellular volume fraction alpha
+        const dk = (D * laplacianBuf[i] + jRelease - jPump) / (alpha / 0.20);
+        
+        // 5. Recovery variable h: slow inactivation & metabolic exhaustion
+        const dh = 0.045 * (sig - 0.75 * hVal);
 
-        u[i] = nextU;
-        v[i] = nextV;
+        let nextK = kVal + dk * DT;
+        let nextH = hVal + dh * DT;
+
+        if (nextK < K_REST) nextK = K_REST;
+        if (nextK > 65.0) nextK = 65.0;
+        if (nextH < 0.0) nextH = 0.0;
+        if (nextH > 1.0) nextH = 1.0;
+
+        kArr[i] = nextK;
+        hArr[i] = nextH;
       }
     }
 
-    function renderGrid(ctx, u, v, inh) {
+    // Color mapper from [K+]e (mM) to RGB Heatmap
+    function getColor(kVal) {
+      if (kVal <= K_REST + 0.5) {
+        // Deep resting cortical blue
+        return [10, 22, 40];
+      }
+      if (kVal < K_THRESHOLD) {
+        // Transition from cyan to yellow-green (sub-threshold buffering)
+        const t = (kVal - K_REST) / (K_THRESHOLD - K_REST);
+        return [
+          Math.floor(10 + t * 40),
+          Math.floor(60 + t * 160),
+          Math.floor(180 - t * 140)
+        ];
+      }
+      // Depolarization wave: Red to White-hot core
+      const t = Math.min(1.0, (kVal - K_THRESHOLD) / (35.0 - K_THRESHOLD));
+      return [
+        Math.floor(220 + t * 35),
+        Math.floor(38 + t * 217),
+        Math.floor(38 + t * 217)
+      ];
+    }
+
+    function renderField(ctx, kArr) {
       const width = ctx.canvas.width;
       const height = ctx.canvas.height;
       const cellPx = width / N;
-      const radius = cellPx * 0.44;
 
-      ctx.fillStyle = '#060101';
+      ctx.fillStyle = '#050811';
       ctx.fillRect(0, 0, width, height);
 
       for (let y = 0; y < N; y++) {
-        const py = (y + 0.5) * cellPx;
+        const py = y * cellPx;
         for (let x = 0; x < N; x++) {
-          const px = (x + 0.5) * cellPx;
-          const idx = y * N + x;
-          const uVal = u[idx];
-          const vVal = v[idx];
-          const isFixedInhibitor = inh[idx] === 1;
+          const px = x * cellPx;
+          const kVal = kArr[y * N + x];
+          const [r, g, b] = getColor(kVal);
 
-          let r, g, b;
-
-          if (uVal >= 0.20) {
-            r = COLOR_PURPLE.r;
-            g = COLOR_PURPLE.g;
-            b = COLOR_PURPLE.b;
-          } else if (vVal >= 0.045 || isFixedInhibitor) {
-            r = COLOR_YELLOW.r;
-            g = COLOR_YELLOW.g;
-            b = COLOR_YELLOW.b;
-          } else {
-            r = COLOR_DARK_RED.r;
-            g = COLOR_DARK_RED.g;
-            b = COLOR_DARK_RED.b;
-          }
-
-          ctx.beginPath();
-          ctx.arc(px, py, radius, 0, Math.PI * 2);
           ctx.fillStyle = `rgb(${r},${g},${b})`;
-          ctx.fill();
+          ctx.fillRect(px, py, cellPx + 0.3, cellPx + 0.3);
         }
       }
     }
 
-    function updateMetricsUI() {
+    function updateUI() {
       document.getElementById('simTimeLabel').textContent = `${simTime.toFixed(1)}s`;
       document.getElementById('simStepLabel').textContent = simStep;
 
-      let activeA = 0, activeB = 0;
-      let yellowA = 0, yellowB = 0;
+      let maxKA = K_REST, maxKB = K_REST;
+      let depolA = 0, depolB = 0;
 
       for (let i = 0; i < N * N; i++) {
-        if (uA[i] >= 0.20) activeA++;
-        if (vA[i] >= 0.045 || inhA[i]) yellowA++;
-
-        if (uB[i] >= 0.20) activeB++;
-        if (vB[i] >= 0.045 || inhB[i]) yellowB++;
+        if (kA[i] > maxKA) maxKA = kA[i];
+        if (kB[i] > maxKB) maxKB = kB[i];
+        if (kA[i] >= K_THRESHOLD) depolA++;
+        if (kB[i] >= K_THRESHOLD) depolB++;
       }
 
-      const pctActA = ((activeA / (N * N)) * 100).toFixed(1);
-      const pctActB = ((activeB / (N * N)) * 100).toFixed(1);
+      document.getElementById('peakKA').textContent = `${maxKA.toFixed(1)} mM`;
+      document.getElementById('peakKB').textContent = `${maxKB.toFixed(1)} mM`;
 
-      document.getElementById('activeCellsA').textContent = `${pctActA}%`;
-      document.getElementById('activeCellsB').textContent = `${pctActB}%`;
+      const pctA = ((depolA / (N * N)) * 100).toFixed(1);
+      const pctB = ((depolB / (N * N)) * 100).toFixed(1);
 
-      document.getElementById('inhibCellsA').textContent = `${((yellowA / (N * N)) * 100).toFixed(0)}%`;
-      document.getElementById('inhibCellsB').textContent = `${((yellowB / (N * N)) * 100).toFixed(0)}%`;
+      document.getElementById('depolAreaA').textContent = `${pctA}%`;
+      document.getElementById('depolAreaB').textContent = `${pctB}%`;
 
       const badgeA = document.getElementById('stateBadgeA');
-      if (activeA > 15) {
-        badgeA.textContent = 'Propagation active!';
-        badgeA.className = 'text-xs font-mono px-2 py-0.5 rounded bg-purple-950/80 border border-purple-500/60 text-purple-300 animate-pulse';
+      if (depolA > 20) {
+        badgeA.textContent = 'CSD Propagation Active!';
+        badgeA.className = 'text-xs font-mono px-2 py-0.5 rounded bg-rose-950/80 border border-rose-500/60 text-rose-300 animate-pulse';
       } else {
-        badgeA.textContent = 'Quenched / Rest';
+        badgeA.textContent = 'Homeostasis / Quenched';
         badgeA.className = 'text-xs font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400';
       }
 
       const badgeB = document.getElementById('stateBadgeB');
-      if (activeB > 15) {
-        badgeB.textContent = 'Propagation active!';
-        badgeB.className = 'text-xs font-mono px-2 py-0.5 rounded bg-purple-950/80 border border-purple-500/60 text-purple-300 animate-pulse';
+      if (depolB > 20) {
+        badgeB.textContent = 'CSD Propagation Active!';
+        badgeB.className = 'text-xs font-mono px-2 py-0.5 rounded bg-rose-950/80 border border-rose-500/60 text-rose-300 animate-pulse';
       } else {
-        badgeB.textContent = 'Quenched / Rest';
+        badgeB.textContent = 'Homeostasis / Quenched';
         badgeB.className = 'text-xs font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400';
       }
     }
 
     function loop() {
       if (isRunning) {
-        for (let s = 0; s < SUBSTEPS_PER_FRAME; s++) {
-          integrateStep(uA, vA, inhA);
-          integrateStep(uB, vB, inhB);
+        const vmaxA = parseFloat(document.getElementById('sliderVmaxA').value);
+        const vmaxB = parseFloat(document.getElementById('sliderVmaxB').value);
+
+        for (let s = 0; s < SUBSTEPS; s++) {
+          stepPDE(kA, hA, vmaxA);
+          stepPDE(kB, hB, vmaxB);
           simStep++;
           simTime += DT;
         }
       }
 
-      renderGrid(ctxA, uA, vA, inhA);
-      renderGrid(ctxB, uB, vB, inhB);
+      renderField(ctxA, kA);
+      renderField(ctxB, kB);
 
       if (isRecording) {
         combineCtx.fillStyle = '#070B14';
@@ -528,20 +508,93 @@
         combineCtx.drawImage(canvasA, 0, 0, 480, 480);
         combineCtx.drawImage(canvasB, 480, 0, 480, 480);
 
-        combineCtx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+        combineCtx.fillStyle = 'rgba(15, 23, 42, 0.85)';
         combineCtx.fillRect(0, 0, 960, 32);
-        combineCtx.fillStyle = '#C084FC';
+        combineCtx.fillStyle = '#F43F5E';
         combineCtx.font = 'bold 12px JetBrains Mono, sans-serif';
-        combineCtx.fillText(`Condition A (Inhibitor: ${document.getElementById('sliderDensityA').value}%)`, 16, 21);
-        combineCtx.fillStyle = '#FACC15';
-        combineCtx.fillText(`Condition B (Inhibitor: ${document.getElementById('sliderDensityB').value}%)`, 496, 21);
+        combineCtx.fillText(`Condition A (Astrocyte Vmax: ${document.getElementById('sliderVmaxA').value} mM/s)`, 16, 21);
+        combineCtx.fillStyle = '#10B981';
+        combineCtx.fillText(`Condition B (Astrocyte Vmax: ${document.getElementById('sliderVmaxB').value} mM/s)`, 496, 21);
       }
 
       if (simStep % 12 === 0) {
-        updateMetricsUI();
+        updateUI();
       }
 
       animationFrameId = requestAnimationFrame(loop);
+    }
+
+    function setupControls() {
+      const sRadius = document.getElementById('sliderRadius');
+      sRadius.addEventListener('input', (e) => {
+        stimRadius = parseFloat(e.target.value);
+        document.getElementById('valRadius').textContent = `${stimRadius.toFixed(1)} grid units`;
+      });
+
+      const sD = document.getElementById('sliderD');
+      sD.addEventListener('input', (e) => {
+        D = parseFloat(e.target.value);
+        document.getElementById('valD').textContent = `${D.toFixed(2)} mm²/s`;
+      });
+
+      const sVmaxA = document.getElementById('sliderVmaxA');
+      sVmaxA.addEventListener('input', (e) => {
+        document.getElementById('vmaxValA').textContent = `${parseFloat(e.target.value).toFixed(1)} mM/s`;
+      });
+
+      const sVmaxB = document.getElementById('sliderVmaxB');
+      sVmaxB.addEventListener('input', (e) => {
+        document.getElementById('vmaxValB').textContent = `${parseFloat(e.target.value).toFixed(1)} mM/s`;
+      });
+
+      document.getElementById('btnResetParams').addEventListener('click', () => {
+        stimRadius = 3.2;
+        D = 0.85;
+        sRadius.value = stimRadius;
+        sD.value = D;
+        document.getElementById('valRadius').textContent = `${stimRadius.toFixed(1)} grid units`;
+        document.getElementById('valD').textContent = `${D.toFixed(2)} mm²/s`;
+      });
+
+      const btnPlayPause = document.getElementById('btnPlayPause');
+      const iconPlay = document.getElementById('iconPlay');
+      const iconPause = document.getElementById('iconPause');
+      const btnPlayText = document.getElementById('btnPlayText');
+
+      btnPlayPause.addEventListener('click', () => {
+        isRunning = !isRunning;
+        if (isRunning) {
+          iconPlay.classList.add('hidden');
+          iconPause.classList.remove('hidden');
+          btnPlayText.textContent = 'Pause';
+        } else {
+          iconPlay.classList.remove('hidden');
+          iconPause.classList.add('hidden');
+          btnPlayText.textContent = 'Resume';
+        }
+      });
+
+      document.getElementById('btnTriggerMIE').addEventListener('click', () => {
+        injectBolus(kA, N / 2, N / 2, stimRadius);
+        injectBolus(kB, N / 2, N / 2, stimRadius);
+        if (!isRunning) btnPlayPause.click();
+      });
+
+      document.getElementById('btnReset').addEventListener('click', () => {
+        resetTissue();
+      });
+
+      function handleCanvasClick(e, targetK) {
+        const rect = e.target.getBoundingClientRect();
+        const clientX = e.clientX - rect.left;
+        const clientY = e.clientY - rect.top;
+        const cellX = (clientX / rect.width) * N;
+        const cellY = (clientY / rect.height) * N;
+        injectBolus(targetK, cellX, cellY, stimRadius);
+      }
+
+      canvasA.addEventListener('mousedown', (e) => handleCanvasClick(e, kA));
+      canvasB.addEventListener('mousedown', (e) => handleCanvasClick(e, kB));
     }
 
     function setupRecorder() {
@@ -553,13 +606,11 @@
         if (!isRecording) {
           recordedChunks = [];
           const stream = combineCanvas.captureStream(30);
-          
+
           let mimeType = 'video/webm;codecs=vp9';
           if (!MediaRecorder.isTypeSupported(mimeType)) {
             mimeType = 'video/webm;codecs=vp8';
-            if (!MediaRecorder.isTypeSupported(mimeType)) {
-              mimeType = 'video/webm';
-            }
+            if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
           }
 
           try {
@@ -568,10 +619,8 @@
             mediaRecorder = new MediaRecorder(stream);
           }
 
-          mediaRecorder.ondataavailable = (event) => {
-            if (event.data && event.data.size > 0) {
-              recordedChunks.push(event.data);
-            }
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) recordedChunks.push(e.data);
           };
 
           mediaRecorder.onstop = () => {
@@ -580,7 +629,7 @@
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `csd_torus_experiment_${Date.now()}.webm`;
+            a.download = `csd_biophysical_sim_${Date.now()}.webm`;
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
@@ -593,7 +642,7 @@
             badge.classList.remove('flex');
             recordBtn.classList.remove('bg-red-600', 'hover:bg-red-500');
             recordBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
-            document.getElementById('recordBtnLabel').textContent = 'OK - Record Video & Download';
+            document.getElementById('recordBtnLabel').textContent = 'Record WebM Video';
             clearInterval(recordIntervalTimer);
           };
 
@@ -618,124 +667,14 @@
       });
     }
 
-    function setupEventListeners() {
-      const sliderA = document.getElementById('sliderDensityA');
-      const valA = document.getElementById('densityValA');
-      sliderA.addEventListener('input', (e) => {
-        const val = parseFloat(e.target.value);
-        valA.textContent = `${val.toFixed(1)}%`;
-        inhA = createTissueMask(val, 101);
-      });
-
-      const sliderB = document.getElementById('sliderDensityB');
-      const valB = document.getElementById('densityValB');
-      sliderB.addEventListener('input', (e) => {
-        const val = parseFloat(e.target.value);
-        valB.textContent = `${val.toFixed(1)}%`;
-        inhB = createTissueMask(val, 101);
-      });
-
-      const sliderD = document.getElementById('sliderD');
-      sliderD.addEventListener('input', (e) => {
-        D = parseFloat(e.target.value);
-        document.getElementById('valD').textContent = D.toFixed(2);
-      });
-
-      const sliderA_thr = document.getElementById('sliderA');
-      sliderA_thr.addEventListener('input', (e) => {
-        a_thr = parseFloat(e.target.value);
-        document.getElementById('valA').textContent = a_thr.toFixed(3);
-      });
-
-      const sliderClearance = document.getElementById('sliderClearance');
-      sliderClearance.addEventListener('input', (e) => {
-        cell_clearance = parseFloat(e.target.value);
-        document.getElementById('valClearance').textContent = cell_clearance.toFixed(2);
-      });
-
-      const sliderRadius = document.getElementById('sliderRadius');
-      sliderRadius.addEventListener('input', (e) => {
-        mie_radius = parseFloat(e.target.value);
-        document.getElementById('valRadius').textContent = `${mie_radius.toFixed(1)} cells`;
-      });
-
-      document.getElementById('btnResetParams').addEventListener('click', () => {
-        D = 0.70;
-        a_thr = 0.015;
-        cell_clearance = 0.14;
-        mie_radius = 3.5;
-        sliderD.value = D;
-        sliderA_thr.value = a_thr;
-        sliderClearance.value = cell_clearance;
-        sliderRadius.value = mie_radius;
-        document.getElementById('valD').textContent = D.toFixed(2);
-        document.getElementById('valA').textContent = a_thr.toFixed(3);
-        document.getElementById('valClearance').textContent = cell_clearance.toFixed(2);
-        document.getElementById('valRadius').textContent = `${mie_radius.toFixed(1)} cells`;
-      });
-
-      const btnPlayPause = document.getElementById('btnPlayPause');
-      const iconPlay = document.getElementById('iconPlay');
-      const iconPause = document.getElementById('iconPause');
-      const btnPlayText = document.getElementById('btnPlayText');
-
-      btnPlayPause.addEventListener('click', () => {
-        isRunning = !isRunning;
-        if (isRunning) {
-          iconPlay.classList.add('hidden');
-          iconPause.classList.remove('hidden');
-          btnPlayText.textContent = 'Pause';
-        } else {
-          iconPlay.classList.remove('hidden');
-          iconPause.classList.add('hidden');
-          btnPlayText.textContent = 'Resume';
-        }
-      });
-
-      document.getElementById('btnTriggerMIE').addEventListener('click', () => {
-        injectIdenticalMIE(N / 2, N / 2, mie_radius);
-        if (!isRunning) {
-          btnPlayPause.click();
-        }
-      });
-
-      document.getElementById('btnReset').addEventListener('click', () => {
-        initSimulations();
-      });
-
-      function handleCanvasClick(e, targetGridU) {
-        const rect = e.target.getBoundingClientRect();
-        const clientX = e.clientX - rect.left;
-        const clientY = e.clientY - rect.top;
-        const cellX = (clientX / rect.width) * N;
-        const cellY = (clientY / rect.height) * N;
-
-        const r2 = mie_radius * mie_radius;
-        for (let y = 0; y < N; y++) {
-          for (let x = 0; x < N; x++) {
-            const dx = x - cellX;
-            const dy = y - cellY;
-            if (dx * dx + dy * dy <= r2) {
-              targetGridU[y * N + x] = 0.95;
-            }
-          }
-        }
-      }
-
-      canvasA.addEventListener('mousedown', (e) => handleCanvasClick(e, uA));
-      canvasB.addEventListener('mousedown', (e) => handleCanvasClick(e, uB));
-    }
-
     window.addEventListener('load', () => {
-      initSimulations();
-      setupEventListeners();
+      resetTissue();
+      setupControls();
       setupRecorder();
-      injectIdenticalMIE(N / 2, N / 2, mie_radius);
+      injectBolus(kA, N / 2, N / 2, stimRadius);
+      injectBolus(kB, N / 2, N / 2, stimRadius);
       loop();
     });
   </script>
 </body>
 </html>
-
-
-
