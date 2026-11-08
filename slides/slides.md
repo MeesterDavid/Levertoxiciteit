@@ -54,7 +54,7 @@ class="nam-img"
 <div class="kw-card">
 <div class="kw-dot bg-emerald"></div>
 <div>
-<div class="kw-title">Pillars: (q)AOPs &amp; Disease Maps</div>
+<div class="kw-title">Pillars: (q)AOPs &amp; Physiological Maps</div>
 <div class="kw-desc">Mechanistically mapping and explaining <em>Adverse Outcomes</em></div>
 </div>
 </div>
