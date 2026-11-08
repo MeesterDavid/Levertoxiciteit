@@ -235,9 +235,9 @@
         <div class="flex flex-col gap-1.5">
           <div class="flex justify-between items-center text-xs">
             <span class="text-slate-300 font-medium">Stimulus Radius (r)</span>
-            <span id="valRadius" class="font-mono text-amber-400 font-bold">3.2 grid units</span>
+            <span id="valRadius" class="font-mono text-amber-400 font-bold">2.2 grid units</span>
           </div>
-          <input id="sliderRadius" type="range" min="1.0" max="7.0" step="0.2" value="3.2" class="thumb-amber w-full" />
+          <input id="sliderRadius" type="range" min="1.0" max="7.0" step="0.2" value="2.2" class="thumb-amber w-full" />
           <p class="text-[10px] text-slate-500">
             <strong>Nucleation Test:</strong> If r &lt; 2.2, diffusion drains K+ faster into neighbors than regenerative channels can supply &rarr; <em>Wave quenches</em>.
           </p>
@@ -291,7 +291,7 @@
     const SUBSTEPS = 6;       // Integration steps per frame
 
     let D = 0.85;             // Effective diffusion constant
-    let stimRadius = 3.2;     // Radius of initial bolus in grid cells
+    let stimRadius = 2.2;     // Radius of initial bolus in grid cells
 
     // Tissue State Arrays: [K+]e (concentration), h (recovery / pump activation)
     const kA = new Float64Array(N * N);
@@ -548,7 +548,7 @@
       });
 
       document.getElementById('btnResetParams').addEventListener('click', () => {
-        stimRadius = 3.2;
+        stimRadius = 2.2;
         D = 0.85;
         sRadius.value = stimRadius;
         sD.value = D;
