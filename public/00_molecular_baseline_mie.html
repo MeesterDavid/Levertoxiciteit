@@ -12,6 +12,39 @@
       padding: 24px 32px;
       line-height: 1.55;
     }
+    /* Mathematics is typeset the LaTeX way - serif with italic single-letter variables and
+       upright multi-letter labels - instead of inside a monospace <code> chip, so a formula
+       can never be mistaken for code and never inherits a code background. */
+    .math {
+      font-family: 'Cambria Math', 'Latin Modern Roman', 'STIX Two Math', Georgia, serif;
+      font-style: normal;
+      color: #F1F5F9;
+      white-space: nowrap;
+      font-size: 1.02em;
+    }
+    .math i,
+    .math var {
+      font-family: 'Cambria Math', 'Latin Modern Roman', 'STIX Two Math', Georgia, serif;
+      font-style: italic;
+    }
+    .math sub {
+      font-size: 0.70em;
+      vertical-align: -0.15em;
+      font-style: normal;
+      line-height: 0;
+    }
+    /* <code> is reserved for real identifiers (model ids, repository paths). It never gets a
+       background, border or padding, so no code chip can visually compete with the formulas. */
+    code {
+      font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.94em;
+      color: #7DD3FC;
+      background: none !important;
+      border: 0 !important;
+      padding: 0 !important;
+      border-radius: 0;
+      white-space: nowrap;
+    }
     .header-box {
       background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
       border: 1px solid #334155;
@@ -113,8 +146,8 @@
   <div class="header-box">
     <h1>🧪 Milestone 0 (Step A Baseline): Microsoft Graphormer + ToxTransformer MIE Predictor (LOOCV)</h1>
     <p style="margin:4px 0;color:#CBD5E1;font-size:14px;">
-      <b>Model 1 (2D Molecular Graph):</b> <code>Microsoft Graphormer</code> (<code>clefourrier/pcqm4mv2_graphormer_base</code>, 47.7M params, 12 layers, 768D [CLS] on GPU 1) &rarr; <b>LOOCV: 4/12 (33.3%)</b><br/>
-      <b>Model 2 (SMILES → SELFIES &amp; Bioassay MoE):</b> <code>ToxTransformer</code> (<code>biobricks-ai/toxtransformer</code>, 25.4M params, 2 Transformer experts × 3,797 bioassays, 524D on GPU 1) &rarr; <b>LOOCV: 9/12 (75.0%)</b><br/>
+      <b>Model 1 (2D Molecular Graph):</b> <b>Microsoft Graphormer</b> (<code>clefourrier/pcqm4mv2_graphormer_base</code>, 47.7M params, 12 layers, 768D [CLS] on GPU 1) &rarr; <b>LOOCV: <span class="math">4/12 (33.3%)</span></b><br/>
+      <b>Model 2 (SMILES → SELFIES &amp; Bioassay MoE):</b> <b>ToxTransformer</b> (<code>biobricks-ai/toxtransformer</code>, 25.4M params, 2 Transformer experts × 3,797 bioassays, 524D on GPU 1) &rarr; <b>LOOCV: <span class="math">9/12 (75.0%)</span></b><br/>
       <b>50/50 Soft Probability Fusion (Dual Consensus):</b> Combines both probability vectors &rarr; <b>LOOCV: 10/12 (83.3%, Macro F1 = 0.832)</b>
     </p>
     <p style="margin:4px 0;color:#94A3B8;font-size:13.5px;">
@@ -128,7 +161,7 @@
       <h3>📘 User Guide Cell 1: Per-Compound 2D Graph (Graphormer), SELFIES Saliency (ToxTransformer) &amp; Held-Out LOOCV Probabilities</h3>
       <ul>
         <li><b>How to use:</b> Click any of the 12 compounds below. Hover over an atom in the 2D graph (top-left) or a <b>SELFIES token box</b> (bottom-left) to inspect the exact attention saliency.</li>
-        <li><b>What the bars on the right show (LOOCV):</b> When the selected compound is held out as an unseen test molecule, the bars show the 3-class probabilities predicted by <b>Graphormer LOOCV (768D)</b>, <b>ToxTransformer LOOCV (524D)</b>, and their <b>50/50 Consensus average</b> ($P_{\text{consensus}}(c) = 0.5\cdot P_{\text{Graph}}(c) + 0.5\cdot P_{\text{Tox}}(c)$). Notice how Graphormer's probabilities stay flat (~30–40%) on big drugs because it only knows quantum HOMO–LUMO physics, while ToxTransformer (trained on 3,797 bioassays) is sharply decisive!</li>
+        <li><b>What the bars on the right show (LOOCV):</b> When the selected compound is held out as an unseen test molecule, the bars show the 3-class probabilities predicted by <b>Graphormer LOOCV (768D)</b>, <b>ToxTransformer LOOCV (524D)</b>, and their <b>50/50 Consensus average</b> (<span class="math"><i>P</i><sub>consensus</sub>(<i>c</i>) = 0.5 &middot; <i>P</i><sub>Graph</sub>(<i>c</i>) + 0.5 &middot; <i>P</i><sub>Tox</sub>(<i>c</i>)</span>). Notice how Graphormer's probabilities stay flat (~30–40%) on big drugs because it only knows quantum HOMO–LUMO physics, while ToxTransformer (trained on 3,797 bioassays) is sharply decisive!</li>
       </ul>
     </div>
     <div class="tab-group">
@@ -2918,7 +2951,7 @@ ToxTransformer Token Saliency: 0.949</title><rect x="515.0" y="440.0" width="33.
       <h3>📘 User Guide Cell 2: Leave-One-Out (LOOCV) Probability Distribution across all 12 Compounds</h3>
       <ul>
         <li><b>How to use:</b> Each compound has two stacked LOOCV probability bars: <b>top bar = Microsoft Graphormer (768D LOOCV, 4/12)</b> and <b>bottom bar = ToxTransformer (524D LOOCV, 9/12)</b>. <b>Red</b> = MIE 167 (LXRα Steatosis), <b>Orange</b> = MIE 41 (BSEP Cholestasis), <b>Green</b> = No Toxic MIE.</li>
-        <li><b>How 50/50 Probability Fusion works (and why it reaches 10/12):</b> We do <i>not</i> fuse binary yes/no votes! Instead, we average the continuous 3-class probability distributions 50/50. When ToxTransformer is strongly confident (e.g., 91–96% on T0901317, GW3965, Bosentan, Troglitazone, Glibenclamide) and Graphormer is flat/unsure (~33%), ToxTransformer's strong probability dominates the 50/50 average. Conversely, on <code>DMSO_Control</code> where ToxTransformer is split (45% No MIE vs. 48% MIE 41), Graphormer's structural preference for No MIE (38% vs. 29%) tips the 50/50 average over the line to the correct class!</li>
+        <li><b>How 50/50 Probability Fusion works (and why it reaches 10/12):</b> We do <i>not</i> fuse binary yes/no votes! Instead, we average the continuous 3-class probability distributions 50/50. When ToxTransformer is strongly confident (e.g., 91–96% on T0901317, GW3965, Bosentan, Troglitazone, Glibenclamide) and Graphormer is flat/unsure (~33%), ToxTransformer's strong probability dominates the 50/50 average. Conversely, on <b>DMSO_Control</b> where ToxTransformer is split (45% No MIE vs. 52% MIE 41), Graphormer's structural preference for No MIE (38% vs. 30%) tips the 50/50 average over the line to the correct class!</li>
       </ul>
     </div>
     <svg viewBox="0 0 1140 560" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">
@@ -2982,9 +3015,9 @@ ToxTransformer Token Saliency: 0.949</title><rect x="515.0" y="440.0" width="33.
     <div class="guide-box">
       <h3>📘 User Guide Cell 3: Leave-One-Out Validation — Confusion Matrices (Graphormer 4/12, ToxTransformer 9/12, Consensus 10/12)</h3>
       <ul>
-        <li><b>Why this cell exists:</b> With $n=12$ compounds, each compound is held out once and classified by cosine similarity to the 3 class prototypes (averages) formed by the remaining 11 compounds in the frozen foundation layer.</li>
-        <li><b>How to use:</b> Each panel is a <code>[3 × 3]</code> confusion matrix — rows = true MIE class, columns = LOOCV prediction. <b>Green diagonal</b> = correct predictions, <b>red off-diagonal</b> = misclassifications (listed underneath each matrix).</li>
-        <li><b>What you see happening:</b> Pure 2D quantum-chemical topology alone (<b>Microsoft Graphormer</b>, <code>4/12</code>) separates the small safe controls (75% recall) but cannot distinguish LXRα vs. BSEP binding without biological context. By contrast, <b>ToxTransformer</b> (pretrained on 3,797 wet-lab bioassays) reaches <code>9/12 (75.0%)</code> on its own, and the <b>50/50 Dual Consensus</b> reaches <code>10/12 (83.3%)</code>. Only <code>Chlorpromazine</code> (predicted MIE 167 instead of MIE 41) and <code>Fenofibrate</code> (a lipophilic halogenated drug predicted MIE 41 instead of No MIE) are missed in LOOCV.</li>
+        <li><b>Why this cell exists:</b> With <span class="math"><i>n</i> = 12</span> compounds, each compound is held out once and classified by cosine similarity to the 3 class prototypes (averages) formed by the remaining 11 compounds in the frozen foundation layer.</li>
+        <li><b>How to use:</b> Each panel is a <span class="math">[3 &times; 3]</span> confusion matrix — rows = true MIE class, columns = LOOCV prediction. <b>Green diagonal</b> = correct predictions, <b>red off-diagonal</b> = misclassifications (listed underneath each matrix).</li>
+        <li><b>What you see happening:</b> Pure 2D quantum-chemical topology alone (<b>Microsoft Graphormer</b>, <span class="math">4/12</span>) separates the small safe controls (75% recall) but cannot distinguish LXRα vs. BSEP binding without biological context. By contrast, <b>ToxTransformer</b> (pretrained on 3,797 wet-lab bioassays) reaches <span class="math">9/12 (75.0%)</span> on its own, and the <b>50/50 Dual Consensus</b> reaches <span class="math">10/12 (83.3%)</span>. Only <b>Chlorpromazine</b> (predicted MIE 167 instead of MIE 41) and <b>Fenofibrate</b> (a lipophilic halogenated drug predicted MIE 41 instead of No MIE) are missed in LOOCV.</li>
       </ul>
     </div>
     <svg viewBox="0 0 1140 414" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">
@@ -3098,10 +3131,10 @@ ToxTransformer Token Saliency: 0.949</title><rect x="515.0" y="440.0" width="33.
         <li><b>What are PC 1 (X-axis) and PC 2 (Y-axis)?</b>
           <ul>
             <li><b>PC 1 (Principal Component 1, Horizontal Axis):</b> The single straight line through the 768D (or 524D) neuron space along which the 12 molecules <b>differ the most from one another</b> (the #1 main axis of variation).</li>
-            <li><b>PC 2 (Principal Component 2, Vertical Axis):</b> The second-most important direction of difference across the 12 molecules, perpendicular ($90^\circ$) to PC 1.</li>
+            <li><b>PC 2 (Principal Component 2, Vertical Axis):</b> The second-most important direction of difference across the 12 molecules, perpendicular (90&deg;) to PC 1.</li>
           </ul>
         </li>
-        <li><b>How to read Panel A vs. Panel B:</b> Two molecules sitting close together on the <code>(PC 1, PC 2)</code> map have very similar neuron activations! A <b>solid white ring</b> around a dot means that model classified the molecule <b>correctly in LOOCV</b>; a <b>dashed pink ring</b> means a <b>LOOCV miss</b>. Notice how in <b>Panel A (Graphormer 768D)</b> the red (MIE 167) and orange (MIE 41) drugs are mixed together in the middle, whereas in <b>Panel B (ToxTransformer 524D)</b> the green controls sit far on the left (negative PC 1) and the red MIE 167 vs. orange MIE 41 compounds separate cleanly!</li>
+        <li><b>How to read Panel A vs. Panel B:</b> Two molecules sitting close together on the <span class="math">(PC<sub>1</sub>, PC<sub>2</sub>)</span> map have very similar neuron activations! A <b>solid white ring</b> around a dot means that model classified the molecule <b>correctly in LOOCV</b>; a <b>dashed pink ring</b> means a <b>LOOCV miss</b>. Notice how in <b>Panel A (Graphormer 768D)</b> the red (MIE 167) and orange (MIE 41) drugs are mixed together in the middle, whereas in <b>Panel B (ToxTransformer 524D)</b> the green controls sit far on the left (negative PC 1) and the red MIE 167 vs. orange MIE 41 compounds separate cleanly!</li>
       </ul>
     </div>
     <svg viewBox="0 0 1140 470" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">
@@ -3516,8 +3549,8 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="1086
     <div class="guide-box">
       <h3>📘 User Guide Cell 5: Complete LOOCV Summary Table (Graphormer, ToxTransformer &amp; 50/50 Consensus)</h3>
       <ul>
-        <li><b>What this table shows:</b> All probability columns below show the honest <b>held-out LOOCV probabilities</b> formatted as <code>Graphormer / ToxTransformer / 50-50 Consensus</code>.</li>
-        <li><b>Key conclusion for your research (Validation Strategy Step A → Step B → Step C):</b> Even with <code>10/12 (83.3%)</code> LOOCV accuracy, static structure/bioassay models cannot see intracellular feedback loops (why <code>Fenofibrate</code> protects homeostasis via PPARα, or why low-dose <code>T0901317</code> / <code>Bosentan</code> is buffered by $\beta$-oxidation and FXR). That requires coupling these embeddings to the <code>HepatocyteGraphormer</code> and <code>Neural ODE</code> in <b>Milestones 1 through 4</b>.</li>
+        <li><b>What this table shows:</b> All probability columns below show the honest <b>held-out LOOCV probabilities</b> formatted as <b>Graphormer / ToxTransformer / 50-50 Consensus</b>.</li>
+        <li><b>Key conclusion for your research (Validation Strategy Step A → Step B → Step C):</b> Even with <span class="math">10/12 (83.3%)</span> LOOCV accuracy, static structure/bioassay models cannot see intracellular feedback loops (why <b>Fenofibrate</b> protects homeostasis via PPAR&alpha;, or why low-dose <b>T0901317</b> / <b>Bosentan</b> is buffered by &beta;-oxidation and FXR). That requires coupling these embeddings to the <b>HepatocyteGraphormer</b> and <b>Neural ODE</b> in <b>Milestones 1 through 4</b>.</li>
       </ul>
     </div>
     <div class="table-wrap">
@@ -3528,9 +3561,9 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="1086
             <th>True Category</th>
             <th>Primary Biological Target</th>
             <th>50/50 Consensus LOOCV</th>
-            <th>LOOCV P(MIE 167)<br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
-            <th>LOOCV P(MIE 41)<br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
-            <th>LOOCV P(No MIE)<br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
+            <th>LOOCV <span class="math"><i>P</i>(MIE 167)</span><br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
+            <th>LOOCV <span class="math"><i>P</i>(MIE 41)</span><br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
+            <th>LOOCV <span class="math"><i>P</i>(No MIE)</span><br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
             <th>SELFIES &amp; MoE Gating</th>
             <th>HOMO-LUMO / MW</th>
             <th>Mechanism &amp; Role in Simulator</th>
@@ -3548,7 +3581,7 @@ Dual Cosine Similarity (Graphormer + ToxTransformer): 1.000</title><rect x="1086
     <div class="guide-box">
       <h3>📐 User Guide Cell 6: Schematic Pipeline &amp; Layer-by-Layer AI Model Architectures (Graphormer &amp; ToxTransformer)</h3>
       <ul>
-        <li><b>How to read these schematic figures:</b> The pipeline flows from <b>left to right</b> (<code>1. Data &amp; Sources</code> &rarr; <code>2. Preprocessing</code> &rarr; <code>3. AI Model Architecture</code> &rarr; <code>4. Output &amp; Contract</code>). Within each column, the data sources, transformations, and neural network layers (with exact layer types and tensor dimensions) flow from <b>top to bottom</b>.</li>
+        <li><b>How to read these schematic figures:</b> The pipeline flows from <b>left to right</b> (<b>1. Data &amp; Sources</b> &rarr; <b>2. Preprocessing</b> &rarr; <b>3. AI Model Architecture</b> &rarr; <b>4. Output &amp; Contract</b>). Within each column, the data sources, transformations, and neural network layers (with exact layer types and tensor dimensions) flow from <b>top to bottom</b>.</li>
         <li><b>Standalone Paper Figures in <code>public/</code>:</b> <a href="pipeline_microsoft_graphormer.svg" style="color:#38BDF8;">pipeline_microsoft_graphormer.svg</a> | <a href="pipeline_toxtransformer.svg" style="color:#C084FC;">pipeline_toxtransformer.svg</a> | <a href="00_architecture_pipelines.html" style="color:#10B981;">00_architecture_pipelines.html</a></li>
       </ul>
     </div>

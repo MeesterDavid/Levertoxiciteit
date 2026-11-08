@@ -5,16 +5,19 @@ Generates the central figure for Slide 2 of the 3-minute pitch:
 
 The figure states the central dogma of the proposal (a hepatocyte either returns to the
 homeostatic attractor z_homeo or tips over into z_adversity = z_steatosis / z_cholestasis) and
-shows the solution: ONE multimodal & multiscale AI node that fuses four data modalities
-(protein-protein interaction, gene expression, gene-gene interaction, chemical structure + dose)
-and produces two different answers:
+shows the solution: ONE multimodal & multiscale AI node that fuses five data modalities
+(protein-protein interaction, gene expression, gene-gene interaction, chemical structure + dose
+and - as future work - physiological measurements such as multi-electrode arrays) and produces
+two different answers:
 
-  1. P(MIE | structure)                        -> solid arrow   (built and validated, M0 / M1.1)
-  2. P(z_adversity | context, exposure, dose)   -> dotted arrow  (next step, M1.2 -> M4)
+  1. predicted MIE class                      -> solid arrow  (built and validated, M0 / M1.1)
+  2. P(z_adversity | context, exposure, dose)  -> dashed arrow (next step, M1.2 -> M4)
 
-The figure is deliberately quiet: no editorial headings, no milestone badges and no legend, so
-that at projector distance only the four real data sources, the two model names and the two
-answers remain. All numbers are derived from the milestone artifacts themselves
+A small key in the bottom of the figure makes the colour code explicit instead of implicit: a
+solid green arrow is built and validated today, a dashed purple arrow is future work. Every
+arrow head is drawn in user space with its tip exactly on the border of the node it points at,
+and the two answer arrows leave the model node orthogonally, so a line always runs straight into
+the axis of its own head. All numbers are derived from the milestone artifacts themselves
 (`data/molecular_baseline_mie.json` and `data/hepatocyte_baseline_data.json`), and the provenance
 line is assembled from `metadata.sources` of the hepatocyte JSON (minus MyGene.info), so the
 figure cannot silently drift away from the data. No matplotlib is used: the SVG is written
@@ -38,7 +41,7 @@ HEPATOCYTE_JSON = DATA_DIR / "hepatocyte_baseline_data.json"
 OUT_SVG = PUBLIC_DIR / "s2_multimodal_ai_graph.svg"
 
 # ------------------------------------------------------------------ canvas ----
-W, H = 1040, 406
+W, H = 1040, 460
 FONT = "Inter, 'Helvetica Neue', Arial, sans-serif"
 
 # ----------------------------------------------------------------- palette ----
@@ -131,11 +134,20 @@ def card(
     )
 
 
-def marker(marker_id: str, color: str) -> str:
+def marker(marker_id: str, color: str, size: float = 10.4) -> str:
+    """Arrow head drawn in user space, with its tip exactly on the end of the path.
+
+    `markerUnits="userSpaceOnUse"` keeps every head the same size no matter the stroke width, and
+    `refX=11.4` places the tip of the triangle on the path end point, so the line runs into the
+    axis of its own head instead of stopping in the middle of it. The head is fill-only: a stroked
+    triangle would overshoot the node border by half a stroke width.
+    """
     return (
-        f'<marker id="{marker_id}" viewBox="0 0 10 10" refX="8.4" refY="5" '
-        f'markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
-        f'<path d="M 0 1 L 10 5 L 0 9 z" fill="{color}"/></marker>'
+        f'<marker id="{marker_id}" viewBox="0 0 12 12" refX="11.4" refY="6" '
+        f'markerUnits="userSpaceOnUse" markerWidth="{size:.1f}" markerHeight="{size:.1f}" '
+        f'orient="auto-start-reverse">'
+        f'<path d="M 0.8 1.7 L 11.4 6 L 0.8 10.3 Z" fill="{color}" stroke-linejoin="round"/>'
+        f'</marker>'
     )
 
 
@@ -157,6 +169,42 @@ def curve(
         f'<path d="M {x1:.1f} {y1:.1f} C {x1 + cx:.1f} {y1:.1f}, {x2 - cx:.1f} {y2:.1f}, '
         f'{x2:.1f} {y2:.1f}" fill="none" stroke="{color}" stroke-width="{width}" '
         f'stroke-linecap="round"{dash_attr} opacity="{opacity}" marker-end="url(#{marker_id})"/>'
+    )
+
+
+def elbow(
+    x1: float,
+    y1: float,
+    x2: float,
+    y2: float,
+    color: str,
+    marker_id: str,
+    dash: str | None = None,
+    width: float = 2.0,
+    radius: float = 16.0,
+) -> str:
+    """Orthogonal connector with rounded corners, used for the two answer arrows.
+
+    A cubic S-curve arrives at an angle, so the head visually detaches from the line it belongs
+    to. An elbow arrives horizontally through the middle of its own band, which is what the eye
+    expects from a block diagram, and it keeps the vertical run free for a label.
+    """
+    dash_attr = f' stroke-dasharray="{dash}"' if dash else ""
+    mid_x = (x1 + x2) / 2.0
+    direction = 1.0 if y2 >= y1 else -1.0
+    r = min(radius, abs(y2 - y1) / 2.0 - 0.5, abs(x2 - x1) / 2.0)
+    d = (
+        f"M {x1:.1f} {y1:.1f} "
+        f"L {mid_x - r:.1f} {y1:.1f} "
+        f"Q {mid_x:.1f} {y1:.1f} {mid_x:.1f} {y1 + direction * r:.1f} "
+        f"L {mid_x:.1f} {y2 - direction * r:.1f} "
+        f"Q {mid_x:.1f} {y2:.1f} {mid_x + r:.1f} {y2:.1f} "
+        f"L {x2:.1f} {y2:.1f}"
+    )
+    return (
+        f'<path d="{d}" fill="none" stroke="{color}" stroke-width="{width}" '
+        f'stroke-linecap="round" stroke-linejoin="round"{dash_attr} '
+        f'marker-end="url(#{marker_id})"/>'
     )
 
 
@@ -322,6 +370,19 @@ def draw_icon(kind: str, cx: float, cy: float, color: str) -> str:
     elif kind == "chem":  # chemical structure
         parts.append(hexagon(cx, cy, 6.2, color, width=1.3))
         parts.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="1.5" fill="{color}"/>')
+    elif kind == "signal":  # multi-electrode array: a probe with an action-potential trace
+        parts.append(f'<line x1="{cx - 7:.1f}" y1="{cy + 6:.1f}" x2="{cx + 7:.1f}" y2="{cy + 6:.1f}" '
+                     f'stroke="{color}" stroke-width="1.1" stroke-opacity="0.6"/>')
+        for spike in (-4.0, 0.0, 4.0):
+            parts.append(f'<line x1="{cx + spike:.1f}" y1="{cy + 6:.1f}" x2="{cx + spike:.1f}" '
+                         f'y2="{cy + 3.2:.1f}" stroke="{color}" stroke-width="1.1"/>')
+        trace = ((cx - 7.5, cy - 1.5), (cx - 3.5, cy - 1.5), (cx - 1.8, cy - 6.5),
+                 (cx + 0.8, cy + 2.5), (cx + 2.8, cy - 3.5), (cx + 7.5, cy - 3.5))
+        points = " ".join("%.1f,%.1f" % (px, py) for px, py in trace)
+        parts.append(
+            f'<polyline points="{points}" fill="none" stroke="{color}" stroke-width="1.3" '
+            f'stroke-linecap="round" stroke-linejoin="round"/>'
+        )
     return "".join(parts)
 
 
@@ -349,19 +410,21 @@ def draw_input_card(
     return "".join(rows)
 
 
-def draw_hub(x: float, y: float, w: float, h: float, total_params: str) -> str:
-    """The single fusion node: one multimodal & multiscale model (two model names only)."""
+def draw_hub(x: float, y: float, w: float, h: float, total_params: tuple[str, str]) -> str:
+    """The single fusion node: one multimodal & multiscale model + added classification layer."""
     rows = [
         # soft halo to read as the model's "core"
         f'<rect x="{x - 5:.1f}" y="{y - 5:.1f}" width="{w + 10:.1f}" height="{h + 10:.1f}" rx="17" '
         f'fill="{VIOLET}" fill-opacity="0.07"/>',
         card(x, y, w, h, stroke=VIOLET, fill="#161033", rx=14, width=1.8),
-        text(x + w / 2, y + 40, "Multi-modal &amp;", size=15.5, fill=TEXT, weight=800, anchor="middle"),
-        text(x + w / 2, y + 61, "Multi-scale AI", size=15.5, fill=VIOLET, weight=800, anchor="middle"),
-        f'<line x1="{x + 26:.1f}" y1="{y + 76:.1f}" x2="{x + w - 26:.1f}" y2="{y + 76:.1f}" '
+        text(x + w / 2, y + 33, "Multi-modal &amp;", size=15.0, fill=TEXT, weight=800, anchor="middle"),
+        text(x + w / 2, y + 53, "Multi-scale AI", size=15.0, fill=VIOLET, weight=800, anchor="middle"),
+        f'<line x1="{x + 24:.1f}" y1="{y + 66:.1f}" x2="{x + w - 24:.1f}" y2="{y + 66:.1f}" '
         f'stroke="{VIOLET}" stroke-opacity="0.35" stroke-width="1"/>',
-        text(x + w / 2, y + 98, f"Graphormer {total_params[0]} + ToxFormer {total_params[1]}",
-             size=10.4, fill=SOFT, weight=600, anchor="middle"),
+        text(x + w / 2, y + 86, f"Graphormer {total_params[0]} + ToxFormer {total_params[1]}",
+             size=10.2, fill=SOFT, weight=600, anchor="middle"),
+        text(x + w / 2, y + 106, "+ final classification layer (50/50 fusion)",
+             size=9.5, fill=EMERALD, weight=700, anchor="middle"),
     ]
     return "".join(rows)
 
@@ -387,6 +450,56 @@ def tag(
                fill=color, weight=700, anchor="middle")
     )
     return svg, width
+
+
+def chip_on_arrow(
+    x: float,
+    y: float,
+    lines: tuple[str, ...],
+    color: str,
+    size: float = 8.2,
+) -> str:
+    """Small multi-line chip centred on the vertical run of an elbow connector.
+
+    Used to name the purple answer arrow (`(Neural)` / `ODEs`) inside the 72 px gutter between
+    the model node and the answer nodes, where a horizontal label would collide with the cards.
+    The border is solid and the fill opaque on purpose: a dashed border would let the dashes of
+    the arrow underneath show through its gaps.
+    """
+    width = max(len(line) for line in lines) * size * 0.54 + 13.0
+    height = 11.6 * len(lines) + 7.0
+    rows = [
+        f'<rect x="{x - width / 2:.1f}" y="{y - height / 2:.1f}" width="{width:.1f}" '
+        f'height="{height:.1f}" rx="6" fill="{PANEL_BG}" stroke="{color}" stroke-width="1.1" '
+        f'stroke-opacity="0.9"/>'
+    ]
+    for i, line in enumerate(lines):
+        rows.append(text(x, y - height / 2 + 12.3 + i * 11.6, esc(line), size=size,
+                         fill="#C084FC", weight=700, anchor="middle"))
+    return "".join(rows)
+
+
+def draw_legend(x: float, y: float) -> str:
+    """Two-row key: solid green = built and validated, dashed purple = future work.
+
+    The figure encodes model status by line style only; without a key that code is invisible to
+    a reader who did not write the generator, so the legend makes the claim boundary explicit.
+    """
+    rows = [text(x, y, "LEGEND", size=7.0, fill=DIM, weight=700)]
+    entries = (
+        (EMERALD, None, "arr-solid", "done"),
+        (VIOLET, "7 6", "arr-dot", "possible future work"),
+    )
+    for i, (color, dash, marker_id, label) in enumerate(entries):
+        row_y = y + 16.0 + i * 17.0
+        dash_attr = f' stroke-dasharray="{dash}"' if dash else ""
+        rows.append(
+            f'<path d="M {x:.1f} {row_y:.1f} L {x + 26:.1f} {row_y:.1f}" fill="none" '
+            f'stroke="{color}" stroke-width="2.0" stroke-linecap="round"{dash_attr} '
+            f'marker-end="url(#{marker_id})"/>'
+        )
+        rows.append(text(x + 34, row_y + 2.7, label, size=8.2, fill=SOFT))
+    return "".join(rows)
 
 
 CONFUSION_SHORT_LABELS: tuple[str, str, str] = ("no MIE", "167", "41")
@@ -427,10 +540,17 @@ def draw_confusion_matrix(
 
 
 def draw_output_mie(x: float, y: float, w: float, h: float, mol: dict) -> str:
-    """Answer 1 (solid arrow): P(MIE | structure) - LOOCV only, with its confusion matrix."""
+    """Answer 1 (solid arrow): the predicted MIE class of a compound, structure only.
+
+    The title deliberately does not say "probability that the compound induces a MIE": what is
+    reported is a 3-class discriminative assignment (no MIE / MIE 167 / MIE 41) obtained by cosine
+    similarity to class prototypes in the frozen foundation embedding, validated leave-one-out on
+    the 12 reference compounds. That is a structure-only prediction, not a mechanistic probability.
+    """
     rows = [card(x, y, w, h, stroke=EMERALD, fill="#0c1f22", rx=11, width=1.6)]
-    rows.append(text(x + 14, y + 34, "P(MIE | structure)", size=13.0, fill=EMERALD, weight=800))
-    rows.append(text(x + 14, y + 50, "Chance that a compound induces a specific MIE",
+    rows.append(text(x + 14, y + 32, "Predicted MIE from 12 compounds",
+                     size=12.4, fill=EMERALD, weight=800))
+    rows.append(text(x + 14, y + 48, "structure-only classifier · held-out LOOCV",
                      size=8.6, fill=SOFT))
     chip_svg, chip_w = tag(x + 14, y + 59, "MIE 167 · LXRα", AMBER)
     rows.append(chip_svg)
@@ -438,28 +558,30 @@ def draw_output_mie(x: float, y: float, w: float, h: float, mol: dict) -> str:
     rows.append(chip2_svg)
     rows.append(f'<line x1="{x + 14:.1f}" y1="{y + 86:.1f}" x2="{x + w - 14:.1f}" y2="{y + 86:.1f}" '
                 f'stroke="{EMERALD}" stroke-opacity="0.3" stroke-width="1"/>')
-    # left column: the only honest score (leave-one-out, never in-sample)
-    rows.append(text(x + 14, y + 104, "leave-one-out", size=8.4, fill=DIM, weight=700))
-    rows.append(text(x + 14, y + 120, f"{mol['loo_acc']}/{mol['n_compounds']}",
-                     size=15.5, fill=AMBER, weight=800))
-    rows.append(text(x + 54, y + 120, "correct", size=8.6, fill=AMBER, weight=600))
-    rows.append(text(x + 14, y + 135, f"mean P {mol['loo_mean']:.2f}",
-                     size=9.8, fill=AMBER, weight=700))
-    rows.append(text(x + 14, y + 147, f"range {mol['loo_min']:.2f}–{mol['loo_max']:.2f}",
+    # left column: 50/50 dual consensus leave-one-out score (Cell 3 of report)
+    rows.append(text(x + 14, y + 100, "50/50 consensus", size=8.0, fill=EMERALD, weight=700))
+    rows.append(text(x + 14, y + 110, "leave-one-out", size=8.0, fill=DIM, weight=700))
+    rows.append(text(x + 14, y + 126, f"{mol['loo_acc']}/{mol['n_compounds']}",
+                     size=15.5, fill=EMERALD, weight=800))
+    rows.append(text(x + 68, y + 126, "correct", size=8.6, fill=EMERALD, weight=600))
+    rows.append(text(x + 14, y + 140, f"mean P {mol['loo_mean']:.2f}",
+                     size=9.6, fill=AMBER, weight=700))
+    rows.append(text(x + 14, y + 151, f"range {mol['loo_min']:.2f}–{mol['loo_max']:.2f}",
                      size=8.2, fill=AMBER, weight=600))
-    rows.append(text(x + 14, y + 162, "uncertainty is", size=7.8, fill=MUTED, style="italic"))
-    rows.append(text(x + 14, y + 172, "measurable →", size=7.8, fill=MUTED, style="italic"))
-    # right column: 3x3 confusion matrix of that same LOOCV run
+    rows.append(text(x + 14, y + 165, "uncertainty is", size=7.8, fill=MUTED, style="italic"))
+    rows.append(text(x + 14, y + 175, "measurable →", size=7.8, fill=MUTED, style="italic"))
+    # right column: 3x3 confusion matrix of the 50/50 Dual Consensus LOOCV run
     rows.append(draw_confusion_matrix(x + 140, y + 104, mol["loo_matrix"]))
-    rows.append(text(x + 140, y + 169, "rows = true · cols = LOOCV", size=7.2, fill=DIM))
+    rows.append(text(x + 140, y + 169, "rows = true · cols = 50/50 LOOCV", size=7.1, fill=DIM))
     return "".join(rows)
 
 
 def draw_output_adversity(x: float, y: float, w: float, h: float) -> str:
-    """Answer 2 (dotted arrow): P(z_homeo, z_adversity | context, exposure, dose) - next step."""
+    """Answer 2 (dashed arrow): P(z_homeo, z_adversity | context, exposure, dose) - next step."""
     rows = [card(x, y, w, h, stroke=ROSE, fill="#1d1020", rx=11, width=1.6)]
     rows.append(text(x + 14, y + 32,
-                     "P(z" + sub("", "homeo", size=7.4, dy=2.8) + " z" + sub("", "adversity", size=7.4, dy=2.8) +" | context,",
+                     "P(z" + sub("", "homeo", size=7.4, dy=2.8) + ", z"
+                     + sub("", "adversity", size=7.4, dy=2.8) + " | context,",
                      size=12.0, fill=ROSE, weight=800))
     rows.append(text(x + 14, y + 47, "exposure, dose)", size=12.0, fill=ROSE, weight=800))
     rows.append(text(x + 14, y + 66, "Probability that the hepatocyte tips to z"
@@ -481,80 +603,96 @@ def draw_output_adversity(x: float, y: float, w: float, h: float) -> str:
 
 
 # ---------------------------------------------------------------- assembly ----
-IN_X, IN_W, IN_H, IN_STEP, IN_TOP = 18.0, 286.0, 76.0, 86.0, 26.0
-HUB_X, HUB_W, HUB_Y, HUB_H = 372.0, 296.0, 128.0, 130.0
+# Geometry contract (1040 x 460 canvas):
+#   left column   x 18 .. 304      five data-source cards, 72 px high, 80 px apart
+#   model node    x 372 .. 668     y 157 .. 287 (vertically centred on the middle card)
+#   answer column x 744 .. 1022    card 1 y 58 .. 254, card 2 y 262 .. 392
+#   gutter        x 668 .. 744     (72 px) holds the two orthogonal answer connectors
+#   legend        x 380 .., y 386  two rows, 24 px above the provenance footer
+IN_X, IN_W, IN_H, IN_STEP, IN_TOP = 18.0, 286.0, 72.0, 80.0, 26.0
+HUB_X, HUB_W, HUB_Y, HUB_H = 372.0, 296.0, 157.0, 130.0
 OUT_X, OUT_W = 744.0, 278.0
-OUT1_Y, OUT1_H = 26.0, 196.0
-OUT2_Y, OUT2_H = 230.0, 130.0
+OUT1_Y, OUT1_H = 58.0, 196.0
+OUT2_Y, OUT2_H = 262.0, 130.0
+HUB_FAN_STEP = 22.0      # vertical distance between two entry points on the hub's left border
+HUB_FAN_OUT = 20.0       # answer arrows leave the hub at centre -20 / +30
 
 
 def build_svg(mol: dict, hep: dict) -> str:
     dist_n = hep["dist_matrix_shape"][0]
     parts: list[str] = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" '
-        f'role="img" aria-label="Four biological data sources feed one multimodal and multiscale '
-        f'AI model, which returns two probabilities: the chance of a specific molecular initiating '
-        f'event, and the chance that the hepatocyte tips to z-adversity instead of returning to '
-        f'z-homeo.">',
+        f'role="img" aria-label="Five data sources (chemical structure, protein interactions, gene '
+        f'expression, gene regulatory edges and, as future work, physiological MEA recordings) feed '
+        f'one multimodal and multiscale AI model, which returns two answers: the predicted MIE class '
+        f'of a compound from structure alone, and the probability that the hepatocyte tips to '
+        f'z-adversity instead of returning to z-homeo.">',
         "<defs>"
         + marker("arr-in", SLATE)
         + marker("arr-solid", EMERALD)
         + marker("arr-dot", VIOLET)
         + "</defs>",
         card(4, 4, W - 8, H - 8, stroke=BORDER, fill=PANEL_BG, rx=16),
-        text(IN_X, 17, "FOUR DATA SOURCES", size=7.6, fill=DIM, weight=700),
+        text(IN_X, 17, "FIVE DATA SOURCES", size=7.6, fill=DIM, weight=700),
     ]
 
+    # Chemical information is placed at the top (index 0) because it is the only source used so far (M0).
     inputs = [
+        ("Chemical information", "SMILES · 2D OGB graph + SELFIES",
+         f"{mol['n_compounds']} compounds · {mol['n_classes']} MIE classes", EMERALD, "chem"),
         ("Protein–protein interactions", "STRING-db v12 · taxon 9606 · PPI",
          f"{hep['n_genes']} genes · mean score {hep['string_mean']:.2f}", CYAN, "ppi"),
         ("Gene expression", "GTEx v8 · HPA · GEO GSE126848 · HepaRG",
-         f"{hep['n_genes']} genes × {hep['n_states']} states", EMERALD, "expr"),
+         f"{hep['n_genes']} genes × {hep['n_states']} states", PINK, "expr"),
         ("Gene–gene interactions", "OECD AOP 34 & 27 + Physiological Maps",
          f"{hep['n_edges']} edges · {hep['n_pos']} + / {hep['n_neg']} − · [{dist_n},{dist_n}]",
          AMBER, "gene"),
-        ("Chemical information", "SMILES + dose (µM) · Morgan FP 1024 bit",
-         f"{mol['n_compounds']} compounds · {mol['n_classes']} MIE classes", PINK, "chem"),
+        # Tissue-level electrophysiology is the one modality that cannot be derived from molecules,
+        # genes or annotations: it is measured (MEA), and it is explicitly not built yet.
+        ("Physiological measurements", "MEA · multi-electrode array · in vitro",
+         "", VIOLET, "signal"),
     ]
     for i, (label, source, metric, color, icon) in enumerate(inputs):
         top = IN_TOP + i * IN_STEP
         parts.append(draw_input_card(IN_X, top, IN_W, IN_H, label, source, metric, color, icon))
 
-    # funnel of four arrows into the single model node, centred on the hub
-    hub_targets = tuple(HUB_Y + 32 + i * 23 for i in range(len(inputs)))
+    # Fan of five arrows into the single model node, symmetric around the hub's centre line:
+    # - top source (i == 0, Chemical information): solid green arrow -> used and validated today!
+    # - other 4 sources (i > 0): dashed purple arrows -> future work (M1.2 -> M4)
+    hub_centre = HUB_Y + HUB_H / 2
+    hub_targets = tuple(
+        hub_centre + (i - (len(inputs) - 1) / 2) * HUB_FAN_STEP for i in range(len(inputs))
+    )
     for i, target_y in enumerate(hub_targets):
         start_y = IN_TOP + i * IN_STEP + IN_H / 2
-        parts.append(curve(IN_X + IN_W, start_y, HUB_X - 4, target_y, SLATE, "arr-in",
-                           width=1.5, opacity=0.85))
+        if i == 0:
+            parts.append(curve(IN_X + IN_W, start_y, HUB_X, target_y, EMERALD, "arr-solid",
+                               dash=None, width=2.3, opacity=1.0))
+        else:
+            parts.append(curve(IN_X + IN_W, start_y, HUB_X, target_y, VIOLET, "arr-dot",
+                               dash="7 6", width=1.9, opacity=0.92))
 
     parts.append(draw_hub(HUB_X, HUB_Y, HUB_W, HUB_H,
                           (fmt_params(mol["graphormer_params"]), fmt_params(mol["toxtransformer_params"]))))
 
-    # answer 1: solid arrow (built and validated today)
-    parts.append(curve(HUB_X + HUB_W, HUB_Y + 40, OUT_X - 4, OUT1_Y + OUT1_H / 2 - 2, EMERALD,
-                       "arr-solid", width=2.3))
-    # answer 2: dotted arrow (not built yet -> deliberately dashed)
-    parts.append(curve(HUB_X + HUB_W, HUB_Y + 90, OUT_X - 4, OUT2_Y + OUT2_H / 2 - 2, VIOLET,
-                       "arr-dot", dash="7 6", width=2.3))
-
-    # Badge: Future work / In development
-    mid_x = (HUB_X + HUB_W + OUT_X - 4) / 2
-    mid_y = (HUB_Y + 90 + OUT2_Y + OUT2_H / 2 - 2) / 2
-    badge_text = "future work"
-    badge_w = len(badge_text) * 6.5 + 16
-    badge_h = 20
-
-    parts.append(
-        f'<g transform="translate({mid_x:.1f}, {mid_y:.1f})">'
-        f'<rect x="{-badge_w / 2:.1f}" y="{-badge_h / 2:.1f}" width="{badge_w:.1f}" height="{badge_h:.1f}" '
-        f'rx="10" fill="#0B1120" stroke="{VIOLET}" stroke-width="1.2" stroke-dasharray="3 3"/>'
-        f'<text x="0" y="3.5" text-anchor="middle" fill="#C084FC" font-size="10" font-weight="700" '
-        f'letter-spacing="0.04em">{badge_text}</text>'
-        f'</g>'
-    )
+    # The two answers leave the hub orthogonally and enter the answer cards straight through the
+    # middle of the head, so the head never looks detached from its line.
+    ans1_y = hub_centre - HUB_FAN_OUT
+    ans2_y = hub_centre + HUB_FAN_OUT + 10
+    out1_mid = OUT1_Y + OUT1_H / 2
+    out2_mid = OUT2_Y + OUT2_H / 2
+    parts.append(elbow(HUB_X + HUB_W, ans1_y, OUT_X, out1_mid, EMERALD, "arr-solid", width=2.3))
+    parts.append(elbow(HUB_X + HUB_W, ans2_y, OUT_X, out2_mid, VIOLET, "arr-dot",
+                       dash="7 6", width=2.3))
+    # name the purple arrow on its vertical run (the gutter is only 72 px wide)
+    parts.append(chip_on_arrow((HUB_X + HUB_W + OUT_X) / 2, (ans2_y + out2_mid) / 2,
+                               ("e.g. (N)ODEs",), VIOLET))
 
     parts.append(draw_output_mie(OUT_X, OUT1_Y, OUT_W, OUT1_H, mol))
     parts.append(draw_output_adversity(OUT_X, OUT2_Y, OUT_W, OUT2_H))
+
+    # key for the colour/line-style code of the whole figure
+    parts.append(draw_legend(IN_X + HUB_X, 386.0))
 
     # provenance footer (MyGene.info is omitted: it only annotates gene/protein structure)
     parts.append(text(IN_X, H - 14, "Sources: " + " · ".join(hep["sources"]),
@@ -580,7 +718,7 @@ def main() -> None:
 
     print("== Slide 2 - multimodal & multiscale AI graph ==")
     print(f"   figure           : {OUT_SVG.relative_to(ROOT)} ({len(svg):,} bytes)")
-    print("   topology         : 4 data sources -> 1 model node -> 2 answers (solid / dotted)")
+    print("   topology         : 5 data sources -> 1 model node -> 2 answers (solid / dashed)")
     print(f"   MIE leave-one-out: {mol['loo_acc']}/{mol['n_compounds']} correct, "
           f"mean P {mol['loo_mean']:.3f} ({mol['loo_min']:.3f}-{mol['loo_max']:.3f}) [graphormer]")
     print(f"   dual consensus   : {mol['cons_acc']}/{mol['n_compounds']} correct, "
