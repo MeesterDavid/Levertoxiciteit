@@ -1,9 +1,9 @@
 ---
 theme: default
-title: Multimodal en Multiscale AI in de Toxicologie
+title: Multimodal en Multiscale AI for Toxicology
 info: |
   ## Pitch (max. 3 minuten, 2 slides)
-  Onderzoeksvoorstel: Multimodal en Multiscale AI in de Toxicologie
+  Onderzoeksvoorstel: Multimodal en Multiscale AI for Toxicology
 colorSchema: dark
 transition: fade
 aspectRatio: 16/9
@@ -22,7 +22,7 @@ canvasWidth: 1120
 <div class="header-bar">
 <div>
 <div class="eyebrow">Onderzoeksvoorstel Pitch · Innovative Testing</div>
-<h1 class="main-title">Multimodal &amp; Multiscale AI in de Toxicologie</h1>
+<h1 class="main-title">Multimodal &amp; Multiscale AI for Toxicology</h1>
 </div>
 <div class="header-pill">Slide 1 / 2 · NAMs &amp; Beyond Linear AOPs</div>
 </div>
@@ -31,7 +31,7 @@ canvasWidth: 1120
 <!-- LEFT COLUMN: NEW APPROACH METHODOLOGIES -->
 <div class="panel context-panel">
 <div class="panel-header">
-<span class="badge badge-blue">1. New Approach Methodologies</span>
+<span class="badge badge-blue">1. New Approach Methodologies (NAM's)</span>
 </div>
 <!-- NAM Image / Placeholder -->
 <div class="nam-visual-wrap">
@@ -104,7 +104,7 @@ class="aop-fig-img aop-fig-overlay"
 <div class="video-note">
 <div class="vn-title">Same MIE, different outcomes</div>
 <div class="vn-body">
-Both tissues initiate with an <strong>identical central potassium perturbation (MIE)</strong>. The outcome only arises through <strong>spatiotemporal emergence</strong>: the local density and buffering capacity of astrocytes (yellow cells) dictate whether the tissue recovers or the wave propagates across the cortex.
+Both tissues initiate with an identical central potassium perturbation (MIE). The outcome arises through spatiotemporal emergence: the intrinsic clearance capacity of the astrocytic syncytium (<i>V</i><sub>max</sub>) dictates whether the tissue quenches the local surge or tips into an all-or-none propagating wave.
 </div>
 <div class="vn-foot">scan QR for live simulation</div>
 </div>
@@ -113,7 +113,6 @@ Both tissues initiate with an <strong>identical central potassium perturbation (
 <img class="qr-img" :src="'/qr_csd_simulator.png'" alt="QR-code naar de live CSD-simulator" width="140" height="140" />
 <div class="qr-caption">
 <span>Live Simulator</span>
-<span class="qr-sub">Scan of klik</span>
 </div>
 </a>
 </div>
