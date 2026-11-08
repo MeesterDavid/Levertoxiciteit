@@ -1147,6 +1147,29 @@ def compute_loocv_predictions(
     return loocv_results
 
 
+def loocv_to_prediction_dict(loocv_entry: dict[str, float]) -> dict[str, Any]:
+    """
+    Converts a single compound's Leave-One-Out (LOOCV) probability dictionary into the
+    standard prediction dictionary consumed by all dashboard cells (Cells 1, 2, 3, 5)
+    and downstream contracts, so that no overfitted in-sample probabilities are shown anywhere.
+    """
+    pred_class = int(loocv_entry["loocv_pred_class"])
+    p_no = float(loocv_entry["loocv_P_no_mie"])
+    p_167 = float(loocv_entry["loocv_P_mie167"])
+    p_41 = float(loocv_entry["loocv_P_mie41"])
+    p_any = float(p_167 + p_41)
+    return {
+        "predicted_class": pred_class,
+        "predicted_label": MIE_CLASSES[pred_class],
+        "predicted_label_nl": MIE_CLASS_LABELS_NL[pred_class],
+        "mie_triggered": bool(pred_class in (1, 2) and p_any >= 0.50),
+        "P_no_mie": round(p_no, 4),
+        "P_mie167_steatosis": round(p_167, 4),
+        "P_mie41_cholestasis": round(p_41, 4),
+        "P_any_mie_trigger": round(p_any, 4),
+    }
+
+
 # ==============================================================================
 # 3B. LEAVE-ONE-OUT VALIDATION METRICS (THE ONLY HONEST SCORE FOR n = 12)
 # ==============================================================================
@@ -1506,17 +1529,24 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
     )
 
     # Right panel: Comparison Graphormer vs. ToxTransformer vs. Consensus (x in [675, 1120])
+    is_correct = int(c_pred["predicted_class"]) == int(comp["true_class"])
+    verdict_badge = (
+        f"✓ LOOCV Match (True: {LOOCV_SHORT_LABELS[comp['true_class']]})"
+        if is_correct
+        else f"✗ LOOCV Miss (True: {LOOCV_SHORT_LABELS[comp['true_class']]})"
+    )
+    verdict_col = "#10B981" if is_correct else "#FDA4AF"
     parts.append(
         f'<rect x="675" y="60" width="445" height="490" rx="10" fill="#0B1120" stroke="{cls_col}" stroke-width="2"/>'
-        f'<text x="693" y="85" fill="#94A3B8" font-size="11.5" font-weight="700">DUAL MIE PREDICTION (GRAPHORMER + TOXTRANSFORMER):</text>'
-        f'<text x="693" y="107" fill="{cls_col}" font-size="15" font-weight="800">{html_lib.escape(c_pred["predicted_label_nl"])}</text>'
-        f'<text x="693" y="126" fill="#CBD5E1" font-size="12">Target in AOP: <tspan fill="#38BDF8" font-weight="600">{html_lib.escape(comp["target_gene"])}</tspan></text>'
+        f'<text x="693" y="85" fill="#94A3B8" font-size="11.5" font-weight="700">HELD-OUT LOOCV PREDICTION (50/50 PROBABILITY FUSION):</text>'
+        f'<text x="693" y="107" fill="{cls_col}" font-size="14.5" font-weight="800">{html_lib.escape(c_pred["predicted_label_nl"])}</text>'
+        f'<text x="693" y="126" fill="#CBD5E1" font-size="11.5">Target: <tspan fill="#38BDF8" font-weight="600">{html_lib.escape(comp["target_gene"])}</tspan> · <tspan fill="{verdict_col}" font-weight="700">{html_lib.escape(verdict_badge)}</tspan></text>'
     )
 
-    # For each of the 3 MIE classes we display 3 horizontal bars:
-    # 1) Microsoft Graphormer (2D Graph)
-    # 2) ToxTransformer (SMILES/SELFIES)
-    # 3) Consensus (Combined)
+    # For each of the 3 MIE classes we display 3 horizontal bars (LOOCV probabilities):
+    # 1) Microsoft Graphormer (2D Graph, 768D LOOCV)
+    # 2) ToxTransformer (SMILES/SELFIES + Bioassays, 524D LOOCV)
+    # 3) Consensus (50/50 Probability Fusion LOOCV)
     class_blocks = [
         (
             "MIE 167: LXRα → Steatosis (AOP 34)",
@@ -1547,15 +1577,15 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
             f'<text x="693" y="{by}" fill="#F8FAFC" font-size="12" font-weight="700">{b_title}</text>'
         )
         sub_rows = [
-            ("Graphormer (2D)", p_g, 0.72),
-            ("ToxTransformer", p_t, 0.85),
-            ("Dual Consensus", p_c, 1.00),
+            ("Graphormer LOOCV", p_g, 0.72),
+            ("ToxTransf. LOOCV", p_t, 0.85),
+            ("50/50 Consensus", p_c, 1.00),
         ]
         for s_idx, (s_lbl, s_prob, s_op) in enumerate(sub_rows):
             sy = by + 7 + s_idx * 20
             bw = max(3.0, s_prob * 255.0)
             parts.append(
-                f'<text x="693" y="{sy + 10}" fill="#94A3B8" font-size="10.5" font-weight="600">{s_lbl}</text>'
+                f'<text x="693" y="{sy + 10}" fill="#94A3B8" font-size="10.2" font-weight="600">{s_lbl}</text>'
                 f'<rect x="795" y="{sy}" width="255" height="12" rx="4" fill="#1E293B"/>'
                 f'<rect x="795" y="{sy}" width="{bw:.1f}" height="12" rx="4" fill="{b_col}" fill-opacity="{s_op:.2f}"/>'
                 f'<text x="1058" y="{sy + 10}" fill="#E2E8F0" font-size="10.5" font-weight="700">{s_prob * 100:.1f}%</text>'
@@ -1571,7 +1601,7 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
 
     parts.append(
         f'<line x1="693" y1="415" x2="1102" y2="415" stroke="#1E293B" stroke-width="1.5"/>'
-        f'<text x="693" y="434" fill="#38BDF8" font-size="12" font-weight="700">Quantum &amp; Physicochemical Properties:</text>'
+        f'<text x="693" y="434" fill="#38BDF8" font-size="12" font-weight="700">Quantum &amp; Physicochemical Properties (Display Only — Not Fed to Classifier):</text>'
         f'<text x="693" y="452" fill="#CBD5E1" font-size="11.5">• PCQM4Mv2 HOMO-LUMO Gap: <tspan fill="#F8FAFC" font-weight="700">{comp["homo_lumo_gap_ev"]:.3f} eV</tspan> | MW: <tspan fill="#F8FAFC" font-weight="700">{desc["mw"]} Da</tspan> | LogP: <tspan fill="#F8FAFC" font-weight="700">{desc["logp"]}</tspan></text>'
         f'<text x="693" y="470" fill="#CBD5E1" font-size="11.5">• TPSA: <tspan fill="#F8FAFC" font-weight="700">{desc["tpsa"]} Å²</tspan> | Rings: <tspan fill="#F8FAFC" font-weight="700">{desc["rings"]}</tspan> | Halogens: <tspan fill="#F8FAFC" font-weight="700">{desc["halogens"]}</tspan></text>'
         f'<text x="693" y="494" fill="#FACC15" font-size="11.5" font-weight="700">⚠️ Why Milestones 1–4 are required after this dual baseline:</text>'
@@ -1584,14 +1614,14 @@ def render_molecule_graph_svg(comp: dict[str, Any]) -> str:
 
 def render_mie_probabilities_svg(compounds: list[dict[str, Any]]) -> str:
     """
-    Renders Cell 2: Direct comparison of MIE trigger probabilities across all 12 reference compounds
-    between Microsoft Graphormer (top bar per compound) and ToxTransformer (bottom bar per compound).
+    Renders Cell 2: Direct comparison of Leave-One-Out (LOOCV) MIE trigger probabilities across all
+    12 reference compounds between Microsoft Graphormer (top bar) and ToxTransformer (bottom bar).
     """
     w, h = 1140, 560
     parts = [
         f'<svg viewBox="0 0 {w} {h}" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">',
-        '<text x="20" y="28" fill="#F8FAFC" font-size="15.5" font-weight="700">Comparison across all 12 Test Compounds: Microsoft Graphormer (2D Graph) vs. ToxTransformer (SMILES)</text>',
-        '<text x="20" y="48" fill="#94A3B8" font-size="12">Two bars per compound: Top = Graphormer | Bottom = ToxTransformer | Red = MIE 167 (Steatosis) | Orange = MIE 41 (Cholestasis) | Green = No MIE</text>',
+        '<text x="20" y="28" fill="#F8FAFC" font-size="15.5" font-weight="700">Leave-One-Out (LOOCV) Probabilities across all 12 Compounds: Graphormer (4/12) vs. ToxTransformer (9/12)</text>',
+        '<text x="20" y="48" fill="#94A3B8" font-size="12">Held-out fold probabilities: Top bar = Graphormer (768D) | Bottom bar = ToxTransformer (524D) | Red = MIE 167 | Orange = MIE 41 | Green = No MIE</text>',
     ]
 
     x_left = 205
@@ -1601,14 +1631,14 @@ def render_mie_probabilities_svg(compounds: list[dict[str, Any]]) -> str:
 
     parts.append(
         f'<text x="22" y="68" fill="#94A3B8" font-size="11.5" font-weight="700">Compound &amp; Model</text>'
-        f'<text x="{x_left}" y="68" fill="#94A3B8" font-size="11.5" font-weight="700">Probability Distribution [MIE 167 (Red) | MIE 41 (Orange) | No MIE (Green)]</text>'
-        f'<text x="{x_left + bar_max_w + 20}" y="68" fill="#94A3B8" font-size="11.5" font-weight="700">Consensus MIE Status &amp; Model Agreement</text>'
+        f'<text x="{x_left}" y="68" fill="#94A3B8" font-size="11.5" font-weight="700">LOOCV Probability Distribution [MIE 167 (Red) | MIE 41 (Orange) | No MIE (Green)]</text>'
+        f'<text x="{x_left + bar_max_w + 20}" y="68" fill="#94A3B8" font-size="11.5" font-weight="700">50/50 Consensus LOOCV Verdict (10/12)</text>'
     )
 
     thresh_x = x_left + 0.50 * bar_max_w
     parts.append(
         f'<line x1="{thresh_x:.1f}" y1="{y_top - 6}" x2="{thresh_x:.1f}" y2="{y_top + 12 * row_h}" stroke="#F8FAFC" stroke-width="1.5" stroke-dasharray="4,4"/>'
-        f'<text x="{thresh_x - 55:.1f}" y="{y_top + 12 * row_h + 16}" fill="#F8FAFC" font-size="11" font-weight="600">MIE Trigger Threshold (50%)</text>'
+        f'<text x="{thresh_x - 55:.1f}" y="{y_top + 12 * row_h + 16}" fill="#F8FAFC" font-size="11" font-weight="600">50% Probability Mark</text>'
     )
 
     for idx, c in enumerate(compounds):
@@ -1617,29 +1647,36 @@ def render_mie_probabilities_svg(compounds: list[dict[str, Any]]) -> str:
         t_pred = c["toxtransformer_prediction"]
         c_pred = c["consensus_prediction"]
 
-        # Bar 1: Microsoft Graphormer
+        # Bar 1: Microsoft Graphormer LOOCV
         gw167 = g_pred["P_mie167_steatosis"] * bar_max_w
         gw41 = g_pred["P_mie41_cholestasis"] * bar_max_w
         gw0 = max(0.0, bar_max_w - gw167 - gw41)
 
-        # Bar 2: ToxTransformer
+        # Bar 2: ToxTransformer LOOCV
         tw167 = t_pred["P_mie167_steatosis"] * bar_max_w
         tw41 = t_pred["P_mie41_cholestasis"] * bar_max_w
         tw0 = max(0.0, bar_max_w - tw167 - tw41)
 
-        cls_col = MIE_CLASS_COLORS[c_pred["predicted_class"]]
-        agree_str = "✓ Both Models Agree" if c_pred["models_agree"] else "~ Consensus Averaging"
+        true_col = MIE_CLASS_COLORS[c["true_class"]]
+        pred_col = MIE_CLASS_COLORS[c_pred["predicted_class"]]
+        is_correct = int(c_pred["predicted_class"]) == int(c["true_class"])
+        verdict_tag = (
+            f"✓ Correct (P={c_pred['P_no_mie' if c_pred['predicted_class']==0 else ('P_mie167_steatosis' if c_pred['predicted_class']==1 else 'P_mie41_cholestasis')]*100:.0f}%)"
+            if is_correct
+            else f"✗ Miss (True: {LOOCV_SHORT_LABELS[c['true_class']]})"
+        )
+        verdict_col = "#6EE7B7" if is_correct else "#FDA4AF"
 
         tip = html_lib.escape(
-            f"{c['name']} ({c['mie_code']})\n"
-            f"[Graphormer 2D] P(MIE167)={g_pred['P_mie167_steatosis']*100:.1f}%, P(MIE41)={g_pred['P_mie41_cholestasis']*100:.1f}%, P(None)={g_pred['P_no_mie']*100:.1f}%\n"
-            f"[ToxTransformer SMILES] P(MIE167)={t_pred['P_mie167_steatosis']*100:.1f}%, P(MIE41)={t_pred['P_mie41_cholestasis']*100:.1f}%, P(None)={t_pred['P_no_mie']*100:.1f}%\n"
-            f"[Dual Consensus] P(MIE167)={c_pred['P_mie167_steatosis']*100:.1f}%, P(MIE41)={c_pred['P_mie41_cholestasis']*100:.1f}%, P(None)={c_pred['P_no_mie']*100:.1f}%"
+            f"{c['name']} (True: {c['mie_code']})\n"
+            f"[Graphormer 768D LOOCV] P(MIE167)={g_pred['P_mie167_steatosis']*100:.1f}%, P(MIE41)={g_pred['P_mie41_cholestasis']*100:.1f}%, P(None)={g_pred['P_no_mie']*100:.1f}%\n"
+            f"[ToxTransformer 524D LOOCV] P(MIE167)={t_pred['P_mie167_steatosis']*100:.1f}%, P(MIE41)={t_pred['P_mie41_cholestasis']*100:.1f}%, P(None)={t_pred['P_no_mie']*100:.1f}%\n"
+            f"[50/50 Consensus LOOCV] P(MIE167)={c_pred['P_mie167_steatosis']*100:.1f}%, P(MIE41)={c_pred['P_mie41_cholestasis']*100:.1f}%, P(None)={c_pred['P_no_mie']*100:.1f}%"
         )
 
         parts.append(
             f"<g><title>{tip}</title>"
-            f'<text x="22" y="{ry + 13}" fill="{cls_col}" font-size="12" font-weight="700">{html_lib.escape(c["name"])}</text>'
+            f'<text x="22" y="{ry + 13}" fill="{true_col}" font-size="12" font-weight="700">{html_lib.escape(c["name"])}</text>'
             f'<text x="150" y="{ry + 10}" fill="#38BDF8" font-size="9.5" font-weight="600">Graphormer</text>'
             f'<text x="150" y="{ry + 24}" fill="#A855F7" font-size="9.5" font-weight="600">ToxTransf.</text>'
             # Graphormer bar
@@ -1653,9 +1690,9 @@ def render_mie_probabilities_svg(compounds: list[dict[str, Any]]) -> str:
             f'<rect x="{x_left + tw167 + tw41:.1f}" y="{ry + 15}" width="{tw0:.1f}" height="12" fill="#10B981" fill-opacity="0.88"/>'
             f'<rect x="{x_left:.1f}" y="{ry + 15}" width="{bar_max_w}" height="12" fill="none" stroke="#475569" stroke-width="0.9"/>'
             # Status right
-            f'<text x="{x_left + bar_max_w + 20}" y="{ry + 18}" fill="{cls_col}" font-size="11.5" font-weight="700">'
-            f'{"[MIE TRIGGER] " if c_pred["mie_triggered"] else "[NO MIE] "}{html_lib.escape(c_pred["predicted_label"])} '
-            f'<tspan fill="#94A3B8" font-weight="400">({agree_str})</tspan></text>'
+            f'<text x="{x_left + bar_max_w + 20}" y="{ry + 18}" fill="{pred_col}" font-size="11.2" font-weight="700">'
+            f'{html_lib.escape(c_pred["predicted_label"])} '
+            f'<tspan fill="{verdict_col}" font-weight="700">[{html_lib.escape(verdict_tag)}]</tspan></text>'
             f"</g>"
         )
 
@@ -1793,21 +1830,21 @@ def render_embedding_space_svg(
 ) -> str:
     """
     Renders Cell 4:
-    - Panel A (Left): 2D PCA of the 768D Microsoft Graphormer [CLS] embeddings.
-    - Panel B (Middle): 2D PCA of the 512D ToxTransformer SMILES/SELFIES MoE embeddings.
-    - Panel C (Right): [12 × 12] Cosine similarity matrix.
+    - Panel A (Left): 2D PCA of the 768D Microsoft Graphormer [CLS] embeddings (used in Graphormer LOOCV).
+    - Panel B (Middle): 2D PCA of the 524D ToxTransformer representation (512D MoE + 12D bioassays, used in ToxTransformer LOOCV).
+    - Panel C (Right): [12 × 12] Cosine similarity matrix in the combined LOOCV space.
     """
     w, h = 1140, 470
     parts = [
         f'<svg viewBox="0 0 {w} {h}" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;font-family:Inter,system-ui,sans-serif;">',
-        '<text x="20" y="28" fill="#38BDF8" font-size="14" font-weight="700">Panel A: 768D Graphormer (2D Graph) PCA</text>',
-        '<text x="375" y="28" fill="#A855F7" font-size="14" font-weight="700">Panel B: 512D ToxTransformer (SMILES) PCA</text>',
+        '<text x="20" y="28" fill="#38BDF8" font-size="14" font-weight="700">Panel A: 768D Graphormer Space → 2D PCA</text>',
+        '<text x="375" y="28" fill="#A855F7" font-size="14" font-weight="700">Panel B: 524D ToxTransformer Space → 2D PCA</text>',
         '<text x="735" y="28" fill="#F8FAFC" font-size="14" font-weight="700">Panel C: [12×12] Dual Cosine Similarity</text>',
         '<rect x="20" y="42" width="335" height="395" rx="10" fill="#0B1120" stroke="#1E293B" stroke-width="1.5"/>',
         '<rect x="375" y="42" width="335" height="395" rx="10" fill="#0B1120" stroke="#1E293B" stroke-width="1.5"/>',
     ]
 
-    def _draw_pca_panel(coords: np.ndarray, x0: float, title_x: str, title_y: str, model_tag: str) -> None:
+    def _draw_pca_panel(coords: np.ndarray, x0: float, title_x: str, title_y: str, model_tag: str, loocv_key: str) -> None:
         px_min, px_max = float(coords[:, 0].min()), float(coords[:, 0].max())
         py_min, py_max = float(coords[:, 1].min()), float(coords[:, 1].max())
         sx = max(px_max - px_min, 1e-3)
@@ -1817,8 +1854,8 @@ def render_embedding_space_svg(
         parts.append(
             f'<line x1="{x0 + 20}" y1="240" x2="{x0 + 315}" y2="240" stroke="#1E293B" stroke-width="1.2" stroke-dasharray="4,4"/>'
             f'<line x1="{cx_mid}" y1="65" x2="{cx_mid}" y2="410" stroke="#1E293B" stroke-width="1.2" stroke-dasharray="4,4"/>'
-            f'<text x="{cx_mid}" y="427" text-anchor="middle" fill="#94A3B8" font-size="10.5">{title_x}</text>'
-            f'<text x="{x0 + 14}" y="240" text-anchor="middle" fill="#94A3B8" font-size="10.5" transform="rotate(-90 {x0 + 14} 240)">{title_y}</text>'
+            f'<text x="{cx_mid}" y="427" text-anchor="middle" fill="#94A3B8" font-size="10.2">{title_x}</text>'
+            f'<text x="{x0 + 14}" y="240" text-anchor="middle" fill="#94A3B8" font-size="10.2" transform="rotate(-90 {x0 + 14} 240)">{title_y}</text>'
         )
 
         # Pass 1: markers only. Pass 2 (below) paints every label on top, so a
@@ -1828,15 +1865,20 @@ def render_embedding_space_svg(
             cx = x0 + 38.0 + ((float(coords[i, 0]) - px_min) / sx) * 260.0
             cy = 395.0 - ((float(coords[i, 1]) - py_min) / sy) * 305.0
             col = MIE_CLASS_COLORS[c["true_class"]]
+            loocv_block = c[loocv_key]
+            loocv_pred = int(loocv_block["loocv_pred_class"])
+            is_ok = loocv_pred == int(c["true_class"])
+            stroke_col = "#F8FAFC" if is_ok else "#FDA4AF"
+            dash_attr = "" if is_ok else 'stroke-dasharray="2.5,1.5"'
             points.append((cx, cy, col, c))
             tip = html_lib.escape(
-                f"{c['name']} ({c['mie_code']}) — {model_tag}\n"
-                f"PC1={coords[i, 0]:.3f}, PC2={coords[i, 1]:.3f}\n"
-                f"SELFIES tokens={len(c['selfies_tokens'])} | LogP={c['descriptors']['logp']}"
+                f"{c['name']} (True: {c['mie_code']}) — {model_tag}\n"
+                f"LOOCV Prediction: {LOOCV_SHORT_LABELS[loocv_pred]} ({'✓ Correct' if is_ok else '✗ Miss'})\n"
+                f"PC 1 = {coords[i, 0]:.3f} | PC 2 = {coords[i, 1]:.3f}"
             )
             parts.append(
                 f"<g><title>{tip}</title>"
-                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="7.5" fill="{col}" fill-opacity="0.88" stroke="#F8FAFC" stroke-width="1.4"/>'
+                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="7.5" fill="{col}" fill-opacity="0.88" stroke="{stroke_col}" stroke-width="1.6" {dash_attr}/>'
                 f"</g>"
             )
 
@@ -1863,8 +1905,22 @@ def render_embedding_space_svg(
                 f'font-size="9.6" font-weight="700">{html_lib.escape(name)}</text>'
             )
 
-    _draw_pca_panel(graph_pca_coords, 20.0, "Graphormer PC 1 (2D Graph Topology)", "Graphormer PC 2", "Microsoft Graphormer")
-    _draw_pca_panel(tox_pca_coords, 375.0, "ToxTransformer PC 1 (SMILES / Bioassay)", "ToxTransformer PC 2", "ToxTransformer MoE")
+    _draw_pca_panel(
+        graph_pca_coords,
+        20.0,
+        "PC 1 — Main Variation Axis in 768D Graph Space",
+        "PC 2 — 2nd Variation Axis (768D)",
+        "Microsoft Graphormer (768D)",
+        "loocv",
+    )
+    _draw_pca_panel(
+        tox_pca_coords,
+        375.0,
+        "PC 1 — Main Variation Axis in 524D Bioassay Space",
+        "PC 2 — 2nd Variation Axis (524D)",
+        "ToxTransformer (524D)",
+        "tox_loocv",
+    )
 
     # Panel C: 12x12 Heatmap (x0=790, y0=82)
     n = len(compounds)
@@ -2000,15 +2056,18 @@ def generate_standalone_html(
         cp = c["consensus_prediction"]
         d = c["descriptors"]
         col = MIE_CLASS_COLORS[cp["predicted_class"]]
+        is_ok = int(cp["predicted_class"]) == int(c["true_class"])
+        ok_badge = "✓ Correct" if is_ok else f"✗ Miss ({LOOCV_SHORT_LABELS[cp['predicted_class']]})"
+        ok_col = "#10B981" if is_ok else "#FDA4AF"
         rows_html.append(
             f"<tr>"
-            f"<td style='font-weight:700;color:{col};'>{html_lib.escape(c['name'])}</td>"
+            f"<td style='font-weight:700;color:{MIE_CLASS_COLORS[c['true_class']]};'>{html_lib.escape(c['name'])}</td>"
             f"<td>{html_lib.escape(c['mie_code'])}</td>"
             f"<td>{html_lib.escape(c['target_gene'])}</td>"
-            f"<td style='font-weight:700;color:{col};'>{'YES' if cp['mie_triggered'] else 'NO'} ({cp['P_any_mie_trigger'] * 100:.1f}%)</td>"
-            f"<td>{gp['P_mie167_steatosis'] * 100:.1f}% / <span style='color:#C084FC;font-weight:600;'>{tp['P_mie167_steatosis'] * 100:.1f}%</span></td>"
-            f"<td>{gp['P_mie41_cholestasis'] * 100:.1f}% / <span style='color:#C084FC;font-weight:600;'>{tp['P_mie41_cholestasis'] * 100:.1f}%</span></td>"
-            f"<td>{gp['P_no_mie'] * 100:.1f}% / <span style='color:#C084FC;font-weight:600;'>{tp['P_no_mie'] * 100:.1f}%</span></td>"
+            f"<td style='font-weight:700;color:{ok_col};'>{html_lib.escape(ok_badge)}<br/><span style='color:{col};font-size:11.5px;'>P(MIE)={cp['P_any_mie_trigger'] * 100:.1f}%</span></td>"
+            f"<td>{gp['P_mie167_steatosis'] * 100:.1f}% / <span style='color:#C084FC;font-weight:600;'>{tp['P_mie167_steatosis'] * 100:.1f}%</span> / <b>{cp['P_mie167_steatosis'] * 100:.1f}%</b></td>"
+            f"<td>{gp['P_mie41_cholestasis'] * 100:.1f}% / <span style='color:#C084FC;font-weight:600;'>{tp['P_mie41_cholestasis'] * 100:.1f}%</span> / <b>{cp['P_mie41_cholestasis'] * 100:.1f}%</b></td>"
+            f"<td>{gp['P_no_mie'] * 100:.1f}% / <span style='color:#C084FC;font-weight:600;'>{tp['P_no_mie'] * 100:.1f}%</span> / <b>{cp['P_no_mie'] * 100:.1f}%</b></td>"
             f"<td>{len(c['selfies_tokens'])} tokens ({c['tox_expert_weights'][0]*100:.0f}/{c['tox_expert_weights'][1]*100:.0f}%)</td>"
             f"<td>{c['homo_lumo_gap_ev']:.2f} eV | {d['mw']} Da</td>"
             f"<td>{html_lib.escape(c['mechanism_nl'])}</td>"
@@ -2128,23 +2187,24 @@ def generate_standalone_html(
 </head>
 <body>
   <div class="header-box">
-    <h1>🧪 Milestone 0 (Step A Baseline): Microsoft Graphormer + ToxTransformer MIE Predictor</h1>
+    <h1>🧪 Milestone 0 (Step A Baseline): Microsoft Graphormer + ToxTransformer MIE Predictor (LOOCV)</h1>
     <p style="margin:4px 0;color:#CBD5E1;font-size:14px;">
-      <b>Model 1 (2D Molecular Graph):</b> <code>Microsoft Graphormer</code> (<code>clefourrier/pcqm4mv2_graphormer_base</code>, 47.7M params, 12 layers, 768D on GPU 1)<br/>
-      <b>Model 2 (SMILES → SELFIES &amp; Bioassay MoE):</b> <code>ToxTransformer</code> (<code>biobricks-ai/toxtransformer</code>, 29.3M params, 2 Transformer experts × 3,797 bioassays, 512D on GPU 1)
+      <b>Model 1 (2D Molecular Graph):</b> <code>Microsoft Graphormer</code> (<code>clefourrier/pcqm4mv2_graphormer_base</code>, 47.7M params, 12 layers, 768D [CLS] on GPU 1) &rarr; <b>LOOCV: 4/12 (33.3%)</b><br/>
+      <b>Model 2 (SMILES → SELFIES &amp; Bioassay MoE):</b> <code>ToxTransformer</code> (<code>biobricks-ai/toxtransformer</code>, 25.4M params, 2 Transformer experts × 3,797 bioassays, 524D on GPU 1) &rarr; <b>LOOCV: 9/12 (75.0%)</b><br/>
+      <b>50/50 Soft Probability Fusion (Dual Consensus):</b> Combines both probability vectors &rarr; <b>LOOCV: 10/12 (83.3%, Macro F1 = 0.832)</b>
     </p>
     <p style="margin:4px 0;color:#94A3B8;font-size:13.5px;">
-      This program constitutes <b>Step A (Dual Molecular Structure &amp; SMILES Baseline)</b> from <code>ARCHITECTURE.md</code>: it converts SMILES molecules into both 2D atom/bond graphs and SELFIES sequences and predicts per model and in consensus whether a compound triggers a <b>Molecular Initiating Event (MIE)</b> (<b>MIE 167: LXRα activation → Steatosis</b> or <b>MIE 41: BSEP inhibition → Cholestasis</b>).
+      All cells below display the <b>Leave-One-Out Cross-Validation (LOOCV)</b> predictions: each molecule is held out and scored purely by cosine similarity in the frozen foundation embedding space (768D Graphormer &amp; 524D ToxTransformer) against class prototypes built from the other 11 compounds.
     </p>
   </div>
 
-  <!-- CELL 1: 2D MOLECULAR GRAPH + TOXTRANSFORMER SELFIES SALIENCY + DUAL MIE PROBABILITIES -->
+  <!-- CELL 1: 2D MOLECULAR GRAPH + TOXTRANSFORMER SELFIES SALIENCY + DUAL LOOCV PROBABILITIES -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 1: 2D Molecular Graph (Graphormer) &amp; SMILES/SELFIES Token Saliency (ToxTransformer)</h3>
+      <h3>📘 User Guide Cell 1: Per-Compound 2D Graph (Graphormer), SELFIES Saliency (ToxTransformer) &amp; Held-Out LOOCV Probabilities</h3>
       <ul>
-        <li><b>How to use:</b> Click any of the 12 compounds below. Hover your mouse over an atom in the 2D graph (top-left) or over a <b>SELFIES token box</b> in the ToxTransformer strip (bottom-left) to inspect the exact atom and token saliency.</li>
-        <li><b>What you see happening:</b> Top-left shows <b>Microsoft Graphormer</b> highlighting which atoms in the 2D topology weigh most heavily toward the 768D <code>[CLS]</code> token. Bottom-left shows <b>ToxTransformer</b> translating the SMILES string into SELFIES tokens and highlighting which fragments (such as <code>[F]</code>, <code>[=O]</code>, <code>[S]</code>) activate the two Transformer experts. On the right, you see three stacked bars for each MIE class: <b>Graphormer (2D)</b>, <b>ToxTransformer (SMILES)</b>, and the <b>Dual Consensus</b>.</li>
+        <li><b>How to use:</b> Click any of the 12 compounds below. Hover over an atom in the 2D graph (top-left) or a <b>SELFIES token box</b> (bottom-left) to inspect the exact attention saliency.</li>
+        <li><b>What the bars on the right show (LOOCV):</b> When the selected compound is held out as an unseen test molecule, the bars show the 3-class probabilities predicted by <b>Graphormer LOOCV (768D)</b>, <b>ToxTransformer LOOCV (524D)</b>, and their <b>50/50 Consensus average</b> ($P_{{\\text{{consensus}}}}(c) = 0.5\\cdot P_{{\\text{{Graph}}}}(c) + 0.5\\cdot P_{{\\text{{Tox}}}}(c)$). Notice how Graphormer's probabilities stay flat (~30–40%) on big drugs because it only knows quantum HOMO–LUMO physics, while ToxTransformer (trained on 3,797 bioassays) is sharply decisive!</li>
       </ul>
     </div>
     <div class="tab-group">
@@ -2158,13 +2218,13 @@ def generate_standalone_html(
     </div>
   </div>
 
-  <!-- CELL 2: MIE PROBABILITY DISTRIBUTION ACROSS ALL 12 COMPOUNDS (GRAPHORMER VS TOXTRANSFORMER) -->
+  <!-- CELL 2: LOOCV PROBABILITY DISTRIBUTION ACROSS ALL 12 COMPOUNDS (GRAPHORMER VS TOXTRANSFORMER) -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 2: Comparison Microsoft Graphormer vs. ToxTransformer across all 12 Test Compounds</h3>
+      <h3>📘 User Guide Cell 2: Leave-One-Out (LOOCV) Probability Distribution across all 12 Compounds</h3>
       <ul>
-        <li><b>How to use:</b> For each of the 12 reference compounds, you see two stacked probability bars: the <b>top bar is Microsoft Graphormer (2D Graph)</b> and the <b>bottom bar is ToxTransformer (SMILES/SELFIES)</b>. <b>Red</b> = MIE 167 (LXRα Steatosis), <b>Orange</b> = MIE 41 (BSEP Cholestasis), and <b>Green</b> = No Toxic MIE.</li>
-        <li><b>What you see happening:</b> Both pretrained heads agree on all 12 compounds at this operating point, yet this panel shows the <i>calibrated head</i> output. That is why the honest score for this figure is not shown here but in <b>Cell 3 (leave-one-out confusion matrix)</b>: the heads were calibrated on these same 12 compounds, so any in-sample score is perfect by construction.</li>
+        <li><b>How to use:</b> Each compound has two stacked LOOCV probability bars: <b>top bar = Microsoft Graphormer (768D LOOCV, 4/12)</b> and <b>bottom bar = ToxTransformer (524D LOOCV, 9/12)</b>. <b>Red</b> = MIE 167 (LXRα Steatosis), <b>Orange</b> = MIE 41 (BSEP Cholestasis), <b>Green</b> = No Toxic MIE.</li>
+        <li><b>How 50/50 Probability Fusion works (and why it reaches 10/12):</b> We do <i>not</i> fuse binary yes/no votes! Instead, we average the continuous 3-class probability distributions 50/50. When ToxTransformer is strongly confident (e.g., 91–96% on T0901317, GW3965, Bosentan, Troglitazone, Glibenclamide) and Graphormer is flat/unsure (~33%), ToxTransformer's strong probability dominates the 50/50 average. Conversely, on <code>DMSO_Control</code> where ToxTransformer is split (45% No MIE vs. 48% MIE 41), Graphormer's structural preference for No MIE (38% vs. 29%) tips the 50/50 average over the line to the correct class!</li>
       </ul>
     </div>
     {prob_svg}
@@ -2173,34 +2233,41 @@ def generate_standalone_html(
   <!-- CELL 3: LEAVE-ONE-OUT VALIDATION (CONFUSION MATRICES) - THE ONLY REPORTED SCORE -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 3: Leave-One-Out Validation — Confusion Matrices (Graphormer, ToxTransformer, Dual Consensus)</h3>
+      <h3>📘 User Guide Cell 3: Leave-One-Out Validation — Confusion Matrices (Graphormer 4/12, ToxTransformer 9/12, Consensus 10/12)</h3>
       <ul>
-        <li><b>Why this cell exists:</b> The MIE heads are calibrated on all 12 reference compounds, so their training diagonal is perfect by construction and is therefore <b>not reported</b>. The number that says something about unseen compounds is the <b>leave-one-out cross-validation</b>: 12 folds, each compound scored against prototypes built from the other 11.</li>
-        <li><b>How to use:</b> Each panel is a <code>[3 × 3]</code> confusion matrix — rows = true MIE class, columns = LOOCV prediction. <b>Green diagonal</b> = correct, <b>red off-diagonal</b> = confusion. The headline is <code>LOOCV {graph_val}/{n_val} correct</code> with the mean probability of the true class; hover a cell to see the count.</li>
-        <li><b>What you see happening:</b> Pure 2D quantum-chemical topology alone (<b>Microsoft Graphormer</b>, <code>4/12</code>) separates the small safe controls (75% recall) but cannot distinguish LXRα vs. BSEP binding without biological context. By contrast, <b>ToxTransformer</b> (pretrained on 3,797 wet-lab bioassays) reaches <code>9/12 (75.0%)</code> on its own, and the <b>50/50 Dual Consensus</b> reaches <code>10/12 (83.3%)</code> by combining Graphormer's 2D structural specificity on safe controls with ToxTransformer's bioassay-informed MIE separation.</li>
+        <li><b>Why this cell exists:</b> With $n=12$ compounds, each compound is held out once and classified by cosine similarity to the 3 class prototypes (averages) formed by the remaining 11 compounds in the frozen foundation layer.</li>
+        <li><b>How to use:</b> Each panel is a <code>[3 × 3]</code> confusion matrix — rows = true MIE class, columns = LOOCV prediction. <b>Green diagonal</b> = correct predictions, <b>red off-diagonal</b> = misclassifications (listed underneath each matrix).</li>
+        <li><b>What you see happening:</b> Pure 2D quantum-chemical topology alone (<b>Microsoft Graphormer</b>, <code>4/12</code>) separates the small safe controls (75% recall) but cannot distinguish LXRα vs. BSEP binding without biological context. By contrast, <b>ToxTransformer</b> (pretrained on 3,797 wet-lab bioassays) reaches <code>9/12 (75.0%)</code> on its own, and the <b>50/50 Dual Consensus</b> reaches <code>10/12 (83.3%)</code>. Only <code>Chlorpromazine</code> (predicted MIE 167 instead of MIE 41) and <code>Fenofibrate</code> (a lipophilic halogenated drug predicted MIE 41 instead of No MIE) are missed in LOOCV.</li>
       </ul>
     </div>
     {loocv_svg}
   </div>
 
-  <!-- CELL 3: DUAL LATENT SPACE (768D GRAPHORMER PCA VS 512D TOXTRANSFORMER PCA) -->
+  <!-- CELL 4: DUAL LATENT SPACE (768D GRAPHORMER PCA VS 524D TOXTRANSFORMER PCA) -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 4: Dual Latent Space — 768D Graphormer PCA vs. 512D ToxTransformer SMILES PCA</h3>
+      <h3>📘 User Guide Cell 4: What are PC 1 and PC 2? — 2D PCA Projection of the 768D &amp; 524D Foundation Layers</h3>
       <ul>
-        <li><b>How to use:</b> Compare <b>Panel A</b> (2D PCA of the 768D Microsoft Graphormer <code>[CLS]</code> embeddings) with <b>Panel B</b> (2D PCA of the 512D ToxTransformer SMILES/SELFIES MoE embeddings) and inspect the combined <code>[12 × 12]</code> cosine similarity matrix on the right in <b>Panel C</b>.</li>
-        <li><b>What you see happening:</b> Whereas Graphormer clusters molecules by 2D graph diameter and quantum-chemical electron density (PCQM4Mv2), ToxTransformer clusters molecules by SMILES/SELFIES substructures and their response profiles across 3,797 toxicological bioassays. Together they form a powerful multimodal chemical representation for Milestone 2.</li>
+        <li><b>What is PCA (Principal Component Analysis) and why do we need it?</b> Graphormer represents every molecule as a list of <b>768 neuron values</b> (a point in 768-dimensional space), and ToxTransformer as <b>524 values</b> (512 expert neurons + 12 bioassay blocks). Humans cannot see a 768-dimensional plot! <b>PCA</b> is a mathematical "camera angle" (computed via Singular Value Decomposition, SVD) that rotates that high-dimensional cloud of 12 molecules and projects it onto a flat 2D screen while preserving as much distance between molecules as possible.</li>
+        <li><b>What are PC 1 (X-axis) and PC 2 (Y-axis)?</b>
+          <ul>
+            <li><b>PC 1 (Principal Component 1, Horizontal Axis):</b> The single straight line through the 768D (or 524D) neuron space along which the 12 molecules <b>differ the most from one another</b> (the #1 main axis of variation).</li>
+            <li><b>PC 2 (Principal Component 2, Vertical Axis):</b> The second-most important direction of difference across the 12 molecules, perpendicular ($90^\\circ$) to PC 1.</li>
+          </ul>
+        </li>
+        <li><b>How to read Panel A vs. Panel B:</b> Two molecules sitting close together on the <code>(PC 1, PC 2)</code> map have very similar neuron activations! A <b>solid white ring</b> around a dot means that model classified the molecule <b>correctly in LOOCV</b>; a <b>dashed pink ring</b> means a <b>LOOCV miss</b>. Notice how in <b>Panel A (Graphormer 768D)</b> the red (MIE 167) and orange (MIE 41) drugs are mixed together in the middle, whereas in <b>Panel B (ToxTransformer 524D)</b> the green controls sit far on the left (negative PC 1) and the red MIE 167 vs. orange MIE 41 compounds separate cleanly!</li>
       </ul>
     </div>
     {emb_svg}
   </div>
 
-  <!-- CELL 4: SUMMARY TABLE & SCIENTIFIC BRIDGE TO MILESTONES 1-4 -->
+  <!-- CELL 5: SUMMARY TABLE & SCIENTIFIC BRIDGE TO MILESTONES 1-4 -->
   <div class="card">
     <div class="guide-box">
-      <h3>📘 User Guide Cell 5: Summary Table (Graphormer &amp; ToxTransformer) &amp; Bridge to Milestones 1 through 4</h3>
+      <h3>📘 User Guide Cell 5: Complete LOOCV Summary Table (Graphormer, ToxTransformer &amp; 50/50 Consensus)</h3>
       <ul>
-        <li><b>Key conclusion for your research (Validation Strategy Step A → Step B → Step C):</b> Even when combining two powerful molecular models (<b>Microsoft Graphormer</b> for 2D graph topology and <b>ToxTransformer</b> for SMILES/bioassay prediction), they only answer the static question: <i>"Can this molecule bind to LXRα (MIE 167) or BSEP (MIE 41)?"</i> To predict at which <b>dose</b> and <b>exposure duration</b> the hepatocyte recovers homeostatically ($z_0$) or tips into steatosis ($z_{{\\text{{steatose}}}}$) or cholestasis ($z_{{\\text{{cholestase}}}}$), we couple these MIE predictions in <b>Milestones 1 through 4</b> to the <code>HepatocyteGraphormer</code> and <code>Neural ODE</code>.</li>
+        <li><b>What this table shows:</b> All probability columns below show the honest <b>held-out LOOCV probabilities</b> formatted as <code>Graphormer / ToxTransformer / 50-50 Consensus</code>.</li>
+        <li><b>Key conclusion for your research (Validation Strategy Step A → Step B → Step C):</b> Even with <code>10/12 (83.3%)</code> LOOCV accuracy, static structure/bioassay models cannot see intracellular feedback loops (why <code>Fenofibrate</code> protects homeostasis via PPARα, or why low-dose <code>T0901317</code> / <code>Bosentan</code> is buffered by $\\beta$-oxidation and FXR). That requires coupling these embeddings to the <code>HepatocyteGraphormer</code> and <code>Neural ODE</code> in <b>Milestones 1 through 4</b>.</li>
       </ul>
     </div>
     <div class="table-wrap">
@@ -2210,10 +2277,10 @@ def generate_standalone_html(
             <th>Compound</th>
             <th>True Category</th>
             <th>Primary Biological Target</th>
-            <th>Consensus MIE Trigger?</th>
-            <th>P(MIE 167) Graph / <span style="color:#C084FC;">Tox</span></th>
-            <th>P(MIE 41) Graph / <span style="color:#C084FC;">Tox</span></th>
-            <th>P(No MIE) Graph / <span style="color:#C084FC;">Tox</span></th>
+            <th>50/50 Consensus LOOCV</th>
+            <th>LOOCV P(MIE 167)<br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
+            <th>LOOCV P(MIE 41)<br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
+            <th>LOOCV P(No MIE)<br/>Graph / <span style="color:#C084FC;">Tox</span> / <b>Cons</b></th>
             <th>SELFIES &amp; MoE Gating</th>
             <th>HOMO-LUMO / MW</th>
             <th>Mechanism &amp; Role in Simulator</th>
@@ -2226,7 +2293,7 @@ def generate_standalone_html(
     </div>
   </div>
 
-  <!-- CELL 5: SCHEMATIC PIPELINE & AI MODEL ARCHITECTURE DIAGRAMS -->
+  <!-- CELL 6: SCHEMATIC PIPELINE & AI MODEL ARCHITECTURE DIAGRAMS -->
   <div class="card">
     <div class="guide-box">
       <h3>📐 User Guide Cell 6: Schematic Pipeline &amp; Layer-by-Layer AI Model Architectures (Graphormer &amp; ToxTransformer)</h3>
@@ -2288,7 +2355,7 @@ def main() -> None:
         processed_items.append(item)
         labels.append(comp["true_class"])
 
-    print("[4/5] Extracting 768D Graphormer & 512D ToxTransformer embeddings + MIE calibration on GPU 1...")
+    print("[4/5] Extracting 768D Graphormer & 524D ToxTransformer embeddings + LOOCV evaluation on GPU 1...")
     graph_predictor.calibrate_mie_head(processed_items, labels, epochs=250)
     tox_predictor.calibrate_mie_head(processed_items, labels, epochs=250)
 
@@ -2314,27 +2381,27 @@ def main() -> None:
     graph_loocv_list = compute_loocv_predictions(cls_matrix, labels)
     tox_loocv_list = compute_loocv_predictions(tox_feat_matrix, labels)
 
-    # Compute 2D PCA for both Graphormer (768D) and ToxTransformer (512D) on GPU 1
+    # Compute 2D PCA for both Graphormer (768D) and ToxTransformer (524D) on GPU 1
     cls_norm = F.normalize(cls_matrix, p=2, dim=-1)
-    tox_norm = F.normalize(tox_matrix, p=2, dim=-1)
+    tox_feat_norm = F.normalize(tox_feat_matrix, p=2, dim=-1)
 
-    dual_norm = F.normalize(torch.cat([cls_norm, tox_norm], dim=-1), p=2, dim=-1)
+    dual_norm = F.normalize(torch.cat([cls_norm, tox_feat_norm], dim=-1), p=2, dim=-1)
     cos_sim_matrix = torch.matmul(dual_norm, dual_norm.T).detach().cpu().numpy()
 
     g_centered = cls_norm - cls_norm.mean(dim=0, keepdim=True)
     ug, sg, _ = torch.linalg.svd(g_centered, full_matrices=False)
     graph_pca_coords = (ug[:, :2] * sg[:2]).detach().cpu().numpy()
 
-    t_centered = tox_norm - tox_norm.mean(dim=0, keepdim=True)
+    t_centered = tox_feat_norm - tox_feat_norm.mean(dim=0, keepdim=True)
     ut, st, _ = torch.linalg.svd(t_centered, full_matrices=False)
     tox_pca_coords = (ut[:, :2] * st[:2]).detach().cpu().numpy()
 
-    print("\n[Results: Predicted MIE Triggers per Test Compound (Graphormer vs. ToxTransformer vs. Consensus)]")
-    print("-" * 98)
+    print("\n[LOOCV Per-Compound Results: Graphormer (768D) vs. ToxTransformer (524D) vs. 50/50 Consensus]")
+    print("-" * 104)
     print(
-        f"{'Compound':<15} | {'Consensus MIE':<22} | {'Graphormer (167/41/0)':<23} | {'ToxTransf. (167/41/0)':<23} | {'Agree?'}"
+        f"{'Compound':<15} | {'Consensus LOOCV':<22} | {'Graphormer (167/41/0)':<23} | {'ToxTransf. (167/41/0)':<23} | {'LOOCV Match?'}"
     )
-    print("-" * 98)
+    print("-" * 104)
 
     compounds_out = []
 
@@ -2343,19 +2410,20 @@ def main() -> None:
         g_rep = graph_reps[i]
         t_rep = tox_reps[i]
 
-        g_pred = graph_predictor.predict_item(item)
-        t_pred = tox_predictor.predict_item(item, tox_rep=t_rep)
-        c_pred = compute_consensus_prediction(g_pred, t_pred)
-
         g_loocv = graph_loocv_list[i]
         t_loocv = tox_loocv_list[i]
 
+        # Drive all compound prediction blocks directly from the honest LOOCV probabilities!
+        g_pred = loocv_to_prediction_dict(g_loocv)
+        t_pred = loocv_to_prediction_dict(t_loocv)
+        c_pred = compute_consensus_prediction(g_pred, t_pred)
+
         g_str = f"{g_pred['P_mie167_steatosis']:.2f} / {g_pred['P_mie41_cholestasis']:.2f} / {g_pred['P_no_mie']:.2f}"
         t_str = f"{t_pred['P_mie167_steatosis']:.2f} / {t_pred['P_mie41_cholestasis']:.2f} / {t_pred['P_no_mie']:.2f}"
-        agree_mark = "YES" if c_pred["models_agree"] else "NO"
+        is_match = "YES (✓)" if c_pred["predicted_class"] == comp["true_class"] else f"MISS (True={comp['true_class']})"
 
         print(
-            f"{comp['name']:<15} | {c_pred['predicted_label']:<22} | {g_str:<23} | {t_str:<23} | {agree_mark}"
+            f"{comp['name']:<15} | {c_pred['predicted_label']:<22} | {g_str:<23} | {t_str:<23} | {is_match}"
         )
 
         compounds_out.append(

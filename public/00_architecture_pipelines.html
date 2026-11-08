@@ -148,12 +148,12 @@
 <text x="52" y="701.0" fill="#CBD5E1" font-size="11.1">• 47,677,505 parameters (12 lagen, d_model=768, 32 heads)</text>
 <line x1="218.0" y1="821" x2="218.0" y2="836" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
 <rect x="40" y="839" width="356" height="161" rx="8" fill="#0F172A" stroke="#38BDF8" stroke-width="1.3" />
-<text x="52" y="860" fill="#F8FAFC" font-size="10.2" font-weight="700">1D. Farmacofoor &amp; Fysicochemische Regels</text>
-<rect x="293.0" y="845" width="95.0" height="20" rx="5" fill="#0B1120" stroke="#38BDF8" stroke-width="1" />
-<text x="340.5" y="858.5" text-anchor="middle" fill="#38BDF8" font-size="9.4" font-family="monospace" font-weight="700">SMARTS + RDKit</text>
+<text x="52" y="860" fill="#F8FAFC" font-size="9.0" font-weight="700">1D. Evaluatieprotocol: Leave-One-Out (…</text>
+<rect x="253.6" y="845" width="134.4" height="20" rx="5" fill="#0B1120" stroke="#38BDF8" stroke-width="1" />
+<text x="320.8" y="858.5" text-anchor="middle" fill="#38BDF8" font-size="9.4" font-family="monospace" font-weight="700">N=11 Train | N=1 Test</text>
 <line x1="50" y1="867" x2="386" y2="867" stroke="#1E293B" stroke-width="1" />
-<text x="52" y="884.0" fill="#CBD5E1" font-size="11.1">• LXRα / BSEP farmacofoor-motieven: -CF3 &amp; -SO2NH- groepen</text>
-<text x="52" y="905.0" fill="#CBD5E1" font-size="11.1">• Lipofiliciteit (Crippen LogP), TPSA, MW, HBD/HBA, Halogenen</text>
+<text x="52" y="884.0" fill="#CBD5E1" font-size="11.1">• Geen handgemaakte RDKit farmacofoor-cheat of -CF3/-SO2NH- regels</text>
+<text x="52" y="905.0" fill="#CBD5E1" font-size="11.1">• Puur op basis van de 768D [CLS] foundation-representatie</text>
 <line x1="412" y1="556.0" x2="440" y2="556.0" stroke="#38BDF8" stroke-width="3.2" marker-end="url(#arrow-lr)" />
 <text x="426.0" y="546.0" text-anchor="middle" fill="#38BDF8" font-size="10.5" font-weight="800">STAP 1→2</text>
 <rect x="446" y="98" width="420" height="916" rx="12" fill="#141824" stroke="#F59E0B" stroke-width="1.8" />
@@ -161,7 +161,7 @@
 <line x1="446" y1="150" x2="866" y2="150" stroke="#F59E0B" stroke-width="1.2" stroke-opacity="0.6" />
 <text x="462" y="122" fill="#F8FAFC" font-size="14" font-weight="800">2. BEWERKING (PREPROCESSING)</text>
 <text x="462" y="140" fill="#F59E0B" font-size="11" font-weight="600">Boven ↓ Beneden: Graaf- &amp; Tensor-Transformaties</text>
-<rect x="458" y="164" width="396" height="138" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
+<rect x="458" y="164" width="396" height="165" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
 <text x="470" y="185" fill="#F8FAFC" font-size="12.2" font-weight="700">2A. RDKit Moleculaire 2D Graaf</text>
 <rect x="773.6" y="170" width="72.4" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
 <text x="809.8" y="183.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">G = (V, E)</text>
@@ -169,44 +169,36 @@
 <text x="470" y="209.0" fill="#CBD5E1" font-size="11.1">• Chem.MolFromSmiles(s) → Canonieke SMILES</text>
 <text x="470" y="230.0" fill="#CBD5E1" font-size="11.1">• rdDepictor.Compute2DCoords(mol) → 2D atoomcoördinaten</text>
 <text x="470" y="251.0" fill="#CBD5E1" font-size="11.1">• N atomen (nodes V) en E covalente bindingen (directed edges 2E)</text>
-<line x1="656.0" y1="304" x2="656.0" y2="319" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
-<rect x="458" y="322" width="396" height="170" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
-<text x="470" y="343" fill="#F8FAFC" font-size="9.4" font-weight="700">2B. OGB Categorische Feature Extractie</text>
-<rect x="683.4" y="328" width="162.6" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
-<text x="764.7" y="341.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">Nodes [N,9] | Edges [2E,3]</text>
-<line x1="468" y1="350" x2="844" y2="350" stroke="#1E293B" stroke-width="1" />
-<text x="470" y="367.0" fill="#CBD5E1" font-size="11.1">• atom_to_ogb_features: 9 eigenschappen per atoom [N, 9]</text>
-<text x="470" y="388.0" fill="#CBD5E1" font-size="11.1">  (atoomnr, chiraliteit, graad, lading, #H, rad., hybr., arom., ring)</text>
-<text x="470" y="409.0" fill="#CBD5E1" font-size="11.1">• bond_to_ogb_features: 3 eigenschappen per binding [2E, 3]</text>
-<text x="470" y="430.0" fill="#CBD5E1" font-size="11.1">  (bindingstype SINGLE/DOUBLE/..., stereo, conjugatie)</text>
-<line x1="656.0" y1="494" x2="656.0" y2="509" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
-<rect x="458" y="512" width="396" height="170" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
-<text x="470" y="533" fill="#F8FAFC" font-size="12.2" font-weight="700">2C. Single-Embedding Indexering</text>
-<rect x="762.3" y="518" width="83.7" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
-<text x="804.2" y="531.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">offset = 512</text>
-<line x1="468" y1="540" x2="844" y2="540" stroke="#1E293B" stroke-width="1" />
-<text x="470" y="557.0" fill="#CBD5E1" font-size="11.1">• convert_to_single_emb(x, offset=512) + 1</text>
-<text x="470" y="578.0" fill="#CBD5E1" font-size="11.1">• input_nodes: LongTensor [1, N, 9]</text>
-<text x="470" y="599.0" fill="#CBD5E1" font-size="11.1">• attn_edge_type: LongTensor [1, N, N, 3]</text>
-<text x="470" y="620.0" fill="#CBD5E1" font-size="11.1">• Centraliteit: in_degree [1, N] &amp; out_degree [1, N]</text>
-<line x1="656.0" y1="684" x2="656.0" y2="699" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
-<rect x="458" y="702" width="396" height="170" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
-<text x="470" y="723" fill="#F8FAFC" font-size="11.4" font-weight="700">2D. Floyd-Warshall Kortste-Pad Matrix</text>
-<rect x="722.8" y="708" width="123.2" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
-<text x="784.4" y="721.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">spatial_pos [1,N,N]</text>
-<line x1="468" y1="730" x2="844" y2="730" stroke="#1E293B" stroke-width="1" />
-<text x="470" y="747.0" fill="#CBD5E1" font-size="11.1">• floyd_warshall_with_path(adj): alle-paren kortste paden</text>
-<text x="470" y="768.0" fill="#CBD5E1" font-size="11.1">• spatial_pos: LongTensor [1, N, N] (onbereikbaar = 510)</text>
-<text x="470" y="789.0" fill="#CBD5E1" font-size="11.1">• gen_edge_input: input_edges [1, N, N, max_dist, 3]</text>
-<text x="470" y="810.0" fill="#CBD5E1" font-size="11.1">• attn_bias: FloatTensor [1, N+1, N+1] (mask &gt;= 20 → -inf)</text>
-<line x1="656.0" y1="874" x2="656.0" y2="889" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
-<rect x="458" y="892" width="396" height="108" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
-<text x="470" y="913" fill="#F8FAFC" font-size="12.2" font-weight="700">2E. genormeerde 9D Descriptor Tensor</text>
-<rect x="728.5" y="898" width="117.5" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
-<text x="787.2" y="911.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">FloatTensor [1, 9]</text>
-<line x1="468" y1="920" x2="844" y2="920" stroke="#1E293B" stroke-width="1" />
-<text x="470" y="937.0" fill="#CBD5E1" font-size="11.1">• [MW/500, LogP/5, TPSA/120, HBD/5, HBA/10,</text>
-<text x="470" y="958.0" fill="#CBD5E1" font-size="11.1">   Ringen/5, Halogenen/6, CF3/2, Sulfonamide] → [1, 9]</text>
+<line x1="656.0" y1="331" x2="656.0" y2="346" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
+<rect x="458" y="349" width="396" height="203" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
+<text x="470" y="370" fill="#F8FAFC" font-size="9.4" font-weight="700">2B. OGB Categorische Feature Extractie</text>
+<rect x="683.4" y="355" width="162.6" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
+<text x="764.7" y="368.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">Nodes [N,9] | Edges [2E,3]</text>
+<line x1="468" y1="377" x2="844" y2="377" stroke="#1E293B" stroke-width="1" />
+<text x="470" y="394.0" fill="#CBD5E1" font-size="11.1">• atom_to_ogb_features: 9 eigenschappen per atoom [N, 9]</text>
+<text x="470" y="415.0" fill="#CBD5E1" font-size="11.1">  (atoomnr, chiraliteit, graad, lading, #H, rad., hybr., arom., ring)</text>
+<text x="470" y="436.0" fill="#CBD5E1" font-size="11.1">• bond_to_ogb_features: 3 eigenschappen per binding [2E, 3]</text>
+<text x="470" y="457.0" fill="#CBD5E1" font-size="11.1">  (bindingstype SINGLE/DOUBLE/..., stereo, conjugatie)</text>
+<line x1="656.0" y1="554" x2="656.0" y2="569" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
+<rect x="458" y="572" width="396" height="203" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
+<text x="470" y="593" fill="#F8FAFC" font-size="12.2" font-weight="700">2C. Single-Embedding Indexering</text>
+<rect x="762.3" y="578" width="83.7" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
+<text x="804.2" y="591.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">offset = 512</text>
+<line x1="468" y1="600" x2="844" y2="600" stroke="#1E293B" stroke-width="1" />
+<text x="470" y="617.0" fill="#CBD5E1" font-size="11.1">• convert_to_single_emb(x, offset=512) + 1</text>
+<text x="470" y="638.0" fill="#CBD5E1" font-size="11.1">• input_nodes: LongTensor [1, N, 9]</text>
+<text x="470" y="659.0" fill="#CBD5E1" font-size="11.1">• attn_edge_type: LongTensor [1, N, N, 3]</text>
+<text x="470" y="680.0" fill="#CBD5E1" font-size="11.1">• Centraliteit: in_degree [1, N] &amp; out_degree [1, N]</text>
+<line x1="656.0" y1="777" x2="656.0" y2="792" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
+<rect x="458" y="795" width="396" height="205" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
+<text x="470" y="816" fill="#F8FAFC" font-size="11.4" font-weight="700">2D. Floyd-Warshall Kortste-Pad Matrix</text>
+<rect x="722.8" y="801" width="123.2" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
+<text x="784.4" y="814.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">spatial_pos [1,N,N]</text>
+<line x1="468" y1="823" x2="844" y2="823" stroke="#1E293B" stroke-width="1" />
+<text x="470" y="840.0" fill="#CBD5E1" font-size="11.1">• floyd_warshall_with_path(adj): alle-paren kortste paden</text>
+<text x="470" y="861.0" fill="#CBD5E1" font-size="11.1">• spatial_pos: LongTensor [1, N, N] (onbereikbaar = 510)</text>
+<text x="470" y="882.0" fill="#CBD5E1" font-size="11.1">• gen_edge_input: input_edges [1, N, N, max_dist, 3]</text>
+<text x="470" y="903.0" fill="#CBD5E1" font-size="11.1">• attn_bias: FloatTensor [1, N+1, N+1] (mask &gt;= 20 → -inf)</text>
 <line x1="870" y1="556.0" x2="898" y2="556.0" stroke="#38BDF8" stroke-width="3.2" marker-end="url(#arrow-lr)" />
 <text x="884.0" y="546.0" text-anchor="middle" fill="#38BDF8" font-size="10.5" font-weight="800">STAP 2→3</text>
 <rect x="904" y="98" width="590" height="916" rx="12" fill="#151226" stroke="#A855F7" stroke-width="1.8" />
@@ -252,13 +244,13 @@
 <text x="928" y="776.0" fill="#CBD5E1" font-size="11.1">• Originele PCQM4Mv2 Head: nn.Linear(768 → 1) → HOMO-LUMO Gap (eV)</text>
 <line x1="1199.0" y1="835" x2="1199.0" y2="850" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
 <rect x="916" y="853" width="566" height="147" rx="8" fill="#0F172A" stroke="#A855F7" stroke-width="1.3" />
-<text x="928" y="874" fill="#F8FAFC" font-size="12.2" font-weight="700">Laag 16: Downstream MIE Classificatie Head (Finetuned)</text>
+<text x="928" y="874" fill="#F8FAFC" font-size="12.2" font-weight="700">Laag 16: LOOCV Nearest-Prototype Classificatie</text>
 <rect x="1350.8" y="859" width="123.2" height="20" rx="5" fill="#0B1120" stroke="#10B981" stroke-width="1" />
 <text x="1412.4" y="872.5" text-anchor="middle" fill="#10B981" font-size="9.4" font-family="monospace" font-weight="700">Out: Softmax [1, 3]</text>
 <line x1="926" y1="881" x2="1472" y2="881" stroke="#1E293B" stroke-width="1" />
-<text x="928" y="898.0" fill="#CBD5E1" font-size="11.1">• Tak A (Graphormer Head): LayerNorm(768) → Linear(768→768) → Act → Linear(768→3)</text>
-<text x="928" y="919.0" fill="#CBD5E1" font-size="11.1">• Tak B (Farmacofoor Head): nn.Linear(9 → 3) op 9D RDKit descriptoren</text>
-<text x="928" y="940.0" fill="#CBD5E1" font-size="11.1">• Logit Fusie: logits = (0.70 · Tak_A + 0.30 · Tak_B) / 0.85 → F.softmax [1, 3]</text>
+<text x="928" y="898.0" fill="#CBD5E1" font-size="11.1">• L2-normalisatie van de 768D [CLS] vector: z = F.normalize(h_graph)</text>
+<text x="928" y="919.0" fill="#CBD5E1" font-size="11.1">• Leave-One-Out klasse-centroids c_k op N=11 train-moleculen</text>
+<text x="928" y="940.0" fill="#CBD5E1" font-size="11.1">• Logits = 14.0 · (z @ c_k^T) → F.softmax [1, 3] (pure 768D gelijkenis)</text>
 <line x1="1498" y1="556.0" x2="1526" y2="556.0" stroke="#38BDF8" stroke-width="3.2" marker-end="url(#arrow-lr)" />
 <text x="1512.0" y="546.0" text-anchor="middle" fill="#38BDF8" font-size="10.5" font-weight="800">STAP 3→4</text>
 <rect x="1532" y="98" width="420" height="916" rx="12" fill="#0D1F1D" stroke="#10B981" stroke-width="1.8" />
@@ -276,14 +268,14 @@
 <text x="1556" y="251.0" fill="#CBD5E1" font-size="11.1">• Cosinus-similariteitsmatrix [12, 12]</text>
 <line x1="1742.0" y1="360" x2="1742.0" y2="375" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
 <rect x="1544" y="378" width="396" height="238" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="1.3" />
-<text x="1556" y="399" fill="#F8FAFC" font-size="12.2" font-weight="700">4B. MIE Trigger Kansverdeling</text>
+<text x="1556" y="399" fill="#F8FAFC" font-size="12.2" font-weight="700">4B. MIE Trigger Kansverdeling (LOOCV)</text>
 <rect x="1837.0" y="384" width="95.0" height="20" rx="5" fill="#0B1120" stroke="#10B981" stroke-width="1" />
 <text x="1884.5" y="397.5" text-anchor="middle" fill="#10B981" font-size="9.4" font-family="monospace" font-weight="700">Tensor [12, 3]</text>
 <line x1="1554" y1="406" x2="1930" y2="406" stroke="#1E293B" stroke-width="1" />
 <text x="1556" y="423.0" fill="#CBD5E1" font-size="11.1">• P(Klasse 0): Geen MIE / Adaptieve Homeostase</text>
 <text x="1556" y="444.0" fill="#CBD5E1" font-size="11.1">• P(Klasse 1): MIE 167 (NR1H3 / LXRα → Steatose)</text>
 <text x="1556" y="465.0" fill="#CBD5E1" font-size="11.1">• P(Klasse 2): MIE 41 (ABCB11 / BSEP → Cholestase)</text>
-<text x="1556" y="486.0" fill="#CBD5E1" font-size="11.1">• Accuraatheid: 12/12 (100% Full) | 8/12 LOOCV</text>
+<text x="1556" y="486.0" fill="#CBD5E1" font-size="11.1">• Eerlijke LOOCV: 4/12 (33.3%, kansniveau; mist bioassay-training)</text>
 <line x1="1742.0" y1="618" x2="1742.0" y2="633" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
 <rect x="1544" y="636" width="396" height="149" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="1.3" />
 <text x="1556" y="657" fill="#F8FAFC" font-size="12.2" font-weight="700">4C. Verklaarbaarheid per Atoom</text>
@@ -319,8 +311,7 @@
         P2[&quot;OGB Categorische Feature Extractie&lt;br/&gt;• 9 Atoom-features: [N, 9] (atoomnr, chiraliteit, graad, lading, H, rad., hybr., arom., ring)&lt;br/&gt;• 3 Binding-features: [E, 3] (type, stereo, conjugatie)&quot;]
         P3[&quot;Single-Embedding Indexering (offset=512)&lt;br/&gt;• input_nodes: LongTensor [1, N, 9]&lt;br/&gt;• attn_edge_type: LongTensor [1, N, N, 3]&lt;br/&gt;• in_degree &amp; out_degree: LongTensor [1, N]&quot;]
         P4[&quot;Floyd-Warshall Kortste-Pad Algoritme&lt;br/&gt;• spatial_pos: LongTensor [1, N, N] (max_dist=20, onbereikbaar=510)&lt;br/&gt;• input_edges (kortste-pad bindingen): LongTensor [1, N, N, max_dist, 3]&lt;br/&gt;• attn_bias: FloatTensor [1, N+1, N+1]&quot;]
-        P5[&quot;Fysicochemische &amp; Farmacofoor Descriptoren&lt;br/&gt;RDKit 9D Vector: FloatTensor [1, 9]&lt;br/&gt;(MW, LogP, TPSA, HBD, HBA, Ringen, Halogenen, CF3, Sulfonamide)&quot;]
-        P1 --&gt; P2 --&gt; P3 --&gt; P4 --&gt; P5
+        P1 --&gt; P2 --&gt; P3 --&gt; P4
     end
 
     subgraph MODEL[&quot;3. AI-Model Architectuur: Microsoft Graphormer (Boven → Beneden)&quot;]
@@ -329,7 +320,7 @@
         M2[&quot;Laag 2 — GraphAttnBias Spatial &amp; Edge Bias (Bevroren)&lt;br/&gt;• Spatial Pos Bias: nn.Embedding(512, 32) → [1, 32, N+1, N+1]&lt;br/&gt;• Edge Path Encoding: nn.Embedding(1537, 32) langs kortste pad → [1, 32, N+1, N+1]&lt;br/&gt;• [VNode] Reset Distance Bias: nn.Embedding(1, 32)&quot;]
         M3[&quot;Laag 3..14 — 12× Pre-LN Graphormer Encoder Layers (47.7M params, Bevroren)&lt;br/&gt;Per laag l = 1..12:&lt;br/&gt;• Sublaag A: LayerNorm(768) → MultiheadAttention(d=768, heads=32, d_head=24, +AttnBias) → Residual [1, N+1, 768]&lt;br/&gt;• Sublaag B: LayerNorm(768) → Linear(768 → 768) → GELU → Linear(768 → 768) → Residual [1, N+1, 768]&quot;]
         M4[&quot;Laag 15 — Encoder Final LayerNorm &amp; Representatie Split (Bevroren)&lt;br/&gt;• Moleculaire [CLS] Graph Embedding: h_graph = H[:, 0, :] → FloatTensor [1, 768]&lt;br/&gt;• Atoom Embeddings: H[:, 1:, :] → FloatTensor [N, 768] (Cosinus × L2 Saliency)&lt;br/&gt;• PCQM4Mv2 Regressie Head: Linear(768 → 1) → HOMO-LUMO Gap (eV)&quot;]
-        M5[&quot;Laag 16 — Downstream MIE Classificatie Head (Gekalibreerd / Finetuned)&lt;br/&gt;• Tak A (Graphormer Classifier): LayerNorm(768) → Linear(768 → 768) → GELU → Linear(768 → 3)&lt;br/&gt;• Tak B (Farmacofoor Head): Linear(9 → 3)&lt;br/&gt;• Logit Fusie &amp; Temperatuur Schaling: (0.70·Tak A + 0.30·Tak B) / 0.85 → Softmax [1, 3]&quot;]
+        M5[&quot;Laag 16 — LOOCV Nearest-Prototype Classificatie (768D [CLS] Alleen)&lt;br/&gt;• L2-Normalisatie op h_graph [1, 768]&lt;br/&gt;• Leave-One-Out Klasse-Centroids (N=11 train, N=1 test)&lt;br/&gt;• Cosinus-Similariteit × τ (τ=14.0) → Softmax [1, 3]&quot;]
         M1 --&gt; M2 --&gt; M3 --&gt; M4 --&gt; M5
     end
 
@@ -416,7 +407,7 @@
 <line x1="446" y1="150" x2="866" y2="150" stroke="#F59E0B" stroke-width="1.2" stroke-opacity="0.6" />
 <text x="462" y="122" fill="#F8FAFC" font-size="14" font-weight="800">2. BEWERKING (PREPROCESSING)</text>
 <text x="462" y="140" fill="#F59E0B" font-size="11" font-weight="600">Boven ↓ Beneden: SMILES → SELFIES &amp; Token-Tensoren</text>
-<rect x="458" y="164" width="396" height="194" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
+<rect x="458" y="164" width="396" height="246" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
 <text x="470" y="185" fill="#F8FAFC" font-size="12.2" font-weight="700">2A. RDKit SMILES Canonicalisatie</text>
 <rect x="739.8" y="170" width="106.2" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
 <text x="792.9" y="183.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">Canonieke SMILES</text>
@@ -424,33 +415,25 @@
 <text x="470" y="209.0" fill="#CBD5E1" font-size="11.1">• Chem.MolFromSmiles(smiles)</text>
 <text x="470" y="230.0" fill="#CBD5E1" font-size="11.1">• Chem.MolToSmiles(mol, canonical=True)</text>
 <text x="470" y="251.0" fill="#CBD5E1" font-size="11.1">• Garandeert unieke atoomvolgorde vóór string-codering</text>
-<line x1="656.0" y1="360" x2="656.0" y2="375" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
-<rect x="458" y="378" width="396" height="194" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
-<text x="470" y="399" fill="#F8FAFC" font-size="12.2" font-weight="700">2B. SELFIES Grammatica Transformatie</text>
-<rect x="751.0" y="384" width="95.0" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
-<text x="798.5" y="397.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">L_raw Symbolen</text>
-<line x1="468" y1="406" x2="844" y2="406" stroke="#1E293B" stroke-width="1" />
-<text x="470" y="423.0" fill="#CBD5E1" font-size="11.1">• selfies.encoder(canon_smiles) → 100% valide SELFIES string</text>
-<text x="470" y="444.0" fill="#CBD5E1" font-size="11.1">• selfies.split_selfies(selfies_str) → lijst van L_raw tokens</text>
-<text x="470" y="465.0" fill="#CBD5E1" font-size="11.1">  (bijv. [C], [Branch1], [Ring1], [=O], [S], [F], ...)</text>
-<line x1="656.0" y1="574" x2="656.0" y2="589" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
-<rect x="458" y="592" width="396" height="238" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
-<text x="470" y="613" fill="#F8FAFC" font-size="12.2" font-weight="700">2C. Vocabulaire Indexering &amp; Masking</text>
-<rect x="734.1" y="598" width="111.9" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
-<text x="790.1" y="611.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">LongTensor [1, L]</text>
-<line x1="468" y1="620" x2="844" y2="620" stroke="#1E293B" stroke-width="1" />
-<text x="470" y="637.0" fill="#CBD5E1" font-size="11.1">• Omring met start/eind tokens: [&#x27;&lt;sos&gt;&#x27;] + raw_tokens + [&#x27;&lt;eos&gt;&#x27;]</text>
-<text x="470" y="658.0" fill="#CBD5E1" font-size="11.1">• Encoder Input inp: LongTensor [1, L] (met L = L_raw + 2)</text>
-<text x="470" y="679.0" fill="#CBD5E1" font-size="11.1">• Decoder Prompt sep_out: LongTensor [[6230]] van vorm [1, 1]</text>
-<text x="470" y="700.0" fill="#CBD5E1" font-size="11.1">• Padding Mask: src_padding_mask = inp.eq(0) → BoolTensor [1, L]</text>
-<line x1="656.0" y1="832" x2="656.0" y2="847" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
-<rect x="458" y="850" width="396" height="150" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
-<text x="470" y="871" fill="#F8FAFC" font-size="12.2" font-weight="700">2D. Genormeerde 9D Descriptor Tensor</text>
-<rect x="728.5" y="856" width="117.5" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
-<text x="787.2" y="869.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">FloatTensor [1, 9]</text>
-<line x1="468" y1="878" x2="844" y2="878" stroke="#1E293B" stroke-width="1" />
-<text x="470" y="895.0" fill="#CBD5E1" font-size="11.1">• RDKit 9D farmacofoor- &amp; fysicochemische vector [1, 9]</text>
-<text x="470" y="916.0" fill="#CBD5E1" font-size="11.1">• (MW, LogP, TPSA, HBD, HBA, Ringen, Halogenen, CF3, Sulfonamide)</text>
+<line x1="656.0" y1="412" x2="656.0" y2="427" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
+<rect x="458" y="430" width="396" height="246" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
+<text x="470" y="451" fill="#F8FAFC" font-size="12.2" font-weight="700">2B. SELFIES Grammatica Transformatie</text>
+<rect x="751.0" y="436" width="95.0" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
+<text x="798.5" y="449.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">L_raw Symbolen</text>
+<line x1="468" y1="458" x2="844" y2="458" stroke="#1E293B" stroke-width="1" />
+<text x="470" y="475.0" fill="#CBD5E1" font-size="11.1">• selfies.encoder(canon_smiles) → 100% valide SELFIES string</text>
+<text x="470" y="496.0" fill="#CBD5E1" font-size="11.1">• selfies.split_selfies(selfies_str) → lijst van L_raw tokens</text>
+<text x="470" y="517.0" fill="#CBD5E1" font-size="11.1">  (bijv. [C], [Branch1], [Ring1], [=O], [S], [F], ...)</text>
+<line x1="656.0" y1="678" x2="656.0" y2="693" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
+<rect x="458" y="696" width="396" height="304" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.3" />
+<text x="470" y="717" fill="#F8FAFC" font-size="12.2" font-weight="700">2C. Vocabulaire Indexering &amp; Masking</text>
+<rect x="734.1" y="702" width="111.9" height="20" rx="5" fill="#0B1120" stroke="#F59E0B" stroke-width="1" />
+<text x="790.1" y="715.5" text-anchor="middle" fill="#F59E0B" font-size="9.4" font-family="monospace" font-weight="700">LongTensor [1, L]</text>
+<line x1="468" y1="724" x2="844" y2="724" stroke="#1E293B" stroke-width="1" />
+<text x="470" y="741.0" fill="#CBD5E1" font-size="11.1">• Omring met start/eind tokens: [&#x27;&lt;sos&gt;&#x27;] + raw_tokens + [&#x27;&lt;eos&gt;&#x27;]</text>
+<text x="470" y="762.0" fill="#CBD5E1" font-size="11.1">• Encoder Input inp: LongTensor [1, L] (met L = L_raw + 2)</text>
+<text x="470" y="783.0" fill="#CBD5E1" font-size="11.1">• Decoder Prompt sep_out: LongTensor [[6230]] van vorm [1, 1]</text>
+<text x="470" y="804.0" fill="#CBD5E1" font-size="11.1">• Padding Mask: src_padding_mask = inp.eq(0) → BoolTensor [1, L]</text>
 <line x1="870" y1="556.0" x2="898" y2="556.0" stroke="#C084FC" stroke-width="3.2" marker-end="url(#arrow-lr)" />
 <text x="884.0" y="546.0" text-anchor="middle" fill="#C084FC" font-size="10.5" font-weight="800">STAP 2→3</text>
 <rect x="904" y="98" width="590" height="916" rx="12" fill="#151226" stroke="#A855F7" stroke-width="1.8" />
@@ -494,13 +477,13 @@
 <text x="928" y="749.0" fill="#CBD5E1" font-size="11.1">• Bioassay Slice [:, 2431:6228] → [1, 3797] → 12-bloks mean + LayerNorm(12) → [1, 12]</text>
 <line x1="1199.0" y1="822" x2="1199.0" y2="837" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
 <rect x="916" y="840" width="566" height="160" rx="8" fill="#0F172A" stroke="#A855F7" stroke-width="1.3" />
-<text x="928" y="861" fill="#F8FAFC" font-size="12.2" font-weight="700">Laag 14: Downstream MIE Classificatie Head (Finetuned)</text>
+<text x="928" y="861" fill="#F8FAFC" font-size="12.2" font-weight="700">Laag 14: LOOCV Nearest-Prototype Classificatie</text>
 <rect x="1350.8" y="846" width="123.2" height="20" rx="5" fill="#0B1120" stroke="#10B981" stroke-width="1" />
 <text x="1412.4" y="859.5" text-anchor="middle" fill="#10B981" font-size="9.4" font-family="monospace" font-weight="700">Out: Softmax [1, 3]</text>
 <line x1="926" y1="868" x2="1472" y2="868" stroke="#1E293B" stroke-width="1" />
 <text x="928" y="885.0" fill="#CBD5E1" font-size="11.1">• Feature Concatenatie: [h_tox (512D) || bioassay_summary (12D)] → Tensor [1, 524]</text>
-<text x="928" y="906.0" fill="#CBD5E1" font-size="11.1">• Tak A (MLP Head): Linear(524 → 64) → LayerNorm(64) → GELU → Linear(64 → 3)</text>
-<text x="928" y="927.0" fill="#CBD5E1" font-size="11.1">• Tak B (Farmacofoor): Linear(9 → 3) | Fusie: (0.72·Tak_A + 0.28·Tak_B)/0.85 → [1, 3]</text>
+<text x="928" y="906.0" fill="#CBD5E1" font-size="11.1">• L2-normalisatie + Leave-One-Out klasse-centroids c_k op N=11 train-moleculen</text>
+<text x="928" y="927.0" fill="#CBD5E1" font-size="11.1">• Logits = 14.0 · (z @ c_k^T) → F.softmax [1, 3] (pure 524D gelijkenis)</text>
 <line x1="1498" y1="556.0" x2="1526" y2="556.0" stroke="#C084FC" stroke-width="3.2" marker-end="url(#arrow-lr)" />
 <text x="1512.0" y="546.0" text-anchor="middle" fill="#C084FC" font-size="10.5" font-weight="800">STAP 3→4</text>
 <rect x="1532" y="98" width="420" height="916" rx="12" fill="#0D1F1D" stroke="#10B981" stroke-width="1.8" />
@@ -509,11 +492,11 @@
 <text x="1548" y="122" fill="#F8FAFC" font-size="14" font-weight="800">4. OUTPUT &amp; CONTRACT</text>
 <text x="1548" y="140" fill="#10B981" font-size="11" font-weight="600">Boven ↓ Beneden: Voorspellingen &amp; Bestanden</text>
 <rect x="1544" y="164" width="396" height="205" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="1.3" />
-<text x="1556" y="185" fill="#F8FAFC" font-size="12.2" font-weight="700">4A. 512D Multi-Expert Embedding</text>
+<text x="1556" y="185" fill="#F8FAFC" font-size="10.6" font-weight="700">4A. 512D Expert &amp; 524D Totaal-Representatie</text>
 <rect x="1825.8" y="170" width="106.2" height="20" rx="5" fill="#0B1120" stroke="#10B981" stroke-width="1" />
-<text x="1878.9" y="183.5" text-anchor="middle" fill="#10B981" font-size="9.4" font-family="monospace" font-weight="700">Tensor [12, 512]</text>
+<text x="1878.9" y="183.5" text-anchor="middle" fill="#10B981" font-size="9.4" font-family="monospace" font-weight="700">Tensor [12, 524]</text>
 <line x1="1554" y1="192" x2="1930" y2="192" stroke="#1E293B" stroke-width="1" />
-<text x="1556" y="209.0" fill="#CBD5E1" font-size="11.1">• toxtransformer_embeddings [12, 512]</text>
+<text x="1556" y="209.0" fill="#CBD5E1" font-size="11.1">• toxtransformer_embeddings [12, 512] + 12D bioassay [12, 12]</text>
 <text x="1556" y="230.0" fill="#CBD5E1" font-size="11.1">• 2D PCA/SVD Projectie: toxtransformer_pca_coords_2d [12, 2]</text>
 <text x="1556" y="251.0" fill="#CBD5E1" font-size="11.1">• Per-SELFIES-token Saliency [L_raw]</text>
 <line x1="1742.0" y1="371" x2="1742.0" y2="386" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
@@ -527,12 +510,12 @@
 <text x="1556" y="476.0" fill="#CBD5E1" font-size="11.1">• Expert Gating gewichten (w_exp0, w_exp1)</text>
 <line x1="1742.0" y1="596" x2="1742.0" y2="611" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
 <rect x="1544" y="614" width="396" height="158" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="1.3" />
-<text x="1556" y="635" fill="#F8FAFC" font-size="12.2" font-weight="700">4C. MIE Kansen &amp; Dual Consensus</text>
+<text x="1556" y="635" fill="#F8FAFC" font-size="12.2" font-weight="700">4C. MIE Kansen &amp; Dual Consensus (LOOCV)</text>
 <rect x="1837.0" y="620" width="95.0" height="20" rx="5" fill="#0B1120" stroke="#10B981" stroke-width="1" />
 <text x="1884.5" y="633.5" text-anchor="middle" fill="#10B981" font-size="9.4" font-family="monospace" font-weight="700">Tensor [12, 3]</text>
 <line x1="1554" y1="642" x2="1930" y2="642" stroke="#1E293B" stroke-width="1" />
-<text x="1556" y="659.0" fill="#CBD5E1" font-size="11.1">• ToxTransformer MIE kansen: P(Geen), P(MIE 167), P(MIE 41)</text>
-<text x="1556" y="680.0" fill="#CBD5E1" font-size="11.1">• 50/50 Consensus met Microsoft Graphormer: 12/12 (100%)</text>
+<text x="1556" y="659.0" fill="#CBD5E1" font-size="11.1">• ToxTransformer LOOCV: 9/12 (75.0%, F1=0.741)</text>
+<text x="1556" y="680.0" fill="#CBD5E1" font-size="11.1">• 50/50 Kans-Fusie met Graphormer: 10/12 (83.3%, F1=0.832)</text>
 <line x1="1742.0" y1="774" x2="1742.0" y2="789" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrow-tb)" />
 <rect x="1544" y="792" width="396" height="208" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="1.3" />
 <text x="1556" y="813" fill="#F8FAFC" font-size="10.2" font-weight="700">4D. Opgeslagen Bestanden (Contract M2/M4)</text>
@@ -560,8 +543,7 @@
         TP1[&quot;RDKit SMILES Canonicalisatie&lt;br/&gt;Ruwe SMILES → Canonieke Isomere SMILES&quot;]
         TP2[&quot;SELFIES String Transformatie (selfies.encoder)&lt;br/&gt;100% Valide Moleculaire Grammatica&lt;br/&gt;Splitsing in L_raw chemische symbolen: [Branch], [Ring], [C], [=O], ...&quot;]
         TP3[&quot;SelfiesPropertyValTokenizer Codering&lt;br/&gt;• Encoder Input: [&lt;sos&gt;] + SELFIES tokens + [&lt;eos&gt;] → LongTensor [1, L]&lt;br/&gt;• Decoder Prompt Token: [&lt;sep&gt;] (idx=6230) → LongTensor [1, 1]&lt;br/&gt;• Padding Mask: inp.eq(pad_idx) → BoolTensor [1, L]&quot;]
-        TP4[&quot;Fysicochemische &amp; Farmacofoor Descriptoren&lt;br/&gt;RDKit 9D Vector: FloatTensor [1, 9]&quot;]
-        TP1 --&gt; TP2 --&gt; TP3 --&gt; TP4
+        TP1 --&gt; TP2 --&gt; TP3
     end
 
     subgraph MODEL2[&quot;3. AI-Model Architectuur: ToxTransformer MoE (Boven → Beneden)&quot;]
@@ -570,7 +552,7 @@
         TM2[&quot;Laag 2..5 — Parallelle Mixture-of-Experts Encoders (25.4M params, Bevroren)&lt;br/&gt;• Expert 0 Encoder: 4× TransformerEncoderLayer(d=256, heads=8, d_ff=256) → mem0 [1, L, 256]&lt;br/&gt;• Expert 1 Encoder: 4× TransformerEncoderLayer(d=256, heads=8, d_ff=256) → mem1 [1, L, 256]&lt;br/&gt;• Mean Pooling (excl. &lt;sos&gt;/&lt;eos&gt;): mean_exp0 [1, 256] || mean_exp1 [1, 256] → h_tox [1, 512]&quot;]
         TM3[&quot;Laag 6..9 — Transformer Gating Network (4 Enc + 4 Dec Lagen, Bevroren)&lt;br/&gt;• Gating Encoder (4× d=256, 8 heads) + Gating Decoder (4× d=256, 8 heads) op [&lt;sep&gt;]&lt;br/&gt;• Readout: LayerNorm(256) → Linear(256 → 2) → Softmax → Expert Gewichten (w0, w1) [1, 2]&quot;]
         TM4[&quot;Laag 10..13 — Autoregressieve Bioassay Decoders (2 Experts × 4 Dec Lagen, Bevroren)&lt;br/&gt;• Expert 0 &amp; 1 Decoder: 4× TransformerDecoderLayer(d=256, heads=8, d_ff=256)&lt;br/&gt;• Vocab Projectie: LayerNorm(256) → Linear(256 → 6232) → w0·dec0 + w1·dec1 [1, 6232]&lt;br/&gt;• Bioassay Slice (idx 2431..6228): [1, 3797] → 12-Bloks Pool + LayerNorm(12) → [1, 12]&quot;]
-        TM5[&quot;Laag 14 — Downstream MIE Classificatie Head (Gekalibreerd / Finetuned)&lt;br/&gt;• Concatenatie: [h_tox (512D) || bioassay_summary (12D)] → FloatTensor [1, 524]&lt;br/&gt;• Tak A (MLP Head): Linear(524 → 64) → LayerNorm(64) → GELU → Linear(64 → 3)&lt;br/&gt;• Tak B (Farmacofoor Head): Linear(9 → 3)&lt;br/&gt;• Logit Fusie &amp; Temperatuur Schaling: (0.72·Tak A + 0.28·Tak B) / 0.85 → Softmax [1, 3]&quot;]
+        TM5[&quot;Laag 14 — LOOCV Nearest-Prototype Classificatie (524D Representatie)&lt;br/&gt;• Concatenatie: [h_tox (512D) || bioassay_summary (12D)] → FloatTensor [1, 524]&lt;br/&gt;• L2-Normalisatie + Leave-One-Out Klasse-Centroids (N=11 train, N=1 test)&lt;br/&gt;• Cosinus-Similariteit × τ (τ=14.0) → Softmax [1, 3]&quot;]
         TM1 --&gt; TM2 --&gt; TM3 --&gt; TM4 --&gt; TM5
     end
 

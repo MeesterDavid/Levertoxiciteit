@@ -192,13 +192,13 @@ def load_molecular_metrics() -> dict:
     compounds = mol["compounds"]
     validation = mol.get("validation") or {}
 
-    graph = validation.get("graphormer")
-    if graph:
-        matrix = [[int(value) for value in row] for row in graph["confusion_matrix"]]
-        n_correct = int(graph["n_correct"])
-        mean_p = float(graph["mean_p_true_class"])
-        min_p = float(graph["min_p_true_class"])
-        max_p = float(graph["max_p_true_class"])
+    consensus = validation.get("consensus") or validation.get("graphormer")
+    if consensus:
+        matrix = [[int(value) for value in row] for row in consensus["confusion_matrix"]]
+        n_correct = int(consensus["n_correct"])
+        mean_p = float(consensus["mean_p_true_class"])
+        min_p = float(consensus["min_p_true_class"])
+        max_p = float(consensus["max_p_true_class"])
     else:  # older cache without the `validation` block
         matrix, true_probs = _loocv_confusion(compounds, LOOCV_MODEL_BLOCKS["graphormer"])
         n_correct = sum(matrix[i][i] for i in range(3))

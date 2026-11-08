@@ -33,8 +33,7 @@ MERMAID_GRAPHORMER = """flowchart LR
         P2["OGB Categorische Feature Extractie<br/>• 9 Atoom-features: [N, 9] (atoomnr, chiraliteit, graad, lading, H, rad., hybr., arom., ring)<br/>• 3 Binding-features: [E, 3] (type, stereo, conjugatie)"]
         P3["Single-Embedding Indexering (offset=512)<br/>• input_nodes: LongTensor [1, N, 9]<br/>• attn_edge_type: LongTensor [1, N, N, 3]<br/>• in_degree & out_degree: LongTensor [1, N]"]
         P4["Floyd-Warshall Kortste-Pad Algoritme<br/>• spatial_pos: LongTensor [1, N, N] (max_dist=20, onbereikbaar=510)<br/>• input_edges (kortste-pad bindingen): LongTensor [1, N, N, max_dist, 3]<br/>• attn_bias: FloatTensor [1, N+1, N+1]"]
-        P5["Fysicochemische & Farmacofoor Descriptoren<br/>RDKit 9D Vector: FloatTensor [1, 9]<br/>(MW, LogP, TPSA, HBD, HBA, Ringen, Halogenen, CF3, Sulfonamide)"]
-        P1 --> P2 --> P3 --> P4 --> P5
+        P1 --> P2 --> P3 --> P4
     end
 
     subgraph MODEL["3. AI-Model Architectuur: Microsoft Graphormer (Boven → Beneden)"]
@@ -43,7 +42,7 @@ MERMAID_GRAPHORMER = """flowchart LR
         M2["Laag 2 — GraphAttnBias Spatial & Edge Bias (Bevroren)<br/>• Spatial Pos Bias: nn.Embedding(512, 32) → [1, 32, N+1, N+1]<br/>• Edge Path Encoding: nn.Embedding(1537, 32) langs kortste pad → [1, 32, N+1, N+1]<br/>• [VNode] Reset Distance Bias: nn.Embedding(1, 32)"]
         M3["Laag 3..14 — 12× Pre-LN Graphormer Encoder Layers (47.7M params, Bevroren)<br/>Per laag l = 1..12:<br/>• Sublaag A: LayerNorm(768) → MultiheadAttention(d=768, heads=32, d_head=24, +AttnBias) → Residual [1, N+1, 768]<br/>• Sublaag B: LayerNorm(768) → Linear(768 → 768) → GELU → Linear(768 → 768) → Residual [1, N+1, 768]"]
         M4["Laag 15 — Encoder Final LayerNorm & Representatie Split (Bevroren)<br/>• Moleculaire [CLS] Graph Embedding: h_graph = H[:, 0, :] → FloatTensor [1, 768]<br/>• Atoom Embeddings: H[:, 1:, :] → FloatTensor [N, 768] (Cosinus × L2 Saliency)<br/>• PCQM4Mv2 Regressie Head: Linear(768 → 1) → HOMO-LUMO Gap (eV)"]
-        M5["Laag 16 — Downstream MIE Classificatie Head (Gekalibreerd / Finetuned)<br/>• Tak A (Graphormer Classifier): LayerNorm(768) → Linear(768 → 768) → GELU → Linear(768 → 3)<br/>• Tak B (Farmacofoor Head): Linear(9 → 3)<br/>• Logit Fusie & Temperatuur Schaling: (0.70·Tak A + 0.30·Tak B) / 0.85 → Softmax [1, 3]"]
+        M5["Laag 16 — LOOCV Nearest-Prototype Classificatie (768D [CLS] Alleen)<br/>• L2-Normalisatie op h_graph [1, 768]<br/>• Leave-One-Out Klasse-Centroids (N=11 train, N=1 test)<br/>• Cosinus-Similariteit × τ (τ=14.0) → Softmax [1, 3]"]
         M1 --> M2 --> M3 --> M4 --> M5
     end
 
@@ -74,8 +73,7 @@ MERMAID_TOXTRANSFORMER = """flowchart LR
         TP1["RDKit SMILES Canonicalisatie<br/>Ruwe SMILES → Canonieke Isomere SMILES"]
         TP2["SELFIES String Transformatie (selfies.encoder)<br/>100% Valide Moleculaire Grammatica<br/>Splitsing in L_raw chemische symbolen: [Branch], [Ring], [C], [=O], ..."]
         TP3["SelfiesPropertyValTokenizer Codering<br/>• Encoder Input: [<sos>] + SELFIES tokens + [<eos>] → LongTensor [1, L]<br/>• Decoder Prompt Token: [<sep>] (idx=6230) → LongTensor [1, 1]<br/>• Padding Mask: inp.eq(pad_idx) → BoolTensor [1, L]"]
-        TP4["Fysicochemische & Farmacofoor Descriptoren<br/>RDKit 9D Vector: FloatTensor [1, 9]"]
-        TP1 --> TP2 --> TP3 --> TP4
+        TP1 --> TP2 --> TP3
     end
 
     subgraph MODEL2["3. AI-Model Architectuur: ToxTransformer MoE (Boven → Beneden)"]
@@ -84,7 +82,7 @@ MERMAID_TOXTRANSFORMER = """flowchart LR
         TM2["Laag 2..5 — Parallelle Mixture-of-Experts Encoders (25.4M params, Bevroren)<br/>• Expert 0 Encoder: 4× TransformerEncoderLayer(d=256, heads=8, d_ff=256) → mem0 [1, L, 256]<br/>• Expert 1 Encoder: 4× TransformerEncoderLayer(d=256, heads=8, d_ff=256) → mem1 [1, L, 256]<br/>• Mean Pooling (excl. <sos>/<eos>): mean_exp0 [1, 256] || mean_exp1 [1, 256] → h_tox [1, 512]"]
         TM3["Laag 6..9 — Transformer Gating Network (4 Enc + 4 Dec Lagen, Bevroren)<br/>• Gating Encoder (4× d=256, 8 heads) + Gating Decoder (4× d=256, 8 heads) op [<sep>]<br/>• Readout: LayerNorm(256) → Linear(256 → 2) → Softmax → Expert Gewichten (w0, w1) [1, 2]"]
         TM4["Laag 10..13 — Autoregressieve Bioassay Decoders (2 Experts × 4 Dec Lagen, Bevroren)<br/>• Expert 0 & 1 Decoder: 4× TransformerDecoderLayer(d=256, heads=8, d_ff=256)<br/>• Vocab Projectie: LayerNorm(256) → Linear(256 → 6232) → w0·dec0 + w1·dec1 [1, 6232]<br/>• Bioassay Slice (idx 2431..6228): [1, 3797] → 12-Bloks Pool + LayerNorm(12) → [1, 12]"]
-        TM5["Laag 14 — Downstream MIE Classificatie Head (Gekalibreerd / Finetuned)<br/>• Concatenatie: [h_tox (512D) || bioassay_summary (12D)] → FloatTensor [1, 524]<br/>• Tak A (MLP Head): Linear(524 → 64) → LayerNorm(64) → GELU → Linear(64 → 3)<br/>• Tak B (Farmacofoor Head): Linear(9 → 3)<br/>• Logit Fusie & Temperatuur Schaling: (0.72·Tak A + 0.28·Tak B) / 0.85 → Softmax [1, 3]"]
+        TM5["Laag 14 — LOOCV Nearest-Prototype Classificatie (524D Representatie)<br/>• Concatenatie: [h_tox (512D) || bioassay_summary (12D)] → FloatTensor [1, 524]<br/>• L2-Normalisatie + Leave-One-Out Klasse-Centroids (N=11 train, N=1 test)<br/>• Cosinus-Similariteit × τ (τ=14.0) → Softmax [1, 3]"]
         TM1 --> TM2 --> TM3 --> TM4 --> TM5
     end
 
@@ -326,11 +324,11 @@ def build_graphormer_svg() -> str:
                     ],
                 },
                 {
-                    "heading": "1D. Farmacofoor & Fysicochemische Regels",
-                    "badge": "SMARTS + RDKit",
+                    "heading": "1D. Evaluatieprotocol: Leave-One-Out (LOOCV)",
+                    "badge": "N=11 Train | N=1 Test",
                     "lines": [
-                        "• LXRα / BSEP farmacofoor-motieven: -CF3 & -SO2NH- groepen",
-                        "• Lipofiliciteit (Crippen LogP), TPSA, MW, HBD/HBA, Halogenen",
+                        "• Geen handgemaakte RDKit farmacofoor-cheat of -CF3/-SO2NH- regels",
+                        "• Puur op basis van de 768D [CLS] foundation-representatie",
                     ],
                 },
             ],
@@ -378,14 +376,6 @@ def build_graphormer_svg() -> str:
                         "• spatial_pos: LongTensor [1, N, N] (onbereikbaar = 510)",
                         "• gen_edge_input: input_edges [1, N, N, max_dist, 3]",
                         "• attn_bias: FloatTensor [1, N+1, N+1] (mask >= 20 → -inf)",
-                    ],
-                },
-                {
-                    "heading": "2E. genormeerde 9D Descriptor Tensor",
-                    "badge": "FloatTensor [1, 9]",
-                    "lines": [
-                        "• [MW/500, LogP/5, TPSA/120, HBD/5, HBA/10,",
-                        "   Ringen/5, Halogenen/6, CF3/2, Sulfonamide] → [1, 9]",
                     ],
                 },
             ],
@@ -438,13 +428,13 @@ def build_graphormer_svg() -> str:
                     ],
                 },
                 {
-                    "heading": "Laag 16: Downstream MIE Classificatie Head (Finetuned)",
+                    "heading": "Laag 16: LOOCV Nearest-Prototype Classificatie",
                     "badge": "Out: Softmax [1, 3]",
                     "badge_color": "#10B981",
                     "lines": [
-                        "• Tak A (Graphormer Head): LayerNorm(768) → Linear(768→768) → Act → Linear(768→3)",
-                        "• Tak B (Farmacofoor Head): nn.Linear(9 → 3) op 9D RDKit descriptoren",
-                        "• Logit Fusie: logits = (0.70 · Tak_A + 0.30 · Tak_B) / 0.85 → F.softmax [1, 3]",
+                        "• L2-normalisatie van de 768D [CLS] vector: z = F.normalize(h_graph)",
+                        "• Leave-One-Out klasse-centroids c_k op N=11 train-moleculen",
+                        "• Logits = 14.0 · (z @ c_k^T) → F.softmax [1, 3] (pure 768D gelijkenis)",
                     ],
                 },
             ],
@@ -465,13 +455,13 @@ def build_graphormer_svg() -> str:
                     ],
                 },
                 {
-                    "heading": "4B. MIE Trigger Kansverdeling",
+                    "heading": "4B. MIE Trigger Kansverdeling (LOOCV)",
                     "badge": "Tensor [12, 3]",
                     "lines": [
                         "• P(Klasse 0): Geen MIE / Adaptieve Homeostase",
                         "• P(Klasse 1): MIE 167 (NR1H3 / LXRα → Steatose)",
                         "• P(Klasse 2): MIE 41 (ABCB11 / BSEP → Cholestase)",
-                        "• Accuraatheid: 12/12 (100% Full) | 8/12 LOOCV",
+                        "• Eerlijke LOOCV: 4/12 (33.3%, kansniveau; mist bioassay-training)",
                     ],
                 },
                 {
@@ -583,14 +573,6 @@ def build_toxtransformer_svg() -> str:
                         "• Padding Mask: src_padding_mask = inp.eq(0) → BoolTensor [1, L]",
                     ],
                 },
-                {
-                    "heading": "2D. Genormeerde 9D Descriptor Tensor",
-                    "badge": "FloatTensor [1, 9]",
-                    "lines": [
-                        "• RDKit 9D farmacofoor- & fysicochemische vector [1, 9]",
-                        "• (MW, LogP, TPSA, HBD, HBA, Ringen, Halogenen, CF3, Sulfonamide)",
-                    ],
-                },
             ],
         },
         {
@@ -639,13 +621,13 @@ def build_toxtransformer_svg() -> str:
                     ],
                 },
                 {
-                    "heading": "Laag 14: Downstream MIE Classificatie Head (Finetuned)",
+                    "heading": "Laag 14: LOOCV Nearest-Prototype Classificatie",
                     "badge": "Out: Softmax [1, 3]",
                     "badge_color": "#10B981",
                     "lines": [
                         "• Feature Concatenatie: [h_tox (512D) || bioassay_summary (12D)] → Tensor [1, 524]",
-                        "• Tak A (MLP Head): Linear(524 → 64) → LayerNorm(64) → GELU → Linear(64 → 3)",
-                        "• Tak B (Farmacofoor): Linear(9 → 3) | Fusie: (0.72·Tak_A + 0.28·Tak_B)/0.85 → [1, 3]",
+                        "• L2-normalisatie + Leave-One-Out klasse-centroids c_k op N=11 train-moleculen",
+                        "• Logits = 14.0 · (z @ c_k^T) → F.softmax [1, 3] (pure 524D gelijkenis)",
                     ],
                 },
             ],
@@ -657,10 +639,10 @@ def build_toxtransformer_svg() -> str:
             "bg": "#0D1F1D",
             "items": [
                 {
-                    "heading": "4A. 512D Multi-Expert Embedding",
-                    "badge": "Tensor [12, 512]",
+                    "heading": "4A. 512D Expert & 524D Totaal-Representatie",
+                    "badge": "Tensor [12, 524]",
                     "lines": [
-                        "• toxtransformer_embeddings [12, 512]",
+                        "• toxtransformer_embeddings [12, 512] + 12D bioassay [12, 12]",
                         "• 2D PCA/SVD Projectie: toxtransformer_pca_coords_2d [12, 2]",
                         "• Per-SELFIES-token Saliency [L_raw]",
                     ],
@@ -675,11 +657,11 @@ def build_toxtransformer_svg() -> str:
                     ],
                 },
                 {
-                    "heading": "4C. MIE Kansen & Dual Consensus",
+                    "heading": "4C. MIE Kansen & Dual Consensus (LOOCV)",
                     "badge": "Tensor [12, 3]",
                     "lines": [
-                        "• ToxTransformer MIE kansen: P(Geen), P(MIE 167), P(MIE 41)",
-                        "• 50/50 Consensus met Microsoft Graphormer: 12/12 (100%)",
+                        "• ToxTransformer LOOCV: 9/12 (75.0%, F1=0.741)",
+                        "• 50/50 Kans-Fusie met Graphormer: 10/12 (83.3%, F1=0.832)",
                     ],
                 },
                 {
