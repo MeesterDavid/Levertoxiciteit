@@ -64,7 +64,7 @@ class="nam-img"
 <div class="panel kwestie-panel">
 <div class="panel-header">
 <span class="badge badge-rose">2. Expanding on Linear AOPs</span>
-<span class="panel-subtitle">This research will deliver a toolbox for the development of quantitative AOP's. From linear chains to dynamic, quantitative systems predicting <span class="math-badge"><em>P</em>(<em>z</em><sub>homeo</sub>, <em>z</em><sub>adversity</sub> | context, exposure, dose)</span></span>
+<span class="panel-subtitle">This research will deliver a toolbox for the development of quantitative AOP's. From linear chains to dynamic, quantitative systems predicting <span class="math-badge"><br>><em>P</em>(<em>z</em><sub>homeo</sub>, <em>z</em><sub>adversity</sub> | context, exposure, dose)</span></span>
 </div>
 <!-- DEEL A: AOP 34 -->
 <div class="part">
