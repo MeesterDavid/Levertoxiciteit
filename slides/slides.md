@@ -103,9 +103,6 @@ class="aop-fig-img aop-fig-overlay"
 <!-- Toelichting Tekst -->
 <div class="video-note">
 <div class="vn-title">Same MIE, different outcomes</div>
-<div class="vn-body">
-Both tissues initiate with an identical central potassium perturbation (MIE). The outcome arises through spatiotemporal emergence: the intrinsic clearance capacity of the astrocytic syncytium (<i>V</i><sub>max</sub>) dictates whether the tissue quenches the local surge or tips into an all-or-none propagating wave.
-</div>
 <div class="vn-foot">scan QR for live simulation</div>
 </div>
 <!-- QR Card: echte, door zxing-cpp gedecodeerde QR (bron: slides/make-qr.mjs) -->

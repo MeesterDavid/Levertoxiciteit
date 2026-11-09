@@ -417,13 +417,13 @@ def draw_hub(x: float, y: float, w: float, h: float, total_params: tuple[str, st
         f'<rect x="{x - 5:.1f}" y="{y - 5:.1f}" width="{w + 10:.1f}" height="{h + 10:.1f}" rx="17" '
         f'fill="{VIOLET}" fill-opacity="0.07"/>',
         card(x, y, w, h, stroke=VIOLET, fill="#161033", rx=14, width=1.8),
-        text(x + w / 2, y + 33, "Multi-modal &amp;", size=15.0, fill=TEXT, weight=800, anchor="middle"),
-        text(x + w / 2, y + 53, "Multi-scale AI", size=15.0, fill=VIOLET, weight=800, anchor="middle"),
+        text(x + w / 2, y + 86, "Multi-modal &amp;", size=15.0, fill=VIOLET, weight=800, anchor="middle"),
+        text(x + w / 2, y + 106, "Multi-scale AI", size=15.0, fill=VIOLET, weight=800, anchor="middle"),
         f'<line x1="{x + 24:.1f}" y1="{y + 66:.1f}" x2="{x + w - 24:.1f}" y2="{y + 66:.1f}" '
         f'stroke="{VIOLET}" stroke-opacity="0.35" stroke-width="1"/>',
-        text(x + w / 2, y + 86, f"Graphormer {total_params[0]} + ToxFormer {total_params[1]}",
-             size=10.2, fill=SOFT, weight=600, anchor="middle"),
-        text(x + w / 2, y + 106, "+ final classification layer (50/50 fusion)",
+        text(x + w / 2, y + 33, f"Graphormer {total_params[0]} + ToxFormer {total_params[1]}",
+             size=10.2, fill=EMERALD, weight=600, anchor="middle"),
+        text(x + w / 2, y + 53, "+ final classification layer (50/50 fusion)",
              size=9.5, fill=EMERALD, weight=700, anchor="middle"),
     ]
     return "".join(rows)
@@ -578,27 +578,18 @@ def draw_output_mie(x: float, y: float, w: float, h: float, mol: dict) -> str:
 
 def draw_output_adversity(x: float, y: float, w: float, h: float) -> str:
     """Answer 2 (dashed arrow): P(z_homeo, z_adversity | context, exposure, dose) - next step."""
-    rows = [card(x, y, w, h, stroke=ROSE, fill="#1d1020", rx=11, width=1.6)]
+    rows = [card(x, y, w, h, stroke=VIOLET, fill="#1d1020", rx=11, width=1.6)]
     rows.append(text(x + 14, y + 32,
                      "P(z" + sub("", "homeo", size=7.4, dy=2.8) + ", z"
                      + sub("", "adversity", size=7.4, dy=2.8) + " | context,",
-                     size=12.0, fill=ROSE, weight=800))
-    rows.append(text(x + 14, y + 47, "exposure, dose)", size=12.0, fill=ROSE, weight=800))
-    rows.append(text(x + 14, y + 66, "Probability that the hepatocyte tips to z"
+                     size=12.0, fill=VIOLET, weight=800))
+    rows.append(text(x + 14, y + 47, "exposure, dose)", size=12.0, fill=VIOLET, weight=800))
+    rows.append(text(x + 14, y + 66, "Probability that it tips to z"
                      + sub("", "adversity", dy=2.4), size=8.6, fill=SOFT))
     rows.append(text(x + 14, y + 78, "instead of returning to z" + sub("", "homeo", dy=2.4)
                      + ", given context,", size=8.6, fill=SOFT))
     rows.append(text(x + 14, y + 90, "exposure and dose", size=8.6, fill=SOFT))
-    chips = (
-        ("z_homeo", "z" + sub("", "homeo"), EMERALD),
-        ("z_steatosis", "z" + sub("", "steatosis"), AMBER),
-        ("z_cholestasis", "z" + sub("", "cholestasis"), ROSE),
-    )
-    cx = x + 14
-    for plain, body, color in chips:
-        chip_svg, chip_w = tag(cx, y + 100, plain, color, body=body)
-        rows.append(chip_svg)
-        cx += chip_w + 5
+ 
     return "".join(rows)
 
 
